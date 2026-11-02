@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Score OS · Wave Galaxy (emerald embed)</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #000; width:100%; height:100%; overflow:hidden; }
+  body { height: 100%; }
+  /* Canvas is pinned, document scrolls — scroll drives camera dive + wave amplitude. */
+  #scroll-host { height: 300vh; }
+  #scene { position: fixed; inset: 0; display: block; width: 100%; height: 100%; }
+  #scroll-hint {
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+    color: rgba(255,255,255,.55); font: 11px/1 -apple-system, system-ui, sans-serif;
+    letter-spacing: 1px; text-transform: uppercase; pointer-events: none;
+    z-index: 10;
+  }
+
+  
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.143.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.143.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<canvas id="scene"></canvas>
+
+
+
+
+
+<script type="module">
+import * as THREE from 'three'
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js'
+import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js'
+import { CopyShader } from 'three/addons/shaders/CopyShader.js'
+
+/* ============================================================
+   CONFIG
+============================================================ */
+const CONFIG = {
+  atmoColor: '#10B981',
+  atmoCount: 180,
+  atmoSize: 8.58,
+  atmoSpeed: 0.92,
+  waveCool: '#064e3b',
+  waveWarm: '#10B981',
+  waveLight: '#6EE7B7',
+  rockColor: '#34D399',
+  scrollDiveZ: 2.2,
+  scrollWaveAmp: 4,
+  scrollExpand: 0.5,
+  scrollSpin: 3,
+  scrollChaos: 0.3,
+  pointerRadius: 0.51,
+  pointerStrength: 0.23,
+  cornerBlue: '#02140c',
+  cornerOrange: '#0b3d28',
+}
+
+/* ---------- LAYERS / HELPERS / FINAL PASS ---------- */
+/* ---------- DEFAULTS + localStorage (load before building) ---------- */
+const DEFAULTS = JSON.parse(JSON.stringify(CONFIG))
+const STORAGE_KEY = 'getlayers:wave'
+/* embed: ignore prior localStorage palette */
+function saveConfig() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(CONFIG)) } catch (e) {} }
+
+const LAYERS = { NONE: 0, TORUS_SCENE: 1, BLOOM_SCENE: 2, ENTIRE_SCENE: 3 }
+const Lerp = (a, b, t = 0.075) => a + (b - a) * t
+
+function hexToVec3(hex) {
+  const n = parseInt(hex.slice(1), 16)
+  return new THREE.Vector3(((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255)
+}
+
+const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 }
+window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY })
+window.addEventListener('message', e => {
+  if (e.data && e.data.type === 'championship-pointer') {
+    mouse.x = (e.data.x || 0) * window.innerWidth
+    mouse.y = (e.data.y || 0) * window.innerHeight
+  }
+})
+
+const FinalPass = {
+  uniforms: {
+    iTime: { value: 0 }, tDiffuse: { value: null },
+    torusTexture: { value: null }, bloomTexture: { value: null }, haloTexture: { value: null },
+    iCornerBlue:   { value: hexToVec3(CONFIG.cornerBlue) },
+    iCornerOrange: { value: hexToVec3(CONFIG.cornerOrange) }
+  },
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position, 1.0); }`,
+  fragmentShader: `
+    uniform float iTime; uniform sampler2D tDiffuse; uniform sampler2D bloomTexture; uniform sampler2D torusTexture; uniform sampler2D haloTexture;
+    uniform vec3 iCornerBlue; uniform vec3 iCornerOrange; varying vec2 vUv;
+    vec3 warp3d(vec3 pos, float t) {
+      float curv = .8, a = 1.9, b = 0.7; pos *= 2.;
+      pos.x += curv * sin(t + a * pos.y) + t * b; pos.y += curv * cos(t + a * pos.x);
+      pos.y += curv * sin(t + a * pos.z) + t * b; pos.z += curv * cos(t + a * pos.y);
+      pos.z += curv * sin(t + a * pos.x) + t * b; pos.x += curv * cos(t + a * pos.z);
+      return 0.5 + 0.5 * cos(pos.xyz + vec3(1, 2, 4));
+    }
+    void main() {
+      vec2 uv = 2. * vUv - 1.;
+      vec3 w = pow(warp3d(vec3(uv.x, sin(uv.y), uv.y), iTime * 1.5), vec3(1.5));
+      vec3 col = 1.5 * iCornerBlue * w.x; col *= w.y; col += iCornerOrange * w.z;
+      col *= smoothstep(0.6, 1., abs(uv.y));
+      col *= smoothstep(-.5, 1., -uv.y * uv.x); col *= smoothstep(-.5, 1., -uv.y * uv.x);
+      vec3 halo = texture2D(haloTexture, vUv).xyz;
+      vec3 atmoBg = vec3(0.012, 0.05, 0.13) * (1.0 - 0.4 * length(uv));
+      gl_FragColor = vec4(atmoBg + col * 0.2 + texture2D(bloomTexture, vUv).xyz + texture2D(torusTexture, vUv).xyz + texture2D(tDiffuse, vUv).xyz + halo, 1.);
+    }`
+}
+
+/* ---------- RENDERER / SCENE / CAMERA ---------- */
+const canvas = document.getElementById('scene')
+const renderer = new THREE.WebGL1Renderer({ canvas, antialias: true })
+renderer.setPixelRatio(window.devicePixelRatio)
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.VSMShadowMap
+const scene = new THREE.Scene()
+scene.background = new THREE.Color(0x000000); scene.fog = new THREE.Fog(0x000000, 0, 15)
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 80)
+camera.position.set(0, 0, 3)
+camera.layers.enable(LAYERS.TORUS_SCENE); camera.layers.enable(LAYERS.BLOOM_SCENE); camera.layers.enable(LAYERS.ENTIRE_SCENE)
+scene.add(camera)
+
+/* ---------- COMPOSER ---------- */
+const renderScene = new RenderPass(scene, camera)
+const torusComposer = new EffectComposer(renderer); torusComposer.renderToScreen = false
+torusComposer.addPass(renderScene)
+torusComposer.addPass(new ShaderPass(GammaCorrectionShader))
+torusComposer.addPass(new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.6, 0.3, 0))
+torusComposer.addPass(new ShaderPass(CopyShader))
+const bloomComposer = new EffectComposer(renderer); bloomComposer.renderToScreen = false
+bloomComposer.addPass(renderScene)
+bloomComposer.addPass(new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.0, 1.15, 0))
+bloomComposer.addPass(new ShaderPass(GammaCorrectionShader))
+const finalPass = new ShaderPass(FinalPass)
+finalPass.uniforms.bloomTexture.value = bloomComposer.renderTarget1.texture
+finalPass.uniforms.torusTexture.value = torusComposer.renderTarget1.texture
+const finalComposer = new EffectComposer(renderer)
+finalComposer.addPass(renderScene); finalComposer.addPass(finalPass)
+
+/* ============================================================
+   SCENE: Wave Galaxy
+============================================================ */
+class Wave {
+  state = { visible: true }
+  instance = new THREE.Group()
+  mouseCurrent = { x: 0, y: 0, z: 0 }
+  position = { visible: [0, 0, 0], hidden: [0, 0, -20] }
+  count = { 1: 120000, 2: 1500 }
+  t0 = 0
+  H = 0.1
+  R = 2.2
+  particlePosition = [0, 0, -0.8]
+  particleRotation = [0.6, 0, 0]
+
+  constructor(scene, canvas) {
+    this.canvas = canvas
+    this.generateWave1()
+    this.generateWave2()
+    this.instance.add(this.particles1)
+    this.instance.add(this.particles2)
+    this.instance.position.set(...this.position.hidden)
+    this.particles1.layers.enable(LAYERS.ENTIRE_SCENE)
+    this.particles2.layers.enable(LAYERS.ENTIRE_SCENE)
+    scene.add(this.instance)
+  }
+
+  generateWave1() {
+    const vertices = [], sizes = [], id = []
+    const sine = x => .6 * Math.sin(x) + .3 * Math.cos(2 * x) + .1 * Math.sin(4 * x)
+    const noise1d = (a, r, q) => sine(10. * q * (a + 2 * r))
+    const fbm = (a, r) => {
+      let c = 1, p = 1.3, q = 0.9
+      let f = c * noise1d(a, r, 1); c *= q
+      f += c * noise1d(a, r, p); c *= q
+      f += c * noise1d(a, r, p * p); c *= q
+      f += c * noise1d(a, r, p * p * p); c *= q
+      return f / 3.43
+    }
+    for (let i = 0; i < this.count[1]; i++) {
+      const r = this.R * Math.pow(Math.random(), 0.45)
+      const a = Math.random() * 2 * Math.PI
+      vertices.push(r * Math.sin(a), this.H * fbm(a, r), r * Math.cos(a))
+      sizes.push(10 + 10 * Math.random())
+      id.push(Math.random())
+    }
+    this.geometry1 = new THREE.BufferGeometry()
+    this.geometry1.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
+    this.geometry1.setAttribute('size',     new THREE.Float32BufferAttribute(sizes, 1))
+    this.geometry1.setAttribute('id',       new THREE.Float32BufferAttribute(id, 1))
+
+    this.material1 = new THREE.ShaderMaterial({
+      uniforms: {
+        iTime:    { value: 0 },
+        iMouse:   { value: this.mouseCurrent },
+        uAspect:  { value: window.innerWidth / window.innerHeight },
+        uPointerRadius:   { value: CONFIG.pointerRadius },
+        uPointerStrength: { value: CONFIG.pointerStrength },
+        iAnimate: { value: 0 },
+        uOpacity: { value: 1 },
+        uCool:    { value: hexToVec3(CONFIG.waveCool) },
+        uWarm:    { value: hexToVec3(CONFIG.waveWarm) },
+        uLight:   { value: hexToVec3(CONFIG.waveLight) },
+        uWaveAmp: { value: 1.0 },
+        uExpand:  { value: 1.0 },
+        uChaos:   { value: 0.0 }
+      },
+      vertexShader: `
+        attribute float size; attribute float id;
+        uniform vec2 iMouse; uniform float iAnimate;
+        uniform float uWaveAmp; uniform float uExpand; uniform float uChaos;
+        uniform float uAspect; uniform float uPointerRadius; uniform float uPointerStrength;
+        varying vec3 pack;
+        void main() {
+          /* Scroll-driven transformation: amplify the wave height, push the
+             disc outward, sprinkle some chaos. pack still uses the un-warped
+             radial info so the fragment shader's fade ranges remain valid. */
+          pack.x = length(position.xz);
+          pack.y = atan(position.z, position.x);
+          pack.z = position.y;
+          vec3 jitter = vec3(
+            fract(sin(id * 12.9898) * 43758.5453) - 0.5,
+            fract(sin(id * 78.233 ) * 12345.6789) - 0.5,
+            fract(sin(id * 39.123 ) * 65432.1234) - 0.5
+          );
+          vec3 p = position;
+          p.y  *= uWaveAmp;
+          p.xz *= uExpand;
+          p   += jitter * uChaos;
+          vec4 mv = modelViewMatrix * vec4(p, 1.0);
+          gl_PointSize = size / -mv.z * (.5 + .5 * iAnimate);
+          vec4 res = projectionMatrix * mv;
+          vec2 ndc = res.xy / res.w;
+          vec2 diff = ndc - iMouse;
+          float pdist = length(diff * vec2(uAspect, 1.0));
+          float f = clamp(uPointerRadius - pdist, 0.0, 1.0);
+          vec2 dir = length(diff) > 1e-4 ? normalize(diff) : vec2(0.0);
+          res.xy += dir * (f * f * uPointerStrength) * res.w;
+          float a = pow(iAnimate, 0.6);
+          res.xy *= clamp(2. * a + pow(id, .7) - 1., 0., 1.);
+          gl_Position = res;
+        }`,
+      fragmentShader: `
+        uniform float iTime; uniform float uOpacity; uniform float iAnimate;
+        uniform vec3 uCool; uniform vec3 uWarm; uniform vec3 uLight;
+        varying vec3 pack;
+        void main() {
+          float r = pack.x; float a = pack.y; float py = pack.z;
+          float glow = pow(0.018 / max(0., r), .9);
+          float fading = smoothstep(-${this.H}, .8 * ${this.H}, py) * smoothstep(2.6 * ${this.R}, .7 * ${this.R}, r * r);
+          a = sin(4. * ((-a + 2. * r)));
+          float blink = clamp((.2 + 1.5 * r * sin(a)) * (.5 + .5 * sin(r * 8. + iTime * 4.)), 0., 1.);
+          vec3 col = uCool * .6;
+          vec3 col2 = uWarm * .6;
+          vec3 light = uLight * .8;
+          vec3 tex = 1. - smoothstep(.6, 1., vec3(length(2. * gl_PointCoord - 1.)));
+          col = mix(col, col2, blink);
+          gl_FragColor = vec4(col * tex * fading + tex * light * glow, uOpacity);
+        }`,
+      blending: THREE.AdditiveBlending,
+      depthTest: false,
+      transparent: true
+    })
+    this.particles1 = new THREE.Points(this.geometry1, this.material1)
+    this.particles1.position.set(...this.particlePosition)
+    this.particles1.rotation.set(...this.particleRotation)
+  }
+
+  generateWave2() {
+    const vertices = [], sizes = [], id = []
+    for (let i = 0; i < this.count[2]; i++) {
+      const r = .85 * this.R * Math.sqrt(Math.random())
+      const a = Math.random() * 2 * Math.PI
+      vertices.push(r * Math.sin(a), this.H * (r * r * 6 + 1), r * Math.cos(a))
+      sizes.push(30 + 30 * Math.random())
+      id.push(Math.random())
+    }
+    this.geometry2 = new THREE.BufferGeometry()
+    this.geometry2.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
+    this.geometry2.setAttribute('size',     new THREE.Float32BufferAttribute(sizes, 1))
+    this.geometry2.setAttribute('id',       new THREE.Float32BufferAttribute(id, 1))
+
+    this.material2 = new THREE.ShaderMaterial({
+      uniforms: Object.assign(this.material1.uniforms, { uRock: { value: hexToVec3(CONFIG.rockColor) } }),
+      vertexShader: `
+        attribute float size; attribute float id;
+        uniform float iTime; uniform vec2 iMouse; uniform float iAnimate;
+        uniform float uWaveAmp; uniform float uExpand; uniform float uChaos;
+        uniform float uAspect; uniform float uPointerRadius; uniform float uPointerStrength;
+        varying float rn;
+        void main() {
+          rn = id;
+          float rr = position.x * position.x + position.z * position.z;
+          vec3 pos = vec3(position.x, ${this.H} * sin(iTime * .6 + 100. * rn) / (rr * .33 + .8), position.z);
+          pos.y  *= uWaveAmp;
+          pos.xz *= uExpand;
+          vec3 jitter = vec3(
+            fract(sin(id * 12.9898) * 43758.5453) - 0.5,
+            fract(sin(id * 78.233 ) * 12345.6789) - 0.5,
+            fract(sin(id * 39.123 ) * 65432.1234) - 0.5
+          );
+          pos += jitter * uChaos;
+          vec4 vpos = modelViewMatrix * vec4(pos, 1.0);
+          gl_PointSize = size / -vpos.z * (0.8 + 0.2 * sin(iTime * (1. + rn) * 3.)) * (.5 + .5 * iAnimate);
+          vec4 res = projectionMatrix * vpos;
+          vec2 ndc = res.xy / res.w;
+          vec2 diff = ndc - iMouse;
+          float pdist = length(diff * vec2(uAspect, 1.0));
+          float f = clamp(uPointerRadius - pdist, 0.0, 1.0);
+          vec2 dir = length(diff) > 1e-4 ? normalize(diff) : vec2(0.0);
+          res.xy += dir * (f * f * uPointerStrength) * res.w;
+          float a = pow(iAnimate, 0.9);
+          res.xy *= clamp(2. * a + pow(id, .7) - 1., 0., 1.);
+          gl_Position = res;
+        }`,
+      fragmentShader: `
+        uniform float uOpacity; uniform vec3 uRock; varying float rn;
+        void main() {
+          vec3 color = uRock * .8;
+          vec3 tex = 1. - smoothstep(.3, 1., vec3(length(2. * gl_PointCoord - 1.)));
+          gl_FragColor = vec4(color * tex, (.5 + .5 * rn) * uOpacity);
+        }`,
+      blending: THREE.AdditiveBlending,
+      depthTest: false,
+      transparent: false
+    })
+    this.particles2 = new THREE.Points(this.geometry2, this.material2)
+    this.particles2.position.set(...this.particlePosition)
+    this.particles2.rotation.set(...this.particleRotation)
+  }
+
+  getScenePointer() {
+    return new THREE.Vector3(
+      (mouse.x / this.canvas.clientWidth)  *  2 - 1,
+      (mouse.y / this.canvas.clientHeight) * -2 + 1,
+      0.5
+    )
+  }
+
+  appearIn() {
+    const start = performance.now()
+    const slideStart = start + 500
+    const slideEnd = slideStart + 1500
+    const animEnd = start + 2000
+    const renderFrame = () => {
+      const now = performance.now()
+      // slide-in (OutQuartic) on z, opacity 0→1
+      const tSlide = Math.max(0, Math.min(1, (now - slideStart) / 1500))
+      const eased = 1 - Math.pow(1 - tSlide, 4)
+      this.instance.position.z = Lerp(this.position.hidden[2], this.position.visible[2], eased)
+      this.material1.uniforms.uOpacity.value = eased
+      this.material2.uniforms.uOpacity.value = eased
+      // iAnimate (linear-cubic blend) 0→1 over 2s
+      const tAnim = Math.max(0, Math.min(1, (now - start) / 2000))
+      const tAnimE = tAnim * tAnim * (3 - 2 * tAnim)
+      this.material1.uniforms.iAnimate.value = tAnimE
+      if (now < animEnd) requestAnimationFrame(renderFrame)
+      else { this.material1.uniforms.iAnimate.value = 1 }
+    }
+    requestAnimationFrame(renderFrame)
+  }
+
+  render(scrollT) {
+    const t = performance.now() / 1000
+    const dt = t - this.t0
+    // Rotation accelerates with scroll
+    const spinMul = 1 + scrollT * CONFIG.scrollSpin
+    this.particles1.rotation.y += 0.15 * spinMul * dt
+    this.particles2.rotation.y += 0.15 * spinMul * dt
+    this.material1.uniforms.iTime.value = t
+    // Scroll-driven shape uniforms
+    this.material1.uniforms.uWaveAmp.value = 1 + scrollT * (CONFIG.scrollWaveAmp - 1)
+    this.material1.uniforms.uExpand.value  = 1 + scrollT * CONFIG.scrollExpand
+    this.material1.uniforms.uChaos.value   = scrollT * scrollT * CONFIG.scrollChaos
+    this.t0 = t
+    const target = this.getScenePointer()
+    this.mouseCurrent.x = Lerp(this.mouseCurrent.x, target.x, 0.09)
+    this.mouseCurrent.y = Lerp(this.mouseCurrent.y, target.y, 0.09)
+    this.material1.uniforms.iMouse.value = this.mouseCurrent
+  }
+}
+
+/* ---------- SCROLL → uniforms / camera dive ---------- */
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v))
+let scrollTarget = 0
+let scrollCurrent = 0
+function updateScroll(v) {
+  if (typeof v === 'number') { scrollTarget = clamp(v, 0, 1); return }
+  // standalone fallback
+  const max = document.documentElement.scrollHeight - window.innerHeight
+  scrollTarget = max > 0 ? clamp(window.scrollY / max, 0, 1) : 0
+}
+window.addEventListener('scroll', () => updateScroll(), { passive: true })
+window.addEventListener('message', (e) => {
+  if (e.data && e.data.type === 'championship-scroll' && typeof e.data.t === 'number') updateScroll(e.data.t)
+})
+updateScroll(0)
+const baseCameraZ = camera.position.z   // 3
+// Auto gentle drift so the scene feels alive even without scroll
+setInterval(() => {
+  if (scrollTarget < 0.08) scrollTarget = 0.05 + 0.03 * Math.sin(performance.now()/4000)
+}, 500)
+
+const wave = new Wave(scene, canvas)
+wave.appearIn()
+
+/* ---------- ambient atmosphere particles (camera-attached drifting motes) ---------- */
+let atmoMat = null
+;(function () {
+  const N = Math.round(CONFIG.atmoCount)
+  const positions = new Float32Array(N * 3), sizes = new Float32Array(N), seeds = new Float32Array(N)
+  for (let i = 0; i < N; i++) {
+    positions[i*3] = 2*Math.random()-1; positions[i*3+1] = 2*Math.random()-1; positions[i*3+2] = 2*Math.random()-1
+    sizes[i] = CONFIG.atmoSize * (0.4 + Math.random()); seeds[i] = Math.random()
+  }
+  const g = new THREE.BufferGeometry()
+  g.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+  g.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1))
+  g.setAttribute('seed', new THREE.Float32BufferAttribute(seeds, 1))
+  atmoMat = new THREE.ShaderMaterial({
+    uniforms: { uTime: { value: 0 }, uColor: { value: hexToVec3(CONFIG.atmoColor) },
+      uRes: { value: new THREE.Vector2(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio) } },
+    vertexShader: `
+      attribute float size; attribute float seed; uniform float uTime; uniform vec2 uRes;
+      varying float vA;
+      vec3 warp(vec3 p, float t){ float c=0.9,a=1.9,b=0.02,s=0.05; p*=2.;
+        p.x+=c*sin(s*t+a*p.y)+t*b; p.y+=c*cos(s*t+a*p.x); p.y+=c*sin(s*t+a*p.z)+t*b;
+        p.z+=c*cos(s*t+a*p.y); p.z+=c*sin(s*t+a*p.x)+t*b; p.x+=c*cos(s*t+a*p.z);
+        return cos(p+vec3(1,2,4)); }
+      void main(){
+        vec3 v = position*4.0 + warp(position, uTime)*1.2;
+        vec4 mv = modelViewMatrix * vec4(v, 1.0);
+        float r = length(v); float farF = 1.0 - smoothstep(5.0, 6.5, r); float nearF = smoothstep(0.0, 0.5, -mv.z);
+        vA = farF * nearF;
+        gl_PointSize = size * uRes.y / 900.0 / -mv.z; gl_PointSize = max(gl_PointSize, 1.0);
+        gl_Position = projectionMatrix * mv;
+      }`,
+    fragmentShader: `
+      uniform vec3 uColor; varying float vA;
+      void main(){ vec2 p = gl_PointCoord - 0.5; float l = length(p); if (l > 0.5) discard;
+        float tex = smoothstep(0.5, 0.0, l); gl_FragColor = vec4(uColor * tex, tex * vA * 0.55); }`,
+    transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false
+  })
+  const pts = new THREE.Points(g, atmoMat)
+  pts.frustumCulled = false
+  pts.layers.enable(LAYERS.ENTIRE_SCENE)
+  scene.add(pts)
+  pts.onBeforeRender = () => {
+    const t = performance.now() / 1000
+    atmoMat.uniforms.uTime.value = t * CONFIG.atmoSpeed * 8.0
+    pts.position.copy(camera.position)
+    if (finalPass && finalPass.uniforms.iTime) finalPass.uniforms.iTime.value = t
+  }
+})()
+
+/* ---------- CONFIG → uniforms ---------- */
+function applyConfig() {
+  if (atmoMat) atmoMat.uniforms.uColor.value.copy(hexToVec3(CONFIG.atmoColor))
+  wave.material1.uniforms.uCool.value.copy(hexToVec3(CONFIG.waveCool))
+  wave.material1.uniforms.uWarm.value.copy(hexToVec3(CONFIG.waveWarm))
+  wave.material1.uniforms.uLight.value.copy(hexToVec3(CONFIG.waveLight))
+  wave.material2.uniforms.uRock.value.copy(hexToVec3(CONFIG.rockColor))
+  wave.material1.uniforms.uPointerRadius.value = CONFIG.pointerRadius
+  wave.material1.uniforms.uPointerStrength.value = CONFIG.pointerStrength
+  finalPass.uniforms.iCornerBlue.value.copy(hexToVec3(CONFIG.cornerBlue))
+  finalPass.uniforms.iCornerOrange.value.copy(hexToVec3(CONFIG.cornerOrange))
+}
+
+/* ---------- RESIZE ---------- */
+function resize() {
+  const w = window.innerWidth, h = window.innerHeight, dpr = window.devicePixelRatio
+  renderer.setPixelRatio(dpr); renderer.setSize(w, h, false)
+  camera.aspect = w / h; camera.updateProjectionMatrix()
+  for (const c of [torusComposer, bloomComposer, finalComposer]) { c.setPixelRatio(dpr); c.setSize(w, h) }
+  wave.material1.uniforms.uAspect.value = w / h
+}
+window.addEventListener('resize', () => { resize(); updateScroll() }); resize()
+
+/* ---------- RENDER LOOP ---------- */
+function render() {
+  requestAnimationFrame(render)
+  // Smooth the raw scroll value so the dive feels weighted, not snappy.
+  scrollCurrent = Lerp(scrollCurrent, scrollTarget, 0.08)
+  // Camera dives forward toward the galaxy plane on scroll.
+  camera.position.z = baseCameraZ - scrollCurrent * CONFIG.scrollDiveZ
+  wave.render(scrollCurrent)
+  const t = performance.now() / 1000
+  finalPass.uniforms.iTime.value = t
+  camera.layers.set(LAYERS.TORUS_SCENE);  torusComposer.render()
+  camera.layers.set(LAYERS.BLOOM_SCENE);  bloomComposer.render()
+  camera.layers.set(LAYERS.ENTIRE_SCENE); finalComposer.render()
+}
+render()
+
+applyConfig()
+
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: scoresos-championship-preview
+    runtime: static
+    repo: https://github.com/onelifequest-cmd/scoresos-championship-preview
+    branch: main
+    buildCommand: echo static
+    staticPublishPath: ./
+    headers:
+      - path: /*
+        name: X-Robots-Tag
+        value: noindex, nofollow
