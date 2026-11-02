@@ -10,6 +10,8 @@ Interactive homepage hero: 3D Colosseum carousel for Score OS.
 ## URLs
 - Colosseum (current root): `/` and `/colosseum/`
 - Prior Championship HQ concept: `/championship/`
+- getlayers Carousel Spotlight original: `/original/`
+- Same layer, light Score OS brand only: `/branded/`
 
 ## Local
 ```bash
