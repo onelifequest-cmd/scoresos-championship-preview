@@ -1,14 +1,15 @@
-# Score OS — Championship HQ Preview (not live)
+# Score OS — Colosseum Arena Preview (not live)
 
-Interactive Championship Headquarters homepage concept for Score OS.
+Interactive homepage hero: 3D Colosseum carousel for Score OS.
 
 - **Preview only.** Live site untouched: https://scoresos.com
-- `noindex` / `robots.txt` — do not index
-- getlayers assets (Full Stack Lifetime licence, no attribution required):
-  - Twin Green Beams — hero video background
-  - Emerald Silk Waves — Maxine AI section background
-  - Wave Galaxy — Championship Finish WebGL scene (emerald Score OS roll)
-- CROA-safe demo copy: example data labels, placeholder testimonials, no outcome guarantees
+- `noindex` / `robots.txt` / `X-Robots-Tag` — do not index
+- Engine: getlayers Carousel Spotlight (CSS 3D concave ring), restyled as a Roman arena
+- Features as arch-topped stone cards; CROA-safe copy (no outcome guarantees, no fake scores)
+
+## URLs
+- Colosseum (current root): `/` and `/colosseum/`
+- Prior Championship HQ concept: `/championship/`
 
 ## Local
 ```bash

@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Score OS Championship HQ — PREVIEW ONLY. Not live. Live site remains scoresos.com.">
+<title>ScoreOS — Championship HQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000000; --bg-alt:#050806; --surface:rgba(255,255,255,.04); --surface-2:rgba(255,255,255,.07);
+  --ink:#ffffff; --ink-muted:#9ba8a0; --ink-subtle:#6b776f;
+  --accent:#19e37a; --accent-deep:#0b7a3f; --accent-ink:#031a0c; --glow:#44ffa0;
+  --line:rgba(255,255,255,.10); --line-strong:rgba(25,227,122,.45);
+  --font-display:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;
+  --font-body:'Inter',system-ui,-apple-system,sans-serif;
+  --font-mono:'Share Tech Mono','SF Mono',Menlo,monospace;
+  --radius:6px; --radius-lg:14px;
+  --ease:cubic-bezier(.16,1,.3,1); --dur:.3s; --dur-slow:.9s;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{padding-top:34px} body.locked{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+h1,h2,h3{font-family:var(--font-display);text-transform:uppercase;line-height:.95;margin:0;letter-spacing:.01em}
+.wrap{width:min(1240px,100% - 48px);margin-inline:auto}
+section{position:relative;padding:120px 0}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--accent)}
+.sec-title{font-size:clamp(40px,6vw,76px);font-weight:800;margin:14px 0 12px}
+.sec-sub{color:var(--ink-muted);max-width:620px;font-size:17px;margin:0}
+.head{margin-bottom:56px}
+.example-tag{display:inline-block;font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#ffd166;border:1px solid rgba(255,209,102,.4);padding:4px 8px;border-radius:3px;margin-left:12px;vertical-align:middle}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:16px 28px;border-radius:999px;font-family:var(--font-display);font-size:18px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid transparent;transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),background var(--dur)}
+.btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 0 0 0 rgba(25,227,122,0)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(25,227,122,.35)}
+.btn-ghost{border-color:rgba(255,255,255,.22);color:#fff;background:rgba(255,255,255,.04);backdrop-filter:blur(8px)}
+.btn-ghost:hover{border-color:var(--accent);transform:translateY(-2px)}
+.btn-link{font-family:var(--font-mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted);border-bottom:1px solid var(--line);padding-bottom:3px}
+.btn-link:hover{color:var(--accent);border-color:var(--accent)}
+.btn-sm{padding:10px 18px;font-size:14px}
+
+/* ===== LOADER ===== */
+#loader{position:fixed;inset:0;z-index:1000;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:22px;transition:transform 1.1s var(--ease);will-change:transform}
+#loader.exit{transform:translateY(-100%)}
+#loader .mark{font-family:var(--font-display);font-size:34px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;opacity:.9}
+#loader .mark b{color:var(--accent)}
+#loader .lamps{display:flex;gap:14px}
+#loader .lamp{width:14px;height:14px;border-radius:50%;background:#101410;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);transition:background .3s,box-shadow .3s}
+#loader .lamp.on{background:var(--accent);box-shadow:0 0 18px 4px rgba(25,227,122,.6)}
+#loader .pct{font-family:var(--font-mono);font-size:12px;letter-spacing:.3em;color:var(--ink-muted)}
+#loader .pct span{color:var(--accent)}
+
+/* ===== NAV ===== */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 0;transition:background .4s,backdrop-filter .4s}
+nav.scrolled{background:rgba(0,0,0,.72);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.logo .tile{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#0b7a3f);display:grid;place-items:center;color:#031a0c;font-size:18px;box-shadow:0 0 24px rgba(25,227,122,.35)}
+.logo em{font-style:normal;color:var(--accent)}
+nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-family:var(--font-mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted)}
+nav ul a:hover{color:var(--accent)}
+nav .cta{display:flex;gap:10px;align-items:center}
+@media(max-width:900px){nav ul{display:none}}
+
+/* ===== HERO ===== */
+#hero{min-height:100vh;display:flex;align-items:center;padding:140px 0 100px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;background:#000}
+.hero-bg video,.hero-bg img.poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.6s ease}
+.hero-bg.lit video,.hero-bg.lit img.poster{opacity:1}
+.hero-bg .beams{position:absolute;inset:0;opacity:0;transition:opacity 2s ease}
+.hero-bg.lit .beams{opacity:.35}
+.hero-bg .beam{position:absolute;bottom:-20%;width:14vw;height:140%;background:linear-gradient(to top,rgba(25,227,122,.45),rgba(25,227,122,0) 70%);filter:blur(22px);transform-origin:bottom center;animation:sway 9s ease-in-out infinite alternate}
+.hero-bg .beam.b1{left:12%;transform:rotate(-14deg)} .hero-bg .beam.b2{right:12%;transform:rotate(14deg);animation-delay:-4s}
+.hero-bg .scan{position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 6px);mix-blend-mode:overlay}
+.hero-bg .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,transparent 42%,rgba(0,0,0,.55) 88%),linear-gradient(to bottom,rgba(0,0,0,.28),transparent 28%,transparent 72%,rgba(0,0,0,.85));pointer-events:none}
+@keyframes sway{from{transform:rotate(-16deg)}to{transform:rotate(-9deg)}}
+.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
+@media(max-width:980px){.hero-grid{grid-template-columns:1fr}}
+.hero h1{font-size:clamp(52px,8.2vw,118px);font-weight:800;letter-spacing:.005em}
+.hero h1 .w{display:inline-block;opacity:0;transform:translateY(30px);filter:blur(8px)}
+.ready .hero h1 .w{animation:wordin .9s var(--ease) forwards}
+.hero h1 .w:nth-child(1){animation-delay:.1s}.hero h1 .w:nth-child(2){animation-delay:.22s}.hero h1 .w:nth-child(3){animation-delay:.34s}.hero h1 .w:nth-child(4){animation-delay:.46s}.hero h1 .w:nth-child(5){animation-delay:.58s}.hero h1 .w:nth-child(6){animation-delay:.70s}
+.hero h1 .w.hi{color:var(--accent);text-shadow:0 0 30px rgba(25,227,122,.5)}
+@keyframes wordin{30%{opacity:1}to{opacity:1;transform:none;filter:blur(0)}}
+.hero .sub{font-family:var(--font-display);font-size:clamp(20px,2.4vw,30px);font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#d9e3dc;margin:18px 0 10px}
+.hero p.brand{color:var(--ink-muted);max-width:520px;font-size:17px}
+.hero .actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px;align-items:center}
+.fade-up{opacity:0;transform:translateY(18px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.ready .fade-up{opacity:1;transform:none}
+.fade-up.d1{transition-delay:.7s}.fade-up.d2{transition-delay:.85s}.fade-up.d3{transition-delay:1s}.fade-up.d4{transition-delay:1.15s}
+
+/* scoreboard panel (hero) */
+.board{background:linear-gradient(180deg,#0b0f0c,#050705);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08);position:relative;overflow:hidden}
+.board::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% -20%,rgba(25,227,122,.18),transparent 55%);pointer-events:none}
+.board .bar{display:flex;justify-content:space-between;align-items:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-subtle);margin-bottom:16px}
+.board .bar .live{display:inline-flex;align-items:center;gap:8px;color:var(--accent)}
+.board .bar .live i{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.25}}
+.led-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.led{background:#000;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 12px;text-align:center}
+.led .lbl{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--ink-subtle);text-transform:uppercase;margin-bottom:8px}
+.led .val{font-family:var(--font-mono);font-size:clamp(28px,3vw,40px);color:var(--accent);text-shadow:0 0 14px rgba(25,227,122,.7),0 0 2px #fff;line-height:1}
+.led .delta{font-family:var(--font-mono);font-size:11px;color:var(--ink-muted);margin-top:6px}
+.board .ticker{margin-top:16px;border-top:1px solid var(--line);padding-top:12px;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--ink-muted);white-space:nowrap;overflow:hidden}
+.board .ticker span{display:inline-block;animation:tick 22s linear infinite;padding-left:100%}
+@keyframes tick{to{transform:translateX(-100%)}}
+
+/* ===== SCOREBOARD SECTION ===== */
+#scoreboard{background:var(--bg-alt)}
+.tabs{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px;gap:4px;margin-bottom:28px}
+.tab{padding:10px 20px;border-radius:999px;border:0;background:transparent;color:var(--ink-muted);font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;transition:all var(--dur)}
+.tab.active{background:var(--accent);color:var(--accent-ink);box-shadow:0 0 24px rgba(25,227,122,.35)}
+.sb-layout{display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:start}
+@media(max-width:980px){.sb-layout{grid-template-columns:1fr}}
+.panel{display:none}.panel.active{display:block;animation:fadein .5s var(--ease)}
+@keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:600px){.metric-grid{grid-template-columns:repeat(2,1fr)}}
+.metric{background:#000;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:18px;cursor:pointer;transition:border-color var(--dur),transform var(--dur),box-shadow var(--dur)}
+.metric:hover,.metric.sel{border-color:var(--line-strong);transform:translateY(-3px);box-shadow:0 0 0 1px rgba(25,227,122,.2),0 14px 40px rgba(0,0,0,.5)}
+.metric .lbl{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--ink-subtle);text-transform:uppercase}
+.metric .val{font-family:var(--font-mono);font-size:40px;color:var(--accent);text-shadow:0 0 14px rgba(25,227,122,.6);margin:8px 0 10px;line-height:1}
+.meter{height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#0b7a3f,var(--accent));box-shadow:0 0 10px rgba(25,227,122,.6);transition:width 1.2s var(--ease)}
+.bureaus{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.bureau{background:#000;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:border-color var(--dur),transform var(--dur)}
+.bureau:hover,.bureau.sel{border-color:var(--line-strong);transform:translateY(-3px)}
+.bureau .name{font-family:var(--font-display);font-size:18px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#d9e3dc}
+.bureau .score{font-family:var(--font-mono);font-size:52px;color:var(--accent);text-shadow:0 0 16px rgba(25,227,122,.6);line-height:1;margin:10px 0 4px}
+.bureau .note{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;color:var(--ink-subtle);text-transform:uppercase}
+.history{background:#000;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:18px;cursor:pointer}
+.history:hover{border-color:var(--line-strong)}
+.history svg{width:100%;height:120px;display:block}
+.history .lbl{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--ink-subtle);text-transform:uppercase;display:flex;justify-content:space-between}
+.sb-side .mini{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.mini .metric .val{font-size:28px}
+.preview{background:linear-gradient(180deg,#0b0f0c,#060806);border:1px solid var(--line);border-radius:16px;padding:18px;position:sticky;top:90px}
+.preview .ph{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--ink-subtle);text-transform:uppercase;display:flex;justify-content:space-between;margin-bottom:12px}
+.preview .ph b{color:var(--accent);font-weight:400}
+.preview .desc{color:var(--ink-muted);font-size:14px;margin-top:12px}
+
+/* mock UI screens */
+.screen{background:#07090a;border:1px solid rgba(255,255,255,.1);border-radius:10px;overflow:hidden;font-family:var(--font-body);font-size:11px;color:#c7cfca;aspect-ratio:16/10;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.screen.phone{aspect-ratio:9/18;width:220px;margin:0 auto;border-radius:22px;border-width:4px;border-color:#1a1f1c}
+.screen .top{height:26px;background:#0d1110;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:6px;padding:0 10px}
+.screen .top i{width:7px;height:7px;border-radius:50%;background:#2a332d}
+.screen .top .url{margin-left:8px;flex:1;height:12px;border-radius:6px;background:#141917}
+.screen .body{flex:1;display:flex;min-height:0}
+.screen .side{width:26%;background:#0a0d0c;border-right:1px solid rgba(255,255,255,.06);padding:10px 8px;display:flex;flex-direction:column;gap:7px}
+.screen .side .brand{height:14px;border-radius:4px;background:var(--pbrand,var(--accent));width:70%;margin-bottom:6px;opacity:.9}
+.screen .side .it{height:8px;border-radius:4px;background:#1a211d;width:80%}
+.screen .side .it.on{background:var(--pbrand,var(--accent));opacity:.6}
+.screen .main{flex:1;padding:10px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.screen .hdr{display:flex;justify-content:space-between;align-items:center}
+.screen .hdr b{font-weight:600;color:#e8efea;font-size:12px}
+.screen .pill{background:var(--pbrand,var(--accent));color:#031a0c;font-weight:600;font-size:9px;padding:3px 8px;border-radius:999px}
+.screen .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.screen .card{background:#0f1412;border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:8px}
+.screen .card small{display:block;color:#6b776f;font-size:8px;letter-spacing:.1em;text-transform:uppercase}
+.screen .card strong{display:block;font-family:var(--font-mono);font-size:16px;color:var(--pbrand,var(--accent))}
+.screen .rows{display:flex;flex-direction:column;gap:5px;flex:1}
+.screen .row{display:flex;align-items:center;gap:8px;background:#0c100e;border-radius:5px;padding:6px 8px}
+.screen .row .av{width:14px;height:14px;border-radius:50%;background:#223129;flex:none}
+.screen .row .t{flex:1;height:7px;border-radius:4px;background:#1a211d}
+.screen .row .tag{font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(25,227,122,.15);color:var(--pbrand,var(--accent));font-weight:600;white-space:nowrap}
+.screen .row .tag.warn{background:rgba(255,209,102,.15);color:#ffd166}
+.screen .row .tag.info{background:rgba(120,170,255,.15);color:#9bbcff}
+.screen .chat{display:flex;flex-direction:column;gap:6px;flex:1}
+.screen .msg{max-width:70%;padding:6px 9px;border-radius:9px;background:#141a17;font-size:10px}
+.screen .msg.me{align-self:flex-end;background:var(--pbrand,var(--accent));color:#031a0c}
+.screen .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;flex:1}
+.screen .cal i{background:#0f1412;border-radius:3px;min-height:14px;display:block}
+.screen .cal i.ev{background:var(--pbrand,var(--accent));opacity:.7}
+.screen .web{flex:1;background:linear-gradient(180deg,#101613,#07090a);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px;text-align:center}
+.screen .web .h{font-family:var(--font-display);font-size:16px;font-weight:800;text-transform:uppercase;color:#fff}
+.screen .web .b{width:60%;height:5px;border-radius:3px;background:#2a332d}
+.screen .web .cta{background:var(--pbrand,var(--accent));color:#031a0c;font-weight:700;font-size:9px;padding:4px 12px;border-radius:999px}
+.screen .vids{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.screen .vid{aspect-ratio:16/9;background:#141a17;border-radius:5px;display:grid;place-items:center;color:var(--pbrand,var(--accent));font-size:14px}
+.screen .flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.screen .node{background:#0f1412;border:1px solid rgba(25,227,122,.35);border-radius:5px;padding:5px 8px;font-size:9px;white-space:nowrap}
+.screen .arrow{color:var(--pbrand,var(--accent))}
+.screen .hero-doc{background:#fff;color:#111;border-radius:4px;padding:10px;font-size:8px;line-height:1.5;flex:1;overflow:hidden}
+.screen .hero-doc h6{margin:0 0 4px;font-size:9px}
+.screen .hero-doc mark{background:rgba(255,209,102,.6);padding:0 2px}
+
+/* ===== ARSENAL ===== */
+.arsenal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:28px}
+@media(max-width:1100px){.arsenal-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:600px){.arsenal-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;-webkit-overflow-scrolling:touch}.arsenal-grid .acard{min-width:150px;scroll-snap-align:start}}
+.acard{aspect-ratio:3/4;background:linear-gradient(180deg,#0d1110,#060806);border:1px solid var(--line);border-radius:12px;padding:14px 12px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;color:#fff;transition:transform var(--dur) var(--ease),border-color var(--dur),box-shadow var(--dur);position:relative;overflow:hidden}
+.acard::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0,rgba(25,227,122,.25),transparent 60%);opacity:0;transition:opacity var(--dur)}
+.acard:hover{transform:translateY(-6px);border-color:rgba(25,227,122,.4)}
+.acard.lit{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 20px 50px rgba(25,227,122,.25);transform:translateY(-6px) scale(1.03)}
+.acard.lit::after{opacity:1}
+.acard .num{font-family:var(--font-mono);font-size:11px;color:var(--ink-subtle);letter-spacing:.15em;position:relative;z-index:1}
+.acard .ico{font-size:26px;position:relative;z-index:1}
+.acard .nm{font-family:var(--font-display);font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;line-height:1;position:relative;z-index:1}
+.arsenal-detail{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:28px}
+@media(max-width:900px){.arsenal-detail{grid-template-columns:1fr}}
+.arsenal-detail h3{font-size:clamp(28px,3.4vw,44px);font-weight:800}
+.arsenal-detail p{color:var(--ink-muted)}
+.arsenal-detail .nav-row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+
+/* ===== MAXINE ===== */
+#maxine{position:relative;background:var(--bg-alt);overflow:hidden;min-height:100vh}
+#maxine .silk{position:absolute;inset:0;z-index:0;opacity:.72}
+#maxine .silk video,#maxine .silk img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+#maxine .silk .fallback{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(25,227,122,.22),transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(11,122,63,.25),transparent 50%),#000}
+#maxine .silk .fade{position:absolute;inset:0;background:linear-gradient(to bottom,#050806,transparent 18%,transparent 82%,#050806),linear-gradient(to right,rgba(5,8,6,.55),rgba(5,8,6,.18));pointer-events:none}
+#maxine .wrap{position:relative;z-index:1}
+.mx-layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:start}
+@media(max-width:980px){.mx-layout{grid-template-columns:1fr}}
+.console{background:rgba(0,0,0,.7);border:1px solid rgba(25,227,122,.3);border-radius:16px;padding:0;overflow:hidden;box-shadow:0 0 0 1px rgba(25,227,122,.08),0 40px 100px rgba(0,0,0,.7);backdrop-filter:blur(10px)}
+.console .cbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(25,227,122,.2);font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.console .cbar .dots{display:flex;gap:6px}.console .cbar .dots i{width:8px;height:8px;border-radius:50%;background:#1a2b20}
+.console .cbody{padding:18px;min-height:360px;display:flex;flex-direction:column;gap:12px}
+.console .idle{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;color:var(--ink-muted);min-height:300px}
+.orb{width:84px;height:84px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#8dffc8,var(--accent) 40%,#0b7a3f 70%,#031a0c);box-shadow:0 0 50px rgba(25,227,122,.6);animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.06);box-shadow:0 0 80px rgba(25,227,122,.8)}}
+.report{background:#fff;color:#111;border-radius:8px;padding:16px;font-size:12px;line-height:1.5;font-family:var(--font-body)}
+.report h6{margin:0 0 8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#555}
+.report table{width:100%;border-collapse:collapse}
+.report td{padding:6px 4px;border-bottom:1px solid #eee;vertical-align:top}
+.report tr.flag td{background:rgba(255,209,102,.25);box-shadow:inset 3px 0 0 #ff9f1c}
+.report tr.flag.on td{animation:flagin .5s var(--ease)}
+@keyframes flagin{from{background:rgba(255,159,28,.6)}}
+.mx-note{background:rgba(25,227,122,.08);border:1px solid rgba(25,227,122,.3);border-radius:8px;padding:12px 14px;font-size:13px;color:#d9e3dc;display:none}
+.mx-note.show{display:block;animation:fadein .5s var(--ease)}
+.mx-note b{color:var(--accent)}
+.letter{background:#fff;color:#111;border-radius:8px;padding:16px;font-size:11px;line-height:1.55;display:none;max-height:200px;overflow:auto}
+.letter.show{display:block;animation:fadein .5s var(--ease)}
+.steps{display:flex;flex-direction:column;gap:10px;margin-top:24px}
+.step{display:flex;gap:14px;align-items:flex-start;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);transition:border-color var(--dur),background var(--dur)}
+.step .n{font-family:var(--font-mono);font-size:11px;color:var(--ink-subtle);width:48px;flex:none;padding-top:2px}
+.step.on{border-color:var(--line-strong);background:rgba(25,227,122,.07)}
+.step.on .n{color:var(--accent)}
+.step.done{opacity:.55}
+.mx-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.disclaimer{font-size:12px;color:var(--ink-subtle);margin-top:16px;max-width:560px}
+
+/* ===== RUN THE PLAY ===== */
+.field-wrap{background:linear-gradient(180deg,#071b0f,#04120a);border:1px solid rgba(25,227,122,.25);border-radius:18px;padding:24px;overflow:hidden;position:relative}
+.field-wrap::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0,rgba(25,227,122,.2),transparent 60%);pointer-events:none}
+.field{position:relative;z-index:1}
+.field svg{width:100%;display:block;height:auto}
+.field .ball{transition:transform 1.1s cubic-bezier(.3,1.2,.3,1)}
+.play-layout{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:24px;align-items:stretch}
+@media(max-width:900px){.play-layout{grid-template-columns:1fr}}
+.playcard{background:#000;border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px}
+.playcard .pn{font-family:var(--font-mono);font-size:12px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase}
+.playcard h3{font-size:34px;font-weight:800}
+.playcard p{color:var(--ink-muted);margin:0;flex:1}
+.playcard .ctrl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.playlist{display:flex;gap:6px;flex-wrap:wrap}
+.playlist button{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink-muted);font-family:var(--font-mono);font-size:12px}
+.playlist button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.playlist button.done{border-color:var(--line-strong);color:var(--accent)}
+.touchdown{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;flex-direction:column;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);text-align:center;border-radius:18px}
+.touchdown.show{display:flex;animation:fadein .5s var(--ease)}
+.touchdown h3{font-size:clamp(48px,8vw,110px);font-weight:800;color:var(--accent);text-shadow:0 0 40px rgba(25,227,122,.8);animation:td 1.4s var(--ease)}
+@keyframes td{from{transform:scale(.6);opacity:0}}
+.touchdown p{color:var(--ink-muted);max-width:420px;font-size:14px}
+
+/* ===== YOUR BRAND ===== */
+#brand{background:var(--bg-alt)}
+.brand-layout{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:start}
+@media(max-width:980px){.brand-layout{grid-template-columns:1fr}}
+.ctl-group{margin-bottom:22px}
+.ctl-group .lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-subtle);margin-bottom:10px}
+.logo-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.logo-opt{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 10px;text-align:center;color:#fff;font-family:var(--font-display);font-weight:800;text-transform:uppercase;font-size:14px;letter-spacing:.06em;transition:border-color var(--dur),transform var(--dur)}
+.logo-opt:hover{transform:translateY(-2px)}.logo-opt.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.logo-opt .sym{font-size:26px;display:block;margin-bottom:6px}
+.swatches{display:flex;gap:10px;flex-wrap:wrap}
+.sw{width:40px;height:40px;border-radius:50%;border:2px solid transparent;transition:transform var(--dur)}
+.sw:hover{transform:scale(1.1)}.sw.on{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.2)}
+.view-toggle{display:inline-flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
+.view-toggle button{border:0;background:transparent;color:var(--ink-muted);padding:8px 16px;border-radius:999px;font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+.view-toggle button.on{background:#fff;color:#000}
+.portal-stage{background:radial-gradient(ellipse at 50% 100%,rgba(25,227,122,.12),transparent 60%),#000;border:1px solid var(--line);border-radius:18px;padding:28px;min-height:420px;display:flex;align-items:center;justify-content:center}
+.portal-stage .screen{width:100%;transition:all .5s var(--ease)}
+.portal-stage .screen .side .brand{display:flex;align-items:center;gap:5px;background:transparent;width:auto;height:auto;font-family:var(--font-display);font-weight:800;text-transform:uppercase;font-size:10px;color:#fff;opacity:1}
+.portal-stage .screen .side .brand i{width:14px;height:14px;border-radius:4px;background:var(--pbrand);display:inline-block}
+
+/* ===== ROSTER ===== */
+.roster{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:28px}
+@media(max-width:1000px){.roster{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.roster{grid-template-columns:repeat(2,1fr)}}
+.rcard{background:linear-gradient(180deg,#101512,#070907);border:1px solid var(--line);border-radius:12px;padding:18px 12px 14px;text-align:center;color:#fff;transition:transform var(--dur) var(--ease),border-color var(--dur),box-shadow var(--dur);position:relative;overflow:hidden}
+.rcard::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transition:transform var(--dur)}
+.rcard:hover{transform:translateY(-5px)}
+.rcard.on{border-color:var(--accent);box-shadow:0 16px 40px rgba(25,227,122,.2)}
+.rcard.on::before{transform:scaleX(1)}
+.rcard .jersey{width:64px;height:64px;margin:0 auto 12px;border-radius:14px 14px 20px 20px;background:linear-gradient(180deg,#1a2a1f,#0d1711);border:1px solid rgba(25,227,122,.35);display:grid;place-items:center;font-family:var(--font-mono);font-size:22px;color:var(--accent);text-shadow:0 0 10px rgba(25,227,122,.6)}
+.rcard .nm{font-family:var(--font-display);font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;line-height:1.05}
+.roster-detail{display:grid;grid-template-columns:1fr 1fr;gap:28px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:28px;align-items:center}
+@media(max-width:900px){.roster-detail{grid-template-columns:1fr}}
+.roster-detail h3{font-size:clamp(28px,3.4vw,44px);font-weight:800}
+.roster-detail ul{color:var(--ink-muted);padding-left:18px;margin:12px 0 0;line-height:1.8}
+.roster-detail .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.chip{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line-strong);color:var(--accent);padding:5px 9px;border-radius:999px}
+
+/* ===== WALL OF WINS ===== */
+#wins{background:var(--bg-alt);overflow:hidden}
+#wins::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 20% 0,rgba(25,227,122,.12),transparent 45%),radial-gradient(ellipse at 80% 100%,rgba(25,227,122,.1),transparent 45%)}
+.wall{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;position:relative}
+@media(max-width:900px){.wall{grid-template-columns:1fr}}
+.plaque{background:linear-gradient(160deg,#141a16,#070907);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:26px;position:relative;cursor:pointer;min-height:260px;transition:transform var(--dur) var(--ease),border-color var(--dur)}
+.plaque::before{content:"";position:absolute;inset:8px;border:1px solid rgba(25,227,122,.18);border-radius:10px;pointer-events:none}
+.plaque:hover{transform:translateY(-4px);border-color:var(--line-strong)}
+.plaque .ribbon{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.plaque .ribbon::before{content:"🏆"}
+.plaque .q{font-family:var(--font-display);font-size:24px;font-weight:600;line-height:1.1;color:#e8efea;text-transform:none}
+.plaque .who{margin-top:18px;display:flex;align-items:center;gap:12px}
+.plaque .who .av{width:40px;height:40px;border-radius:50%;background:#1f2a24;border:1px solid var(--line);display:grid;place-items:center;font-family:var(--font-mono);color:var(--ink-subtle);font-size:12px}
+.plaque .who b{display:block;font-family:var(--font-display);font-size:16px;text-transform:uppercase;letter-spacing:.06em}
+.plaque .who span{font-size:12px;color:var(--ink-subtle)}
+.plaque .more{display:none;margin-top:14px;color:var(--ink-muted);font-size:14px}
+.plaque.open .more{display:block;animation:fadein .4s var(--ease)}
+.plaque .vid{margin-top:12px;aspect-ratio:16/9;background:#000;border:1px solid var(--line);border-radius:8px;display:grid;place-items:center;color:var(--ink-subtle);font-family:var(--font-mono);font-size:11px;letter-spacing:.14em}
+.wins-note{margin-top:20px;font-size:12px;color:#ffd166;font-family:var(--font-mono);letter-spacing:.06em}
+
+/* ===== PRICING ===== */
+.leagues{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:stretch}
+@media(max-width:900px){.leagues{grid-template-columns:1fr}}
+.league{background:linear-gradient(180deg,#0d1110,#050705);border:1px solid var(--line);border-radius:18px;padding:34px;position:relative;cursor:pointer;transition:transform var(--dur) var(--ease),border-color var(--dur),box-shadow var(--dur);display:flex;flex-direction:column}
+.league.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 30px 80px rgba(25,227,122,.18);transform:translateY(-4px)}
+.league.sec{opacity:.85}
+.league .tier{font-family:var(--font-mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-subtle);display:flex;justify-content:space-between}
+.league .tier .badge{color:var(--accent);border:1px solid var(--line-strong);padding:3px 8px;border-radius:999px;font-size:9px}
+.league h3{font-size:48px;font-weight:800;margin-top:10px}
+.league .price{font-family:var(--font-mono);font-size:44px;color:var(--accent);text-shadow:0 0 16px rgba(25,227,122,.5);margin:6px 0 4px}
+.league .price small{font-size:14px;color:var(--ink-muted);text-shadow:none}
+.league .for{color:var(--ink-muted);font-size:14px;margin-bottom:20px}
+.league ul{list-style:none;padding:0;margin:0 0 26px;display:grid;gap:10px;flex:1}
+.league li{display:flex;gap:10px;align-items:center;font-size:15px}
+.league li::before{content:"✓";font-family:var(--font-mono);color:var(--accent);width:22px;height:22px;border:1px solid var(--line-strong);border-radius:50%;display:grid;place-items:center;font-size:11px;flex:none}
+.access{margin-top:24px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;border:1px dashed var(--line);border-radius:12px;padding:16px 20px;background:var(--surface)}
+.access input{flex:1;min-width:200px;background:#000;border:1px solid var(--line);color:#fff;padding:12px 14px;border-radius:8px;font-family:var(--font-mono);letter-spacing:.14em;text-transform:uppercase}
+.access .lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted)}
+.price-note{margin-top:14px;font-size:12px;color:var(--ink-subtle)}
+
+/* ===== FINISH ===== */
+#finish{min-height:100vh;display:flex;align-items:center;overflow:hidden;padding:160px 0}
+#finish canvas,#finish .galaxy-frame{position:absolute;inset:0;width:100%;height:100%;z-index:0;border:0;pointer-events:auto}
+#finish .wrap,#finish .sweep,#finish .fallback{pointer-events:none}
+#finish .wrap a,#finish .wrap .btn{pointer-events:auto}
+#finish .fallback{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 70%,rgba(25,227,122,.22),transparent 55%),#000;z-index:0}
+#finish .sweep{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+#finish .sweep i{position:absolute;top:-30%;left:-20%;width:30%;height:160%;background:linear-gradient(90deg,transparent,rgba(25,227,122,.18),transparent);filter:blur(20px);transform:skewX(-20deg);animation:sweep 7s ease-in-out infinite}
+#finish .sweep i:nth-child(2){animation-delay:-3.5s;opacity:.6}
+@keyframes sweep{to{left:120%}}
+#finish .wrap{position:relative;z-index:2;text-align:center;padding:28px 18px;border-radius:18px;background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.55),rgba(0,0,0,.15) 70%,transparent)}
+.trophy{font-size:90px;line-height:1;filter:drop-shadow(0 0 30px rgba(25,227,122,.7));animation:float 4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-12px)}}
+#finish h2{font-size:clamp(44px,7vw,100px);font-weight:800;margin:18px auto 14px;max-width:900px}
+#finish .sub{font-family:var(--font-display);font-size:clamp(18px,2.2vw,26px);text-transform:uppercase;letter-spacing:.04em;color:#d9e3dc;max-width:700px;margin:0 auto}
+#finish .mini-board{display:inline-block;margin-top:34px;padding:14px 26px;border:1px solid rgba(25,227,122,.4);border-radius:12px;background:rgba(0,0,0,.6);font-family:var(--font-mono);font-size:14px;letter-spacing:.3em;color:var(--accent);text-shadow:0 0 12px rgba(25,227,122,.7)}
+#finish .actions{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:30px}
+
+footer{border-top:1px solid var(--line);padding:40px 0;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-subtle)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+/* reveal on scroll */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .hero h1 .w{opacity:1;transform:none;filter:none}.fade-up,.rv{opacity:1;transform:none}
+}
+
+/* PREVIEW banner */
+.preview-banner{position:fixed;top:0;left:0;right:0;z-index:1100;background:rgba(255,209,102,.95);color:#1a1400;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:7px 12px;border-bottom:1px solid rgba(0,0,0,.15);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.preview-banner b{font-weight:700}
+nav{top:32px}
+#hero{padding-top:170px}
+@media (max-width:700px){.preview-banner{font-size:9px;letter-spacing:.04em;padding:6px 8px}}
+</style>
+</head>
+<body class="locked">
+<div class="preview-banner" role="status"><b>PREVIEW ONLY</b> · Championship HQ concept · Not live · scoresos.com untouched</div>
+
+<!-- ===== LOADER (stadium lights come up) ===== -->
+<div id="loader" aria-hidden="true">
+  <div class="mark">SCORE<b>OS</b></div>
+  <div class="lamps"><i class="lamp"></i><i class="lamp"></i><i class="lamp"></i><i class="lamp"></i><i class="lamp"></i><i class="lamp"></i></div>
+  <div class="pct">LIGHTS <span id="pct">00</span>%</div>
+</div>
+
+<!-- ===== NAV (existing destinations preserved) ===== -->
+<nav id="nav">
+  <div class="wrap">
+    <a class="logo" href="#hero"><span class="tile">S</span>Score<em>OS</em></a>
+    <ul>
+      <li><a href="#scoreboard">Scoreboard</a></li>
+      <li><a href="#arsenal">The Arsenal</a></li>
+      <li><a href="#maxine">Maxine AI</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#pricing">DIY OS</a></li>
+    </ul>
+    <div class="cta"><a class="btn btn-ghost btn-sm" href="#pricing">Log In</a><a class="btn btn-primary btn-sm" href="#pricing">Get Started</a></div>
+  </div>
+</nav>
+
+<!-- ===== 1. ENTER THE ARENA ===== -->
+<section id="hero">
+  <div class="hero-bg" id="heroBg">
+    <div class="beams"><i class="beam b1"></i><i class="beam b2"></i></div>
+    <img class="poster" alt="" src="media/twin-green-beams/poster.webp">
+    <video id="heroVideo" muted loop playsinline autoplay preload="auto" poster="media/twin-green-beams/poster.webp">
+      <source media="(max-width:700px)" src="media/twin-green-beams/mobile.mp4" type="video/mp4">
+      <source src="media/twin-green-beams/desktop.webm" type="video/webm">
+      <source src="media/twin-green-beams/desktop.mp4" type="video/mp4">
+    </video>
+    <div class="scan"></div><div class="vignette"></div>
+  </div>
+  <div class="wrap hero-grid">
+    <div class="hero">
+      <div class="eyebrow fade-up">Championship Headquarters</div>
+      <h1><span class="w">Your</span> <span class="w">Agency.</span><br><span class="w">Your</span> <span class="w">Playbook.</span><br><span class="w">Your</span> <span class="w hi">Legacy.</span></h1>
+      <div class="sub fade-up d1">The All-in-One Operating System for Credit Repair Agencies.</div>
+      <p class="brand fade-up d2">Everything you need to launch, manage, automate, and grow your agency in one platform.</p>
+      <div class="actions fade-up d3">
+        <a class="btn btn-primary" href="#arsenal">Explore the Platform →</a>
+        <a class="btn btn-ghost" href="#pricing">Get Started</a>
+        <a class="btn-link" href="#pricing">Explore DIY OS</a>
+      </div>
+    </div>
+    <div class="board fade-up d2" id="heroBoard">
+      <div class="bar"><span>Main Scoreboard<span class="example-tag">Example data</span></span><span class="live"><i></i>Agency OS</span></div>
+      <div class="led-grid">
+        <div class="led"><div class="lbl">Active Clients</div><div class="val" data-count="128">0</div><div class="delta">this month</div></div>
+        <div class="led"><div class="lbl">Dispute Rounds</div><div class="val" data-count="342">0</div><div class="delta">in progress</div></div>
+        <div class="led"><div class="lbl">Automations</div><div class="val" data-count="1.2" data-suffix="K">0</div><div class="delta">tasks run</div></div>
+      </div>
+      <div class="ticker"><span>CRM · MARKETING · FREE WEBSITE · THREE-BUREAU TRACKING · MAXINE AI DISPUTE ENGINE · WHITE-LABEL PORTAL · TWO-WAY MESSAGING · BOOKING CALENDAR · MENTORSHIP · COMMUNITY · TRAINING · SUPPORT · AUTOMATIONS ·</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. THE SCOREBOARD ===== -->
+<section id="scoreboard">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">Section 02</div>
+      <h2 class="sec-title">The Scoreboard</h2>
+      <p class="sec-sub">Three-bureau tracking stays front and center — now paired with a live view of the whole agency. Click any tile to preview that screen in ScoreOS.</p>
+    </div>
+    <div class="tabs rv" role="tablist">
+      <button class="tab active" data-tab="agency">Agency Scoreboard</button>
+      <button class="tab" data-tab="client">Client Credit Scoreboard</button>
+    </div>
+    <div class="sb-layout rv">
+      <div>
+        <div class="panel active" id="panel-agency">
+          <div class="metric-grid">
+            <div class="metric" data-preview="crm"><div class="lbl">Active Clients</div><div class="val" data-count="128">0</div><div class="meter"><i data-w="76"></i></div></div>
+            <div class="metric" data-preview="crm"><div class="lbl">New Clients</div><div class="val" data-count="19">0</div><div class="meter"><i data-w="48"></i></div></div>
+            <div class="metric" data-preview="disputes"><div class="lbl">Dispute Rounds</div><div class="val" data-count="342">0</div><div class="meter"><i data-w="82"></i></div></div>
+            <div class="metric" data-preview="onboarding"><div class="lbl">Pending Onboarding</div><div class="val" data-count="7">0</div><div class="meter"><i data-w="22"></i></div></div>
+            <div class="metric" data-preview="messaging"><div class="lbl">Client Messages</div><div class="val" data-count="56">0</div><div class="meter"><i data-w="60"></i></div></div>
+            <div class="metric" data-preview="automations"><div class="lbl">Automation Activity</div><div class="val" data-count="1240">0</div><div class="meter"><i data-w="91"></i></div></div>
+          </div>
+        </div>
+        <div class="panel" id="panel-client">
+          <div class="bureaus">
+            <div class="bureau" data-preview="bureau"><div class="name">Equifax</div><div class="score" data-count="612">0</div><div class="note">Example score</div></div>
+            <div class="bureau" data-preview="bureau"><div class="name">Experian</div><div class="score" data-count="598">0</div><div class="note">Example score</div></div>
+            <div class="bureau" data-preview="bureau"><div class="name">TransUnion</div><div class="score" data-count="621">0</div><div class="note">Example score</div></div>
+          </div>
+          <div class="history" data-preview="history">
+            <div class="lbl"><span>Score history (example)</span><span>6 months</span></div>
+            <svg viewBox="0 0 600 120" preserveAspectRatio="none">
+              <defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#19e37a" stop-opacity=".4"/><stop offset="1" stop-color="#19e37a" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,95 L100,88 L200,90 L300,70 L400,62 L500,48 L600,40 L600,120 L0,120Z" fill="url(#hg)"/>
+              <path class="hline" d="M0,95 L100,88 L200,90 L300,70 L400,62 L500,48 L600,40" fill="none" stroke="#19e37a" stroke-width="2.5" stroke-dasharray="700" stroke-dashoffset="700" style="filter:drop-shadow(0 0 6px #19e37a)"/>
+            </svg>
+          </div>
+          <div class="sb-side"><div class="mini">
+            <div class="metric" data-preview="disputes"><div class="lbl">Dispute tracking</div><div class="val">14</div><div class="meter"><i data-w="55"></i></div></div>
+            <div class="metric" data-preview="reports"><div class="lbl">Report updates</div><div class="val">3</div><div class="meter"><i data-w="35"></i></div></div>
+          </div></div>
+        </div>
+      </div>
+      <div class="preview">
+        <div class="ph"><span>ScoreOS Preview</span><b id="pvName">Agency Dashboard</b></div>
+        <div id="pvScreen"></div>
+        <div class="desc" id="pvDesc">A fictional demonstration of the agency dashboard. Replace with real product screenshots at handoff.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. THE ARSENAL ===== -->
+<section id="arsenal">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">Section 03</div>
+      <h2 class="sec-title">The Arsenal</h2>
+      <p class="sec-sub">Fourteen plays in the book. Pick a card, see the screen, move to the next — without leaving the homepage.</p>
+    </div>
+    <div class="arsenal-grid rv" id="arsenalGrid"></div>
+    <div class="arsenal-detail rv" id="arsenalDetail">
+      <div>
+        <div class="eyebrow" id="adNum">Play 01</div>
+        <h3 id="adTitle">Credit Monitoring</h3>
+        <p id="adText"></p>
+        <div class="nav-row"><button class="btn btn-ghost btn-sm" id="adPrev">← Previous</button><button class="btn btn-primary btn-sm" id="adNext">Next Feature →</button></div>
+      </div>
+      <div id="adScreen"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. MEET MAXINE AI ===== -->
+<section id="maxine">
+  <div class="silk" id="maxineSilk">
+    <div class="fallback"></div>
+    <img alt="" src="media/emerald-silk-waves/poster.webp">
+    <video id="silkVideo" muted loop playsinline autoplay preload="auto" poster="media/emerald-silk-waves/poster.webp">
+      <source media="(max-width:700px)" src="media/emerald-silk-waves/mobile.mp4" type="video/mp4">
+      <source src="media/emerald-silk-waves/desktop.webm" type="video/webm">
+      <source src="media/emerald-silk-waves/desktop.mp4" type="video/mp4">
+    </video>
+    <div class="fade"></div>
+  </div>
+  <div class="wrap">
+    <div class="mx-layout">
+      <div class="rv">
+        <div class="eyebrow">Section 04 · AI Command Center</div>
+        <h2 class="sec-title">Meet Your<br>AI Power Player.</h2>
+        <p class="sec-sub">Review credit information, identify potential reporting issues, and prepare tailored disputes with Maxine AI.</p>
+        <div class="steps" id="mxSteps">
+          <div class="step on"><span class="n">Step 1</span><span>Click “Analyze Sample Report.”</span></div>
+          <div class="step"><span class="n">Step 2</span><span>A fictional credit report appears.</span></div>
+          <div class="step"><span class="n">Step 3</span><span>Maxine highlights a potentially inaccurate item.</span></div>
+          <div class="step"><span class="n">Step 4</span><span>The system explains what may need investigation.</span></div>
+          <div class="step"><span class="n">Step 5</span><span>A sample dispute letter appears for preview.</span></div>
+          <div class="step"><span class="n">Step 6</span><span>Explore Maxine.</span></div>
+        </div>
+        <div class="mx-actions">
+          <button class="btn btn-primary" id="mxRun">Analyze Sample Report</button>
+          <a class="btn btn-ghost" id="mxExplore" href="#pricing" style="display:none">Explore Maxine →</a>
+          <button class="btn-link" id="mxReset">Reset demo</button>
+        </div>
+        <p class="disclaimer">Demonstration uses a fictional report. Maxine prepares disputes for your review; it does not guarantee deletions, outcomes, or bureau handling.</p>
+      </div>
+      <div class="console rv">
+        <div class="cbar"><span>Maxine AI · Report Analysis</span><span class="dots"><i></i><i></i><i></i></span></div>
+        <div class="cbody" id="mxBody">
+          <div class="idle"><div class="orb"></div><div>Maxine is standing by.<br><small>Run the sample analysis to see the flow.</small></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. RUN THE PLAY ===== -->
+<section id="play">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">Section 05</div>
+      <h2 class="sec-title">Run The Play</h2>
+      <p class="sec-sub">The football is a client. Nine plays take them from new lead to ongoing management — every yard inside ScoreOS.</p>
+    </div>
+    <div class="field-wrap rv">
+      <div class="field">
+        <svg viewBox="0 0 1000 420" id="fieldSvg">
+          <defs>
+            <linearGradient id="turf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c3a1d"/><stop offset="1" stop-color="#072814"/></linearGradient>
+            <pattern id="stripes" width="100" height="420" patternUnits="userSpaceOnUse"><rect width="50" height="420" fill="rgba(255,255,255,.025)"/></pattern>
+            <filter id="glow"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <rect x="0" y="40" width="1000" height="340" fill="url(#turf)"/>
+          <rect x="0" y="40" width="1000" height="340" fill="url(#stripes)"/>
+          <rect x="0" y="40" width="80" height="340" fill="rgba(25,227,122,.12)"/>
+          <rect x="920" y="40" width="80" height="340" fill="rgba(25,227,122,.28)"/>
+          <text x="40" y="225" fill="rgba(255,255,255,.35)" font-family="Barlow Condensed,sans-serif" font-size="28" font-weight="800" text-anchor="middle" transform="rotate(-90 40 225)">LEAD</text>
+          <text x="960" y="225" fill="#19e37a" font-family="Barlow Condensed,sans-serif" font-size="28" font-weight="800" text-anchor="middle" transform="rotate(90 960 225)">MANAGED</text>
+          <g id="yardlines"></g>
+          <g id="playMarkers"></g>
+          <g id="ballG" class="ball">
+            <ellipse cx="0" cy="0" rx="26" ry="16" fill="#7a3b10" stroke="#19e37a" stroke-width="2" filter="url(#glow)"/>
+            <line x1="-10" y1="0" x2="10" y2="0" stroke="#fff" stroke-width="2"/>
+            <line x1="-6" y1="-4" x2="-6" y2="4" stroke="#fff" stroke-width="1.5"/><line x1="0" y1="-4" x2="0" y2="4" stroke="#fff" stroke-width="1.5"/><line x1="6" y1="-4" x2="6" y2="4" stroke="#fff" stroke-width="1.5"/>
+          </g>
+        </svg>
+      </div>
+      <div class="play-layout">
+        <div class="playcard">
+          <div class="pn" id="plNum">Play 1 of 9</div>
+          <h3 id="plTitle">New Lead</h3>
+          <p id="plText">A prospect enters the CRM.</p>
+          <div class="playlist" id="playlist"></div>
+          <div class="ctrl"><button class="btn btn-primary" id="nextPlay">Next Play →</button><button class="btn-link" id="resetPlay">Restart drive</button></div>
+        </div>
+        <div id="plScreen"></div>
+      </div>
+      <div class="touchdown" id="touchdown">
+        <h3>Touchdown</h3>
+        <p>That's the full client workflow demonstrated inside ScoreOS — a completed process, not a promised credit outcome.</p>
+        <button class="btn btn-ghost btn-sm" id="tdClose">Run it again</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6. YOUR BRAND ===== -->
+<section id="brand">
+  <div class="wrap">
+    <div class="brand-layout">
+      <div class="rv">
+        <div class="eyebrow">Section 06 · White-Label Portal</div>
+        <h2 class="sec-title">Your Brand.<br>Your Clients.<br>Your Home Field.</h2>
+        <p class="sec-sub" style="margin-bottom:30px">Deliver a professional client portal that reflects your agency's identity.</p>
+        <div class="ctl-group"><div class="lbl">Sample agency logo</div><div class="logo-opts" id="logoOpts"></div></div>
+        <div class="ctl-group"><div class="lbl">Demonstration brand color</div><div class="swatches" id="swatches"></div></div>
+        <div class="ctl-group"><div class="lbl">View</div><div class="view-toggle"><button class="on" data-view="desktop">Desktop</button><button data-view="mobile">Mobile</button></div></div>
+      </div>
+      <div class="portal-stage rv" id="portalStage"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7. ROSTER ===== -->
+<section id="roster">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">Section 07 · Locker Room</div>
+      <h2 class="sec-title">Build Your Roster.<br>Control The Game.</h2>
+      <p class="sec-sub">Select a role on the lineup board to see how that player works inside ScoreOS.</p>
+    </div>
+    <div class="roster rv" id="rosterGrid"></div>
+    <div class="roster-detail rv">
+      <div>
+        <div class="eyebrow" id="rdPos">Position</div>
+        <h3 id="rdTitle">Agency Owner</h3>
+        <ul id="rdList"></ul>
+        <div class="chips" id="rdChips"></div>
+      </div>
+      <div id="rdScreen"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 8. WALL OF WINS ===== -->
+<section id="wins">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">Section 08</div>
+      <h2 class="sec-title">The Wall Of Wins.</h2>
+      <p class="sec-sub">Hear from agency owners using ScoreOS to manage their operations.</p>
+    </div>
+    <div class="wall rv" id="wall"></div>
+    <div class="wins-note rv">⚠ Plaque slots are placeholders. Populate only with verified testimonials you have permission to publish (from the current scoresos.com Wall of Wins).</div>
+  </div>
+</section>
+
+<!-- ===== 9. CHOOSE YOUR LEAGUE ===== -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">Section 09</div>
+      <h2 class="sec-title">Choose Your League</h2>
+      <p class="sec-sub">Two ways to play. Agency OS is the main event; DIY OS is for individuals working on their own credit.</p>
+    </div>
+    <div class="leagues rv">
+      <div class="league on" data-league="agency">
+        <div class="tier"><span>League · Pro</span><span class="badge">Most popular</span></div>
+        <h3>Agency OS</h3>
+        <div class="price">$199<small>/month</small></div>
+        <div class="for">For credit repair agency owners.</div>
+        <ul><li>Unlimited Active Clients</li><li>Unlimited AI Dispute Letters</li><li>Three-Bureau Tracking</li><li>White-Labeled Client Portal</li><li>Client Messaging</li><li>Automated Monthly Progress Reports</li></ul>
+        <a class="btn btn-primary" href="https://scoresos.com" target="_blank" rel="noopener">Subscribe Now</a>
+      </div>
+      <div class="league sec" data-league="diy">
+        <div class="tier"><span>League · Solo</span></div>
+        <h3>DIY OS</h3>
+        <div class="price">$49.99<small>/month</small></div>
+        <div class="for">For individuals who want to work on their own credit.</div>
+        <ul><li>Personal Credit Portal</li><li>AI Credit Audit and Action Plan</li><li>AI Dispute Letters</li><li>Three-Bureau Tracking</li><li>Secure Document Uploads</li><li>Score Progress Tracking</li></ul>
+        <a class="btn btn-ghost" href="https://scoresos.com" target="_blank" rel="noopener">Start DIY</a>
+      </div>
+    </div>
+    <div class="access rv">
+      <span class="lbl">Already paid?</span>
+      <input type="text" placeholder="Enter access code" aria-label="Access code">
+      <button class="btn btn-ghost btn-sm">Sign up with code</button>
+    </div>
+    <p class="price-note rv">Confirm prices, inclusions, and payment destinations against the live site before release.</p>
+  </div>
+</section>
+
+<!-- ===== 10. CHAMPIONSHIP FINISH ===== -->
+<section id="finish">
+  <div class="fallback"></div>
+  <iframe class="galaxy-frame" id="galaxyFrame" title="Wave Galaxy emerald scene" src="media/wave-galaxy/embed.html" loading="eager" allow="autoplay"></iframe>
+  <canvas id="galaxy" style="display:none" aria-hidden="true"></canvas>
+  <div class="sweep"><i></i><i></i></div>
+  <div class="wrap">
+    <div class="trophy rv">🏆</div>
+    <h2 class="rv">Ready To Build A Championship Agency?</h2>
+    <p class="sub rv">Stop juggling multiple platforms. Run your business from one powerful operating system.</p>
+    <div class="mini-board rv">SCORE<span style="color:#fff">OS</span> · CHAMPIONSHIP HQ</div>
+    <div class="actions rv">
+      <a class="btn btn-primary" href="https://scoresos.com" target="_blank" rel="noopener">Get Started With Agency OS</a>
+      <a class="btn btn-ghost" href="#pricing">Explore DIY OS</a>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>© ScoreOS · Championship Headquarters concept</span><span>Maxine AI · Pricing · DIY OS · Support</span></div></footer>
+
+<script>
+
+/* ---------- video source picker (media attr not reliable on <source>) ---------- */
+(function(){
+  const mobile = matchMedia('(max-width:700px)').matches;
+  function wire(id, deskMp4, deskWebm, mobMp4, poster){
+    const v = document.getElementById(id); if(!v) return;
+    v.innerHTML = '';
+    if(!mobile && deskWebm){ const s=document.createElement('source'); s.src=deskWebm; s.type='video/webm'; v.appendChild(s); }
+    const s2=document.createElement('source'); s2.src=mobile?mobMp4:deskMp4; s2.type='video/mp4'; v.appendChild(s2);
+    v.poster = poster;
+    v.load();
+    const tryPlay=()=>v.play().catch(()=>{});
+    v.addEventListener('canplay', tryPlay, {once:true});
+    tryPlay();
+  }
+  wire('heroVideo','media/twin-green-beams/desktop.mp4','media/twin-green-beams/desktop.webm','media/twin-green-beams/mobile.mp4','media/twin-green-beams/poster.webp');
+  wire('silkVideo','media/emerald-silk-waves/desktop.mp4','media/emerald-silk-waves/desktop.webm','media/emerald-silk-waves/mobile.mp4','media/emerald-silk-waves/poster.webp');
+})();
+
+/* ---------- helpers ---------- */
+const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- mock screens (fictional demonstrations) ---------- */
+const SCREENS={
+  crm:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it on"></div><div class="it"></div><div class="it"></div><div class="it"></div><div class="it"></div></div><div class="main"><div class="hdr"><b>Clients</b><span class="pill">+ New Lead</span></div><div class="cards"><div class="card"><small>Active</small><strong>128</strong></div><div class="card"><small>New</small><strong>19</strong></div><div class="card"><small>Leads</small><strong>44</strong></div></div><div class="rows"><div class="row"><i class="av"></i><span class="t"></span><span class="tag">Active</span></div><div class="row"><i class="av"></i><span class="t"></span><span class="tag warn">Onboarding</span></div><div class="row"><i class="av"></i><span class="t"></span><span class="tag info">Lead</span></div><div class="row"><i class="av"></i><span class="t"></span><span class="tag">Active</span></div></div></div></div></div>`,
+  disputes:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it"></div><div class="it on"></div><div class="it"></div><div class="it"></div></div><div class="main"><div class="hdr"><b>Dispute Rounds</b><span class="pill">Round 3</span></div><div class="cards"><div class="card"><small>Equifax</small><strong>5</strong></div><div class="card"><small>Experian</small><strong>4</strong></div><div class="card"><small>TransUnion</small><strong>5</strong></div></div><div class="rows"><div class="row"><span class="t"></span><span class="tag warn">Sent</span></div><div class="row"><span class="t"></span><span class="tag info">Awaiting</span></div><div class="row"><span class="t"></span><span class="tag">Updated</span></div></div></div></div></div>`,
+  onboarding:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it"></div><div class="it"></div><div class="it on"></div><div class="it"></div></div><div class="main"><div class="hdr"><b>Onboarding</b><span class="pill">7 pending</span></div><div class="rows"><div class="row"><i class="av"></i><span class="t"></span><span class="tag">Agreement ✓</span></div><div class="row"><i class="av"></i><span class="t"></span><span class="tag warn">ID needed</span></div><div class="row"><i class="av"></i><span class="t"></span><span class="tag warn">Docs 2/3</span></div><div class="row"><i class="av"></i><span class="t"></span><span class="tag info">Invited</span></div></div></div></div></div>`,
+  messaging:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it"></div><div class="it"></div><div class="it"></div><div class="it on"></div></div><div class="main"><div class="hdr"><b>Messages</b><span class="pill">56 unread</span></div><div class="chat"><div class="msg">Hi! Did my Round 2 letters go out?</div><div class="msg me">Yes — mailed Tuesday. I'll update you when responses arrive.</div><div class="msg">Perfect, thank you!</div><div class="msg me">Anytime 👍</div></div></div></div></div>`,
+  automations:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it"></div><div class="it on"></div><div class="it"></div></div><div class="main"><div class="hdr"><b>Automations</b><span class="pill">Active</span></div><div class="flow"><span class="node">New client</span><span class="arrow">→</span><span class="node">Welcome email</span><span class="arrow">→</span><span class="node">Doc reminder</span><span class="arrow">→</span><span class="node">Assign staff</span></div><div class="flow"><span class="node">Round sent</span><span class="arrow">→</span><span class="node">30-day follow-up</span><span class="arrow">→</span><span class="node">Progress report</span></div><div class="cards"><div class="card"><small>Runs today</small><strong>1,240</strong></div><div class="card"><small>Reminders</small><strong>318</strong></div><div class="card"><small>Follow-ups</small><strong>96</strong></div></div></div></div></div>`,
+  bureau:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it on"></div><div class="it"></div><div class="it"></div></div><div class="main"><div class="hdr"><b>Three-Bureau Tracking</b><span class="pill">Example</span></div><div class="cards"><div class="card"><small>Equifax</small><strong>612</strong></div><div class="card"><small>Experian</small><strong>598</strong></div><div class="card"><small>TransUnion</small><strong>621</strong></div></div><div class="rows"><div class="row"><span class="t"></span><span class="tag warn">Disputing</span></div><div class="row"><span class="t"></span><span class="tag">Verified</span></div><div class="row"><span class="t"></span><span class="tag info">Monitoring</span></div></div></div></div></div>`,
+  history:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it on"></div><div class="it"></div><div class="it"></div></div><div class="main"><div class="hdr"><b>Score Progress</b><span class="pill">6 mo</span></div><div class="rows" style="justify-content:center"><svg viewBox="0 0 300 90" style="width:100%"><polyline points="10,70 60,66 110,68 160,52 210,44 260,34 290,28" fill="none" stroke="#19e37a" stroke-width="2.5"/><circle cx="290" cy="28" r="4" fill="#19e37a"/></svg></div></div></div></div>`,
+  reports:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it"></div><div class="it"></div><div class="it on"></div></div><div class="main"><div class="hdr"><b>Report Updates</b><span class="pill">3 new</span></div><div class="rows"><div class="row"><span class="t"></span><span class="tag">Equifax · updated</span></div><div class="row"><span class="t"></span><span class="tag">Experian · updated</span></div><div class="row"><span class="t"></span><span class="tag">TransUnion · updated</span></div></div></div></div></div>`,
+  marketing:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it"></div><div class="it on"></div><div class="it"></div></div><div class="main"><div class="hdr"><b>Marketing</b><span class="pill">Lead capture</span></div><div class="cards"><div class="card"><small>Form leads</small><strong>44</strong></div><div class="card"><small>Campaigns</small><strong>6</strong></div><div class="card"><small>Conv.</small><strong>18%</strong></div></div><div class="rows"><div class="row"><span class="t"></span><span class="tag">Form · Live</span></div><div class="row"><span class="t"></span><span class="tag info">Email seq.</span></div><div class="row"><span class="t"></span><span class="tag warn">SMS draft</span></div></div></div></div></div>`,
+  website:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="main"><div class="web"><div class="h">Your Agency Name</div><div class="b"></div><div class="b" style="width:40%"></div><span class="cta">Free Consultation</span></div></div></div></div>`,
+  portal:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it on"></div><div class="it"></div><div class="it"></div></div><div class="main"><div class="hdr"><b>Client Portal</b><span class="pill">White-label</span></div><div class="cards"><div class="card"><small>Scores</small><strong>3</strong></div><div class="card"><small>Disputes</small><strong>14</strong></div><div class="card"><small>Docs</small><strong>5</strong></div></div><div class="rows"><div class="row"><span class="t"></span><span class="tag">Progress</span></div><div class="row"><span class="t"></span><span class="tag info">Upload</span></div></div></div></div></div>`,
+  calendar:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it"></div><div class="it"></div><div class="it on"></div></div><div class="main"><div class="hdr"><b>Booking Calendar</b><span class="pill">4 today</span></div><div class="cal">${Array.from({length:35},(_,i)=>`<i class="${[3,9,12,16,22,25,31].includes(i)?'ev':''}"></i>`).join('')}</div></div></div></div>`,
+  mentorship:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it"></div><div class="it on"></div></div><div class="main"><div class="hdr"><b>Mentorship</b><span class="pill">Resources</span></div><div class="rows"><div class="row"><i class="av"></i><span class="t"></span><span class="tag">Session notes</span></div><div class="row"><i class="av"></i><span class="t"></span><span class="tag info">Office hours</span></div><div class="row"><i class="av"></i><span class="t"></span><span class="tag">Playbook</span></div></div></div></div></div>`,
+  community:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it on"></div><div class="it"></div></div><div class="main"><div class="hdr"><b>Community</b><span class="pill">Agency owners</span></div><div class="chat"><div class="msg">Anyone using the new automation for doc reminders?</div><div class="msg me">Yes — cut our follow-ups in half.</div><div class="msg">Sharing my onboarding template 👇</div></div></div></div></div>`,
+  training:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it"></div><div class="it on"></div></div><div class="main"><div class="hdr"><b>Training Library</b><span class="pill">Videos</span></div><div class="vids"><div class="vid">▶</div><div class="vid">▶</div><div class="vid">▶</div><div class="vid">▶</div><div class="vid">▶</div><div class="vid">▶</div></div></div></div></div>`,
+  support:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it"></div><div class="it"></div><div class="it on"></div></div><div class="main"><div class="hdr"><b>Support</b><span class="pill">Open ticket</span></div><div class="rows"><div class="row"><span class="t"></span><span class="tag">Resolved</span></div><div class="row"><span class="t"></span><span class="tag warn">In progress</span></div><div class="row"><span class="t"></span><span class="tag info">Help center</span></div></div></div></div></div>`,
+  maxine:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it on"></div><div class="it"></div></div><div class="main"><div class="hdr"><b>Maxine AI</b><span class="pill">Analyzing</span></div><div class="hero-doc"><h6>Sample report · Tradelines</h6>Retail card · Reported late 03/2024 · <mark>Date inconsistency</mark><br>Auto loan · Balance $8,410 · Current<br>Collection · <mark>Possible duplicate</mark><br><br><b>Maxine:</b> 2 items may warrant investigation. Draft letters ready for review.</div></div></div></div>`,
+  team:()=>`<div class="screen"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side"><div class="brand"></div><div class="it"></div><div class="it on"></div></div><div class="main"><div class="hdr"><b>Team Assignment</b><span class="pill">Assign</span></div><div class="rows"><div class="row"><i class="av"></i><span class="t"></span><span class="tag">Dispute Specialist</span></div><div class="row"><i class="av"></i><span class="t"></span><span class="tag info">VA</span></div><div class="row"><i class="av"></i><span class="t"></span><span class="tag warn">Outsourced</span></div></div></div></div></div>`,
+  owner:()=>SCREENS.crm(),
+};
+const screen=k=>(SCREENS[k]||SCREENS.crm)();
+
+/* ---------- LOADER ---------- */
+(function(){
+  const lamps=$$('#loader .lamp'), pct=$('#pct');
+  let v=0,last=performance.now(),ready=false,done=false;const start=last;
+  window.addEventListener('load',()=>ready=true); setTimeout(()=>ready=true,2600);
+  function frame(now){
+    const dt=Math.min((now-last)/1000,.05); last=now;
+    const ceiling=ready?100:92, rate=ready?6:1.7;
+    if(ready&&v>=99.4)v=100; else v+=(ceiling-v)*rate*dt;
+    pct.textContent=String(Math.floor(v)).padStart(2,'0');
+    lamps.forEach((l,i)=>l.classList.toggle('on',v>(i+1)*100/7));
+    const elapsed=now-start;
+    if(v>=100&&elapsed>1300&&!done){done=true;exit();return}
+    if(!done)requestAnimationFrame(frame);
+  }
+  function exit(){
+    lamps.forEach(l=>l.classList.add('on'));
+    const L=$('#loader'); L.classList.add('exit');
+    document.body.classList.add('ready'); $('#heroBg').classList.add('lit');
+    countUp($('#heroBoard'));
+    setTimeout(()=>{document.body.classList.remove('locked');L.remove()},1100);
+  }
+  if(reduce){ready=true;v=100}
+  requestAnimationFrame(frame);
+})();
+
+/* ---------- LED count-up ---------- */
+function countUp(root){
+  $$('[data-count]',root).forEach(el=>{
+    if(el.dataset.done)return; el.dataset.done=1;
+    const target=parseFloat(el.dataset.count), suf=el.dataset.suffix||'', dec=String(el.dataset.count).includes('.')?1:0;
+    const t0=performance.now(), dur=reduce?0:1400;
+    (function tick(now){const p=Math.min(1,(now-t0)/(dur||1));const e=1-Math.pow(1-p,3);el.textContent=(target*e).toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g,',')+suf;if(p<1)requestAnimationFrame(tick)})(t0);
+  });
+  $$('.meter i',root).forEach(i=>i.style.width=i.dataset.w+'%');
+  const hl=$('.hline',root); if(hl)hl.style.transition='stroke-dashoffset 1.6s ease',hl.style.strokeDashoffset=0;
+}
+
+/* ---------- NAV + reveal ---------- */
+const nav=$('#nav'); addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');if(e.target.id==='panel-agency'||e.target.closest('#scoreboard'))countUp($('#scoreboard'));io.unobserve(e.target)}}),{threshold:.18});
+$$('.rv').forEach(el=>io.observe(el));
+
+/* ---------- SCOREBOARD ---------- */
+const pvScreen=$('#pvScreen'), pvName=$('#pvName'), pvDesc=$('#pvDesc');
+const PV={crm:['Agency CRM','Leads, clients, documents, and notes in one list.'],disputes:['Dispute Management','Rounds per bureau with status on every item.'],onboarding:['Onboarding Queue','Agreements and document requirements per client.'],messaging:['Two-Way Messaging','Client communication without leaving the software.'],automations:['Automations','Onboarding, reminders, follow-ups, and workflow runs.'],bureau:['Three-Bureau Tracking','Equifax, Experian, and TransUnion side by side.'],history:['Score History','Example progress view for one client.'],reports:['Report Updates','New bureau report pulls and what changed.']};
+function setPreview(k){pvScreen.innerHTML=screen(k);pvName.textContent=PV[k][0];pvDesc.textContent='Fictional demonstration — '+PV[k][1]+' Replace with real product screenshots at handoff.';}
+setPreview('crm');
+$$('[data-preview]').forEach(el=>el.addEventListener('click',()=>{$$('[data-preview]').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');setPreview(el.dataset.preview)}));
+$$('.tab').forEach(t=>t.addEventListener('click',()=>{$$('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');$$('.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+t.dataset.tab));countUp($('#panel-'+t.dataset.tab));setPreview(t.dataset.tab==='agency'?'crm':'bureau')}));
+
+/* ---------- ARSENAL ---------- */
+const FEATURES=[
+ ['Credit Monitoring','📡','How an agency accesses credit monitoring information and client report data.','bureau'],
+ ['Agency CRM','🗂️','Manage leads, clients, documents, and notes from one roster.','crm'],
+ ['Marketing','📣','Lead capture forms and marketing tools to fill the pipeline.','marketing'],
+ ['Free Website','🌐','Sample agency website templates, ready to brand.','website'],
+ ['Three-Bureau Tracking','📊','Bureau information and dispute tracking across Equifax, Experian, and TransUnion.','bureau'],
+ ['AI Dispute Engine','🤖','Maxine AI analyzes the report and prepares tailored disputes for your review.','maxine'],
+ ['White-Label Portal','🎨','Customize the client portal with your logo and colors.','portal'],
+ ['Two-Way Messaging','💬','Client communication inside the software.','messaging'],
+ ['Booking Calendar','📅','Appointment scheduling and calendar management.','calendar'],
+ ['Mentorship','🎓','Mentorship resources offered through ScoreOS.','mentorship'],
+ ['Community','🏟️','The agency-owner community experience.','community'],
+ ['Training Videos','🎬','The training library and educational resources.','training'],
+ ['Support System','🛟','How agency owners access support.','support'],
+ ['Automations','⚡','Onboarding, reminders, follow-ups, and workflow automations.','automations'],
+];
+let ai=0; const ag=$('#arsenalGrid');
+ag.innerHTML=FEATURES.map((f,i)=>`<button class="acard" data-i="${i}"><span class="num">${String(i+1).padStart(2,'0')}</span><span class="ico">${f[1]}</span><span class="nm">${f[0]}</span></button>`).join('');
+function showFeature(i){ai=(i+FEATURES.length)%FEATURES.length;const f=FEATURES[ai];$$('.acard').forEach((c,j)=>c.classList.toggle('lit',j===ai));$('#adNum').textContent='Play '+String(ai+1).padStart(2,'0')+' of 14';$('#adTitle').textContent=f[0];$('#adText').textContent=f[2];$('#adScreen').innerHTML=screen(f[3]);$('#adScreen').firstElementChild.style.animation='fadein .5s var(--ease)';}
+ag.addEventListener('click',e=>{const c=e.target.closest('.acard');if(c)showFeature(+c.dataset.i)});
+$('#adNext').onclick=()=>showFeature(ai+1);$('#adPrev').onclick=()=>showFeature(ai-1);showFeature(0);
+
+/* ---------- MAXINE DEMO ---------- */
+const mxBody=$('#mxBody'), mxSteps=$$('#mxSteps .step');
+function mxStep(n){mxSteps.forEach((s,i)=>{s.classList.toggle('on',i===n);s.classList.toggle('done',i<n)})}
+const wait=ms=>new Promise(r=>setTimeout(r,reduce?0:ms));
+let mxRunning=false;
+$('#mxRun').onclick=async()=>{
+  if(mxRunning)return;mxRunning=true;$('#mxRun').disabled=true;
+  mxStep(1);
+  mxBody.innerHTML=`<div class="report"><h6>Sample credit report · Fictional</h6><table>
+    <tr><td><b>Retail Card</b><br>Opened 2019 · Balance $1,240</td><td>Reported 30 days late · 03/2024</td></tr>
+    <tr id="flagRow"><td><b>Collection Account</b><br>Original creditor: Medical</td><td>Balance $410 · Listed twice with different dates</td></tr>
+    <tr><td><b>Auto Loan</b><br>Opened 2021 · Balance $8,410</td><td>Current · Pays as agreed</td></tr>
+    <tr><td><b>Student Loan</b><br>Opened 2017</td><td>Current</td></tr>
+  </table></div><div class="mx-note" id="mxNote"></div><div class="letter" id="mxLetter"></div>`;
+  await wait(1100); mxStep(2);
+  const row=$('#flagRow'); row.classList.add('flag','on');
+  await wait(1000); mxStep(3);
+  const note=$('#mxNote'); note.innerHTML=`<b>Maxine:</b> The collection account appears twice with different reported dates. Duplicate or inconsistent reporting may warrant investigation under the FCRA accuracy requirements. I've prepared a dispute letter for your review.`; note.classList.add('show');
+  await wait(1300); mxStep(4);
+  const L=$('#mxLetter'); L.innerHTML=`<b>Sample dispute letter — for review</b><br><br>To: [Credit Bureau]<br>Re: Request for investigation of reported information<br><br>I am writing to request an investigation of the collection account listed on my report. The item appears to be reported twice with inconsistent dates and balances. Please investigate the accuracy of this information and provide the results of your investigation in writing.<br><br>Sincerely,<br>[Client Name]`; L.classList.add('show');
+  await wait(900); mxStep(5); $('#mxExplore').style.display='inline-flex'; mxRunning=false;
+};
+$('#mxReset').onclick=()=>{mxBody.innerHTML=`<div class="idle"><div class="orb"></div><div>Maxine is standing by.<br><small>Run the sample analysis to see the flow.</small></div></div>`;mxStep(0);$('#mxExplore').style.display='none';$('#mxRun').disabled=false;mxRunning=false};
+
+/* ---------- RUN THE PLAY ---------- */
+const PLAYS=[['New Lead','A prospect enters the CRM.','crm'],['Client Enrollment','The client signs up for agency services.','website'],['Onboarding','The client completes the agreement and document requirements.','onboarding'],['Agency Notification','The agency receives a new-client notification.','automations'],['Team Assignment','A staff member or outsourcer is assigned.','team'],['Credit Report Review','The agency reviews the imported report.','bureau'],['Dispute Management','Dispute items are selected and the appropriate workflow begins.','disputes'],['Client Communication','The client receives progress information.','messaging'],['Ongoing Agency Management','The agency tracks the client\'s status and next steps.','crm']];
+const yl=$('#yardlines'); let ylh='';for(let i=1;i<10;i++){const x=80+i*84;ylh+=`<line x1="${x}" y1="40" x2="${x}" y2="380" stroke="rgba(255,255,255,.18)" stroke-width="${i===5?2:1}"/><text x="${x}" y="30" fill="rgba(255,255,255,.4)" font-family="Share Tech Mono,monospace" font-size="12" text-anchor="middle">${i*10}</text>`}yl.innerHTML=ylh;
+const pm=$('#playMarkers'); pm.innerHTML=PLAYS.map((p,i)=>`<g class="pmark" data-i="${i}" style="cursor:pointer"><circle cx="${110+i*92}" cy="330" r="14" fill="#000" stroke="#19e37a" stroke-width="1.5" opacity=".9"/><text x="${110+i*92}" y="335" fill="#19e37a" font-family="Share Tech Mono,monospace" font-size="12" text-anchor="middle">${i+1}</text></g>`).join('');
+const pl=$('#playlist'); pl.innerHTML=PLAYS.map((p,i)=>`<button data-i="${i}">${i+1}</button>`).join('');
+let pi=0; const ball=$('#ballG');
+function setPlay(i){pi=i;const p=PLAYS[i];$('#plNum').textContent=`Play ${i+1} of 9`;$('#plTitle').textContent=p[0];$('#plText').textContent=p[1];$('#plScreen').innerHTML=screen(p[2]);const x=110+i*92;ball.style.transform=`translate(${x}px,${200+(i%2?-30:30)}px) rotate(${i*40}deg)`;$$('#playlist button').forEach((b,j)=>{b.classList.toggle('on',j===i);b.classList.toggle('done',j<i)});$$('.pmark').forEach((m,j)=>m.querySelector('circle').setAttribute('fill',j<=i?'#19e37a':'#000'));$$('.pmark text').forEach((t,j)=>t.setAttribute('fill',j<=i?'#031a0c':'#19e37a'));$('#nextPlay').textContent=i===8?'Touchdown! →':'Next Play →'}
+$('#nextPlay').onclick=()=>{if(pi<8)setPlay(pi+1);else{ball.style.transform='translate(960px,200px) rotate(720deg)';setTimeout(()=>$('#touchdown').classList.add('show'),reduce?0:900)}};
+$('#resetPlay').onclick=()=>setPlay(0);$('#tdClose').onclick=()=>{$('#touchdown').classList.remove('show');setPlay(0)};
+pl.addEventListener('click',e=>{const b=e.target.closest('button');if(b)setPlay(+b.dataset.i)});
+pm.addEventListener('click',e=>{const g=e.target.closest('.pmark');if(g)setPlay(+g.dataset.i)});
+setPlay(0);
+
+/* ---------- YOUR BRAND ---------- */
+const LOGOS=[['Summit Credit Co.','⛰️'],['Northstar Credit','✦'],['Blue Harbor Financial','⚓']];
+const COLORS=['#19e37a','#3a6cff','#ffb020','#ff4d6d','#b56cff','#ffffff'];
+let bl=0,bc=0,bv='desktop';
+$('#logoOpts').innerHTML=LOGOS.map((l,i)=>`<button class="logo-opt ${i===0?'on':''}" data-i="${i}"><span class="sym">${l[1]}</span>${l[0]}</button>`).join('');
+$('#swatches').innerHTML=COLORS.map((c,i)=>`<button class="sw ${i===0?'on':''}" data-i="${i}" style="background:${c}" aria-label="${c}"></button>`).join('');
+function renderPortal(){const l=LOGOS[bl],c=COLORS[bc];const stage=$('#portalStage');
+  const sideBrand=`<div class="brand"><i></i>${l[0].split(' ')[0]}</div>`;
+  const h=bv==='desktop'?`<div class="screen" style="--pbrand:${c}"><div class="top"><i></i><i></i><i></i><span class="url"></span></div><div class="body"><div class="side">${sideBrand}<div class="it on"></div><div class="it"></div><div class="it"></div><div class="it"></div></div><div class="main"><div class="hdr"><b>Welcome back, Jordan</b><span class="pill">${l[0]}</span></div><div class="cards"><div class="card"><small>Equifax</small><strong>612</strong></div><div class="card"><small>Experian</small><strong>598</strong></div><div class="card"><small>TransUnion</small><strong>621</strong></div></div><div class="rows"><div class="row"><span class="t"></span><span class="tag">Round 3 sent</span></div><div class="row"><span class="t"></span><span class="tag info">Upload documents</span></div><div class="row"><span class="t"></span><span class="tag warn">Message from your agency</span></div></div></div></div></div>`
+  :`<div class="screen phone" style="--pbrand:${c}"><div class="top" style="justify-content:center"><span style="font-family:var(--font-display);font-weight:800;text-transform:uppercase;font-size:11px;color:#fff">${l[1]} ${l[0]}</span></div><div class="body"><div class="main"><div class="hdr"><b>Hi Jordan</b><span class="pill">Portal</span></div><div class="cards" style="grid-template-columns:1fr"><div class="card"><small>Equifax</small><strong>612</strong></div><div class="card"><small>Experian</small><strong>598</strong></div><div class="card"><small>TransUnion</small><strong>621</strong></div></div><div class="rows"><div class="row"><span class="t"></span><span class="tag">Round 3</span></div><div class="row"><span class="t"></span><span class="tag info">Docs</span></div></div></div></div></div>`;
+  stage.innerHTML=h;}
+$('#logoOpts').onclick=e=>{const b=e.target.closest('button');if(!b)return;bl=+b.dataset.i;$$('.logo-opt').forEach(x=>x.classList.toggle('on',x===b));renderPortal()};
+$('#swatches').onclick=e=>{const b=e.target.closest('button');if(!b)return;bc=+b.dataset.i;$$('.sw').forEach(x=>x.classList.toggle('on',x===b));renderPortal()};
+$$('.view-toggle button').forEach(b=>b.onclick=()=>{bv=b.dataset.view;$$('.view-toggle button').forEach(x=>x.classList.toggle('on',x===b));renderPortal()});
+renderPortal();
+
+/* ---------- ROSTER ---------- */
+const ROLES=[['Agency Owner','01',['Full visibility across clients, team, and revenue','Approves dispute strategy and assignments','Reviews automated monthly progress reports'],['All access','Reports','Billing'],'owner'],
+ ['Agency Administrator','02',['Manages onboarding queue and client records','Assigns clients to staff and outsourcers','Monitors automation activity'],['Assign clients','Onboarding','Automations'],'onboarding'],
+ ['Dispute Specialist','03',['Reviews imported credit reports','Selects dispute items and runs the workflow','Tracks round status per bureau'],['Disputes','Maxine AI','Bureaus'],'disputes'],
+ ['Customer Service Team','04',['Handles two-way client messaging','Sends progress information and reminders','Escalates issues to the right player'],['Messaging','Calendar','Support'],'messaging'],
+ ['Virtual Assistant','05',['Follows assigned task lists','Collects client documents and updates records','Books appointments on the calendar'],['Tasks','Documents','Calendar'],'calendar'],
+ ['Outsourcing Team','06',['Receives scoped assignments from the admin','Works inside the agency\'s ScoreOS account','Progress tracked against assigned responsibilities'],['Assignments','Tracking','Team chat'],'team']];
+$('#rosterGrid').innerHTML=ROLES.map((r,i)=>`<button class="rcard ${i===0?'on':''}" data-i="${i}"><div class="jersey">${r[1]}</div><div class="nm">${r[0]}</div></button>`).join('');
+function setRole(i){const r=ROLES[i];$$('.rcard').forEach((c,j)=>c.classList.toggle('on',j===i));$('#rdPos').textContent='Position '+r[1];$('#rdTitle').textContent=r[0];$('#rdList').innerHTML=r[2].map(x=>`<li>${x}</li>`).join('');$('#rdChips').innerHTML=r[3].map(x=>`<span class="chip">${x}</span>`).join('');$('#rdScreen').innerHTML=screen(r[4]);}
+$('#rosterGrid').onclick=e=>{const b=e.target.closest('.rcard');if(b)setRole(+b.dataset.i)};setRole(0);
+
+/* ---------- WALL OF WINS (placeholders only) ---------- */
+$('#wall').innerHTML=[1,2,3].map(i=>`<div class="plaque"><div class="ribbon">Championship Plaque ${String(i).padStart(2,'0')}</div><div class="q">“[Verified testimonial — paste from the live Wall of Wins]”</div><div class="who"><div class="av">?</div><div><b>[Customer name]</b><span>[Agency name]</span></div></div><div class="more">Optional extended testimonial text goes here. Add a customer photo in the avatar slot if permission is on file.<div class="vid">▶ OPTIONAL VIDEO TESTIMONIAL</div></div></div>`).join('');
+$('#wall').onclick=e=>{const p=e.target.closest('.plaque');if(p)p.classList.toggle('open')};
+
+/* ---------- PRICING ---------- */
+$$('.league').forEach(l=>l.addEventListener('click',()=>{$$('.league').forEach(x=>{x.classList.remove('on');x.classList.add('sec')});l.classList.add('on');l.classList.remove('sec')}));
+
+/* ---------- FINISH: Wave Galaxy getlayers embed (emerald) ---------- */
+(function(){
+  const sec=$('#finish'), frame=$('#galaxyFrame');
+  if(!sec||!frame) return;
+  function send(){
+    const r=sec.getBoundingClientRect();
+    const t = Math.max(0, Math.min(1, 1 - (r.top + r.height*0.35) / Math.max(innerHeight,1)));
+    try{ frame.contentWindow && frame.contentWindow.postMessage({type:'championship-scroll', t}, '*'); }catch(e){}
+  }
+  addEventListener('scroll', send, {passive:true});
+  addEventListener('resize', send);
+  frame.addEventListener('load', send);
+  setInterval(send, 180);
+  send();
+  sec.addEventListener('mousemove', e=>{
+    const r=sec.getBoundingClientRect();
+    try{ frame.contentWindow && frame.contentWindow.postMessage({type:'championship-pointer', x:(e.clientX-r.left)/Math.max(r.width,1), y:(e.clientY-r.top)/Math.max(r.height,1)}, '*'); }catch(err){}
+  }, {passive:true});
+})();
+
+</script>
+</body>
+</html>
