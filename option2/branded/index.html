@@ -275,11 +275,24 @@ body.lock{overflow:hidden}
   #site-disclaimer{margin-top:14px; max-width:90vw}
   #site-disclaimer p{font-size:10px; line-height:1.45}
 }
-/* Browse overlay readable over neon dashboard */
+/* Browse overlay: Patrick platform line — upper area, scrim, not clipped */
+.browse{
+  align-items:flex-start !important;
+  justify-content:center;
+  padding: min(12vh, 72px) 5% 0 !important;
+  box-sizing:border-box;
+}
 .browse h2{
-  text-shadow:0 2px 18px rgba(0,0,0,.75), 0 0 40px rgba(0,0,0,.45);
-  background:radial-gradient(closest-side, rgba(0,0,0,.45), rgba(0,0,0,0));
-  padding:1.2em 1.4em; border-radius:12px;
+  max-width: min(92%, 34ch);
+  margin:0 auto;
+  font-size: clamp(15px, 3.1vmin, 22px) !important;
+  font-weight:500 !important;
+  line-height:1.28 !important;
+  letter-spacing:0.01em;
+  text-align:center;
+  text-shadow:0 2px 18px rgba(0,0,0,.85), 0 0 40px rgba(0,0,0,.5);
+  background:radial-gradient(closest-side, rgba(0,0,0,.55), rgba(0,0,0,0));
+  padding:1.1em 1.2em; border-radius:14px;
 }
 
 /* full-bleed tunnel hero: no inset frame / black letterbox bands */
@@ -291,15 +304,6 @@ body.lock{overflow:hidden}
 
 
 
-/* Browse label sits above credit-score gauge (not over the number) */
-.browse{
-  align-items:flex-start;
-  padding-top:18vh;
-}
-.browse h2{margin-top:0}
-@media(max-width:640px){
-  .browse{padding-top:16vh}
-}
 
 /* centered neon badge (replaces search-bar-like glass/search pills) */
 .cc .badge{
@@ -567,11 +571,11 @@ body.detail-open .track{pointer-events:none}
                   <span class="l3" data-letters="YOUR LEGACY."></span>
                 </h1>
               </div>
-              <div class="browse"><h2 id="browse-h2" data-letters="Browse our\nfeatures"></h2></div>
+              <div class="browse"><h2 id="browse-h2" data-letters="Not just software,\nbut a complete platform\ndesigned to scale your business\nwhile your clients succeed."></h2></div>
               <div class="hero-slider-outer">
                 <div class="hero-slider" id="hero-slider">
                   <img class="slide slide-a" src="../assets/branded-cards/maxine-tunnel.webp" alt="" draggable="false">
-                  <img class="slide slide-b" src="../assets/branded-cards/browse-credit-dashboard.webp" alt="" draggable="false">
+                  <img class="slide slide-b" src="../assets/branded-cards/browse-holographic-stadium.webp" alt="" draggable="false">
                 </div>
               </div>
               <div class="hero-bottom" id="hero-bottom">
