@@ -289,6 +289,7 @@ body.lock{overflow:hidden}
   transform:none !important;
   opacity:0;
   visibility:hidden;
+  overflow:hidden; /* clip rotated scrim AABB to inner image */
 }
 .browse.browse--badge.is-on{
   opacity:1;
@@ -310,7 +311,7 @@ body.lock{overflow:hidden}
   max-width:82% !important;
   margin:0 !important;
   box-sizing:border-box;
-  padding:0.7em 0.85em;
+  padding:0.75em 1em;
   border-radius:14px;
   text-align:center;
   white-space:normal;
@@ -318,7 +319,7 @@ body.lock{overflow:hidden}
   overflow-wrap:normal !important;
   hyphens:none !important;
   /* Size so the longest line fits inside the 82% box at 390–430 */
-  font-size:clamp(11px, 2.35vmin, 15px) !important;
+  font-size:clamp(12px, 2.55vmin, 16px) !important;
   font-weight:600 !important;
   line-height:1.32 !important;
   letter-spacing:0.01em;
