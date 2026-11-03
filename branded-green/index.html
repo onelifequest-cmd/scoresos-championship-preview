@@ -196,7 +196,9 @@
   #detail-panel { position: absolute; inset: 0; z-index: 42; display: flex; align-items: center; justify-content: center;
     padding: clamp(16px, 4vw, 48px); opacity: 0; transform: translateY(12px);
     transition: opacity .35s ease .12s, transform .35s ease .12s; pointer-events: none; }
-  #detail.-ready #detail-panel { opacity: 1; transform: none; pointer-events: auto; }
+  #detail.-ready #detail-panel { opacity: 1; transform: none; }
+  #detail.-ready #detail-sheet,
+  #detail.-ready #detail-close { pointer-events: auto; }
   #detail-sheet { width: min(920px, 100%); max-height: min(92vh, 860px); display: grid;
     grid-template-columns: minmax(220px, 38%) 1fr; gap: 0; background: #fff;
     border-radius: calc(var(--corner) + 4px); overflow: hidden;
