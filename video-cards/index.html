@@ -41,7 +41,7 @@
     font-variant-numeric: tabular-nums; }
 
   #ring { position: relative; width: 0; height: 0; transform-style: preserve-3d; z-index: 1;
-    transform: translateZ(var(--push, 0px)) rotateY(var(--rot, 0deg)); }
+    transform: translateY(var(--lift, 0px)) translateZ(var(--push, 0px)) rotateY(var(--rot, 0deg)); }
 
   .card { position: absolute; width: var(--cw, 220px); height: var(--ch, 300px);
     left: calc(var(--cw, 220px) / -2); top: calc(var(--ch, 300px) / -2);
@@ -621,6 +621,9 @@ function layout() {
   /* Title scales with card so labels stay readable on the larger face. */
   const titlePx = Math.max(15, Math.min(22, cw * 0.078));
   document.getElementById('section').style.setProperty('--title-size', titlePx + 'px');
+  /* Drop the arc into the empty band above the dock on phones (was centered with a large lower gap). */
+  const lift = vw <= 520 ? Math.min(96, Math.max(48, vh * 0.09)) : (vw <= 900 ? 36 : 0);
+  stage.style.setProperty('--lift', lift + 'px');
 }
 
 let rot = 0, vel = 0, dragging = false, lastX = 0, downX = 0, moved = false, targetIndex = 0, settled = true, lastRot = NaN;
