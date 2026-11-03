@@ -327,8 +327,9 @@
   }
   /* Frosted play control on every card */
   .card__play {
-    position: absolute; left: 50%; top: 46%;
-    transform: translate(-50%, -50%) scale(var(--play-s, 0.72));
+    /* Bottom-center, clear of .card__foot title (~12px + ~18px title) */
+    position: absolute; left: 50%; top: auto; bottom: 48px;
+    transform: translate(-50%, 0) scale(var(--play-s, 0.72));
     z-index: 5;
     /* 70→~56 visual after cylinder perspective; 80→~64 on desktop */
     width: 70px; height: 70px; border-radius: 50%;
@@ -377,7 +378,7 @@
     50% { box-shadow: 0 12px 36px rgba(2,93,37,.45), 0 0 0 10px rgba(252,195,37,0), inset 0 1px 0 rgba(255,255,255,.5); }
   }
   @media (min-width: 901px) {
-    .card__play { width: 80px; height: 80px; }
+    .card__play { width: 80px; height: 80px; bottom: 56px; }
     .card__play svg { width: 28px; height: 28px; }
   }
   @media (prefers-reduced-motion: reduce) {
