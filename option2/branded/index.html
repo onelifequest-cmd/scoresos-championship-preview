@@ -295,7 +295,8 @@ body.lock{overflow:hidden}
   visibility:visible;
 }
 .browse.browse--badge h2{
-  /* Center on inner image; rotate(-90deg) matches slide-b orientation */
+  /* Center on inner image; rotate(-90deg) matches slide-b orientation.
+     Cap width to ~82% of the inner image so glyphs never clip the edges. */
   position:absolute !important;
   left:50% !important;
   top:50% !important;
@@ -305,20 +306,21 @@ body.lock{overflow:hidden}
   transform-origin:center center !important;
   filter:none !important;
   display:block;
-  width:max-content;
-  max-width:min(86%, 36ch);
+  width:82% !important;
+  max-width:82% !important;
   margin:0 !important;
   box-sizing:border-box;
-  padding:0.85em 1.1em;
+  padding:0.7em 0.85em;
   border-radius:14px;
   text-align:center;
   white-space:normal;
   word-break:normal !important;
   overflow-wrap:normal !important;
   hyphens:none !important;
-  font-size:clamp(13px, 2.9vmin, 18px) !important;
+  /* Size so the longest line fits inside the 82% box at 390–430 */
+  font-size:clamp(11px, 2.35vmin, 15px) !important;
   font-weight:600 !important;
-  line-height:1.35 !important;
+  line-height:1.32 !important;
   letter-spacing:0.01em;
   color:#fff !important;
   background:rgba(0,0,0,.48);
@@ -775,7 +777,7 @@ body.detail-open .track{pointer-events:none}
                 <div class="hero-slider" id="hero-slider">
                   <img class="slide slide-a" src="../assets/branded-cards/maxine-tunnel.webp" alt="" draggable="false">
                   <img class="slide slide-b" src="../assets/branded-cards/browse-holographic-stadium.webp" alt="" draggable="false">
-                  <div class="browse browse--badge"><h2 id="browse-h2" data-letters="Not just software,\nbut a complete platform\ndesigned to scale your business\nwhile your clients succeed."></h2></div>
+                  <div class="browse browse--badge"><h2 id="browse-h2" data-letters="Not just software,\nbut a complete platform\ndesigned to scale\nyour business while\nyour clients succeed."></h2></div>
                 </div>
               </div>
               <div class="hero-bottom" id="hero-bottom">
