@@ -872,7 +872,10 @@ const blockLetterStyle = (p, index, total) => {
            opacity: Math.max(0, 1 - inv*1.3) };
 };
 const templatesLetterStyle = (p, index) => {
-  const t = clamp01((phase1(p) - 0.45 - index*0.005) / 0.45);
+  const start = 0.22;
+  const per = 0.001;
+  const span = 0.35;
+  const t = clamp01((phase1(p) - start - index*per) / span);
   return { transform:`translateY(${(1-smooth(t))*150}%)`, filter:`blur(${(1-t)*1.5}vmin)`,
            opacity: t };
 };
