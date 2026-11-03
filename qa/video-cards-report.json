@@ -1,0 +1,18 @@
+{
+  "front_state": {
+    "hasFront": true,
+    "readyState": 4,
+    "paused": false,
+    "currentTime": 4.25087,
+    "on": true,
+    "networkState": 1
+  },
+  "detail_t1": 2.208785,
+  "detail_t2": {
+    "t": 3.412716,
+    "paused": false,
+    "ready": 4
+  },
+  "advanced": true,
+  "errors": []
+}

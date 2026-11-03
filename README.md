@@ -20,3 +20,8 @@ python3 -m http.server 8765
 ```
 
 - `/cards/` — Arsenal carousel with 16 prompt-extracted feature cards (neon green cinematic art). Keep `/branded-green/` as the approved baseline.
+
+## Routes
+- `/` colosseum / prior preview
+- `/cards/` static feature cards
+- `/video-cards/` same carousel with free looping cinematic clips on the front card + detail view
