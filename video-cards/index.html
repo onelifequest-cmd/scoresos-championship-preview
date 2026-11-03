@@ -45,7 +45,7 @@
 
   .card { position: absolute; width: var(--cw, 220px); height: var(--ch, 300px);
     left: calc(var(--cw, 220px) / -2); top: calc(var(--ch, 300px) / -2);
-    transform: rotateY(var(--a)) translateZ(calc(var(--r, 620px) * -1));
+    transform: rotateY(var(--a)) translateZ(calc(var(--r, 620px) * var(--zsign, -1) - var(--zb, 0px))) scale(var(--s, 1));
     backface-visibility: hidden; -webkit-backface-visibility: hidden; transform-style: preserve-3d; }
   .card__inner {
     position: absolute; inset: 0; border-radius: var(--corner); overflow: hidden; background: #0a0e18;
@@ -53,6 +53,7 @@
                 0 6px 16px -8px rgba(24,34,64, calc(.32 * var(--shadow)));
     transition: transform .4s cubic-bezier(.22,.61,.36,1), box-shadow .4s ease;
     backface-visibility: hidden; -webkit-backface-visibility: hidden; will-change: transform; }
+  .card.-front { z-index: 5; }
   .card.-front .card__inner { box-shadow: 0 40px 90px -20px rgba(24,34,64,.5), 0 8px 22px -8px rgba(24,34,64,.4); }
   .card:hover .card__inner { transform: scale(var(--hover)); }
   .card__inner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -583,28 +584,29 @@ function buildDots() {
 function layout() {
   const vw = innerWidth;
   const vh = innerHeight;
-  /* Bigger cards: phones aim ~55–62% *projected* viewport width (was ~101px / ~26% vw).
-     CSS size alone is not enough — 3D depth shrinks the face, so we also pull the ring
-     forward (lower arcDepth) and tighten radiusK on small screens. */
-  let cw, radiusK, arcDepth, persp;
+  /* Phones/tablet: convex ring (zsign=+1) so center is closest; sides recede with a clear gap.
+     Desktop keeps the original concave Colosseum arc. */
+  let cw, radiusK, arcDepth, persp, zsign, push;
   if (vw <= 520) {
-    cw = Math.min(280, Math.max(248, vw * 0.68)) * CFG.cardScale;
-    radiusK = 2.12;
-    arcDepth = 0.24;
-    persp = Math.max(1200, vw * 1.4);
+    cw = Math.min(310, Math.max(255, vw * 0.74)) * CFG.cardScale;
+    radiusK = 3.25;
+    arcDepth = 0.28;
+    persp = Math.max(1100, vw * 1.4);
+    zsign = 1;
   } else if (vw <= 900) {
-    cw = Math.min(290, Math.max(240, vw * 0.38)) * CFG.cardScale;
-    radiusK = 2.55;
-    arcDepth = 0.42;
-    persp = Math.max(900, vw * 1.05);
+    cw = Math.min(295, Math.max(248, vw * 0.38)) * CFG.cardScale;
+    radiusK = 3.2;
+    arcDepth = 0.50;
+    persp = Math.max(1000, vw * 1.1);
+    zsign = 1;
   } else {
     cw = Math.min(310, Math.max(250, vw * 0.19)) * CFG.cardScale;
     radiusK = CFG.radiusK;
     arcDepth = CFG.arcDepth;
     persp = Math.max(800, vw * 0.85 * CFG.perspective);
+    zsign = -1;
   }
   let ch = cw * CFG.cardRatio;
-  /* Keep the center card between the masthead and the dock. */
   const mastReserve = Math.min(168, Math.max(120, vh * 0.22));
   const dockReserve = Math.min(150, Math.max(110, vh * 0.17));
   const maxCh = Math.max(260, vh - mastReserve - dockReserve - 16);
@@ -612,17 +614,18 @@ function layout() {
     ch = maxCh;
     cw = ch / CFG.cardRatio;
   }
-  const r  = cw * radiusK;
+  const r = cw * radiusK;
+  push = zsign < 0 ? r * (1 - arcDepth) : -r * (1 + arcDepth);
   stage.style.setProperty('--cw', cw + 'px');
   stage.style.setProperty('--ch', ch + 'px');
-  stage.style.setProperty('--r',  r + 'px');
-  stage.style.setProperty('--push', (r * (1 - arcDepth)) + 'px');
+  stage.style.setProperty('--r', r + 'px');
+  stage.style.setProperty('--zsign', String(zsign));
+  stage.style.setProperty('--push', push + 'px');
   stage.style.perspective = persp + 'px';
-  /* Title scales with card so labels stay readable on the larger face. */
   const titlePx = Math.max(15, Math.min(22, cw * 0.078));
   document.getElementById('section').style.setProperty('--title-size', titlePx + 'px');
-  /* Drop the arc into the empty band above the dock on phones (was centered with a large lower gap). */
-  const lift = vw <= 520 ? Math.min(96, Math.max(48, vh * 0.09)) : (vw <= 900 ? 36 : 0);
+  /* Nudge up on phones: shrink empty band under the headline, keep dock clearance. */
+  const lift = vw <= 520 ? Math.min(-12, Math.max(-28, -vh * 0.028)) : (vw <= 900 ? -4 : 0);
   stage.style.setProperty('--lift', lift + 'px');
 }
 
@@ -713,12 +716,21 @@ function playFrontVideo(cardEl) {
 
 function render() {
   const fs = frontSlot();
+  /* Scale + z so neighbors recede behind the center card (never cover its label/number). */
+  ring.querySelectorAll('.card').forEach((el) => {
+    const slot = +el.dataset.slot;
+    let d = Math.abs(slot - fs);
+    if (d > CFG.slots / 2) d = CFG.slots - d;
+    const s = d === 0 ? 1 : (d === 1 ? 0.78 : Math.max(0.62, 1 - 0.13 * d));
+    const zb = d === 0 ? 0 : Math.round(28 + d * 36);
+    el.style.setProperty('--s', s.toFixed(3));
+    el.style.setProperty('--zb', zb + 'px');
+    el.style.zIndex = String(40 - d);
+    el.classList.toggle('-front', slot === fs);
+  });
   if (fs !== lastFrontSlot) {
-    const old = ring.querySelector('.card.-front');
-    if (old) old.classList.remove('-front');
-    const neu = ring.querySelector(`.card[data-slot="${fs}"]`);
-    if (neu) neu.classList.add('-front');
     lastFrontSlot = fs;
+    const neu = ring.querySelector(`.card[data-slot="${fs}"]`);
     if (!detailOpen) {
       if (neu) playFrontVideo(neu);
       else stopFrontVideo();
