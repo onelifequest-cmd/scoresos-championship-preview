@@ -114,9 +114,9 @@
   #eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: 11px; font-weight: 600;
     letter-spacing: .26em; text-transform: uppercase; color: var(--ink-3); }
   #eyebrow::before, #eyebrow::after { content: ''; width: 26px; height: 1px; background: var(--line); }
-  #headline { margin: 14px 0 0; font-family: 'Fraunces', Georgia, serif; font-weight: 340;
-    font-size: clamp(28px, 4.6vw, 58px); line-height: 1.02; letter-spacing: -.018em; color: var(--ink);
-    text-wrap: balance; }
+  #headline { margin: 12px auto 0; max-width: 18.5em; font-family: 'Fraunces', Georgia, serif; font-weight: 340;
+    font-size: clamp(22px, 2.8vw, 40px); line-height: 1.12; letter-spacing: -.016em; color: var(--ink);
+    text-wrap: balance; overflow-wrap: normal; word-break: normal; hyphens: none; }
   #headline em { font-style: italic; font-weight: 400; }
 
   .edge { position: fixed; top: 50%; z-index: 4; font-size: 10.5px; font-weight: 600; letter-spacing: .28em;
@@ -167,8 +167,8 @@
     #nav { display: none; }
     #cta { padding: 8px 13px; }
     #frame { inset: 10px; }
-    #mast { top: clamp(68px, 9.5vh, 96px); }
-    #headline { font-size: clamp(24px, 6.2vw, 34px); margin-top: 10px; }
+    #mast { top: clamp(58px, 7.8vh, 84px); }
+    #headline { font-size: clamp(17px, 4.4vw, 24px); margin-top: 8px; max-width: 22em; line-height: 1.14; }
     /* Center column must shrink so prev/next stay inside the viewport (20 dots used to shove › off-screen at 430). */
     #dock { grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center;
       padding: 0 16px clamp(16px, 2.6vh, 26px); }
@@ -192,8 +192,8 @@
     #dock { gap: 8px; padding-left: 12px; padding-right: 12px; }
   }
   @media (max-height: 560px) {
-    #mast { top: 60px; }
-    #headline { font-size: clamp(22px, 5vw, 34px); }
+    #mast { top: 52px; }
+    #headline { font-size: clamp(15px, 3.8vw, 22px); line-height: 1.12; }
     .hint { display: none; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -430,7 +430,7 @@ const CARDS = [
   {
     img: 'score-os.webp', title: 'Score OS', rating: 'Platform', meta: 'Scale & success',
     kicker: 'Score OS · Platform',
-    blurb: 'Not just a credit repair platform — software built to scale your agency and your clients’ success in one place.',
+    blurb: 'Score OS is the all-in-one operating system for credit repair agencies.',
     bullets: ['One operating system for agency work', 'Clients, monitoring, and workflows together', 'Built so your team can grow without dropping the ball']
   },
   {
@@ -609,7 +609,7 @@ const UI = {
   nav:      ['Platform', 'Maxine AI', 'Pricing', 'DIY OS'],
   cta:      'Get started',
   eyebrow:  'Score OS · The Arsenal',
-  headline: 'Your agency,<br>run in <em>one place</em>',
+  headline: 'Not just a credit repair platform —<br>software built to scale your agency and your clients’ success, <em>all in one place</em>.',
   edgeL:    'Agency OS',
   edgeR:    'DIY OS',
 };
@@ -730,11 +730,12 @@ function layout() {
     zsign = -1;
   }
   let ch = cw * CFG.cardRatio;
+  /* Longer hero line needs more mast room; dock stays visible on 390×844. */
   const mastReserve = vw > 900
-    ? Math.min(210, Math.max(150, vh * 0.26))
-    : Math.min(168, Math.max(120, vh * 0.22));
+    ? Math.min(268, Math.max(188, vh * 0.30))
+    : Math.min(196, Math.max(148, vh * 0.255));
   const dockReserve = Math.min(150, Math.max(110, vh * 0.17));
-  const maxCh = Math.max(260, vh - mastReserve - dockReserve - 16);
+  const maxCh = Math.max(240, vh - mastReserve - dockReserve - 16);
   if (ch > maxCh) {
     ch = maxCh;
     cw = ch / CFG.cardRatio;
@@ -749,12 +750,12 @@ function layout() {
   stage.style.perspective = persp + 'px';
   const titlePx = Math.max(15, Math.min(22, cw * 0.078));
   document.getElementById('section').style.setProperty('--title-size', titlePx + 'px');
-  /* Phones: nudge up. Desktop: drop the ring so the center card clears the headline by ≥32px. */
+  /* Phones: slight up-nudge so dock title+arrows stay above the fold on 390×844.
+     Desktop: drop the ring so the center card clears the (taller) headline by ≥32px. */
   let lift;
-  if (vw <= 520) lift = Math.min(-12, Math.max(-28, -vh * 0.028));
-  else if (vw <= 900) lift = -4;
-  /* Slightly less drop than before so a smaller card still holds ~55px under the headline. */
-  else lift = Math.round(Math.min(92, Math.max(76, vh * 0.098)));
+  if (vw <= 520) lift = Math.min(-6, Math.max(-22, -vh * 0.018));
+  else if (vw <= 900) lift = 8;
+  else lift = Math.round(Math.min(118, Math.max(88, vh * 0.118)));
   stage.style.setProperty('--lift', lift + 'px');
 }
 
