@@ -152,7 +152,8 @@
   .navbtn:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
   .navbtn:active { transform: scale(.94); }
 
-  .hint { position: fixed; left: 50%; bottom: clamp(124px, 17vh, 156px); transform: translateX(-50%); z-index: 4;
+  /* Sit in the gap between card bottom and dock title — not under the center card. */
+  .hint { position: fixed; left: 50%; bottom: clamp(108px, 13.5vh, 128px); transform: translateX(-50%); z-index: 4;
     font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; font-weight: 600; color: var(--ink-3);
     pointer-events: none; user-select: none; opacity: .9; }
 
@@ -168,22 +169,27 @@
     #frame { inset: 10px; }
     #mast { top: clamp(68px, 9.5vh, 96px); }
     #headline { font-size: clamp(24px, 6.2vw, 34px); margin-top: 10px; }
-    #dock { grid-template-columns: auto 1fr auto; gap: 12px; align-items: center;
-      padding-bottom: clamp(16px, 2.6vh, 26px); }
+    /* Center column must shrink so prev/next stay inside the viewport (20 dots used to shove › off-screen at 430). */
+    #dock { grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center;
+      padding: 0 16px clamp(16px, 2.6vh, 26px); }
     .dock__count b { font-size: 24px; }
     .dock__count i, .dock__count .of { display: none; }
-    .dock__c { gap: 9px; }
-    .dock__title { font-size: clamp(18px, 4.6vw, 26px); }
+    .dock__c { gap: 9px; min-width: 0; overflow: hidden; }
+    .dock__title { font-size: clamp(18px, 4.6vw, 26px); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .dock__sub { max-width: 100%; overflow: hidden; }
+    .dock__r { flex-shrink: 0; gap: 8px; }
     .hint { display: none; }
-    .navbtn { width: 44px; height: 44px; }
+    .navbtn { width: 40px; height: 40px; flex-shrink: 0; }
+    #dots { display: none; } /* dots wider than phone column; swipe + arrows cover nav */
     /* Larger face: keep labels clear, curb hover blow-up into chrome */
     #section { --corner: 18px; --hover: 1.03; --title-size: 18px; }
     .card__no { top: 14px; left: 15px; font-size: 12px; }
     .card__foot { left: 16px; right: 16px; bottom: 14px; }
   }
   @media (max-width: 420px) {
-    #dots { display: none; }
     .dock__sub { font-size: 11.5px; gap: 10px; }
+    .navbtn { width: 38px; height: 38px; }
+    #dock { gap: 8px; padding-left: 12px; padding-right: 12px; }
   }
   @media (max-height: 560px) {
     #mast { top: 60px; }
@@ -676,8 +682,8 @@ function layout() {
     persp = Math.max(1000, vw * 1.1);
     zsign = 1;
   } else {
-    /* Desktop: keep cards big (~24% vw) but leave ≥32px under the headline. */
-    cw = Math.min(380, Math.max(310, vw * 0.255)) * CFG.cardScale;
+    /* Desktop: slightly tighter so hint clears card bottom; keep ≥32px under headline. */
+    cw = Math.min(355, Math.max(300, vw * 0.245)) * CFG.cardScale;
     radiusK = 2.55;
     arcDepth = 0.36;
     persp = Math.max(1200, vw * 1.05 * CFG.perspective);
@@ -707,7 +713,8 @@ function layout() {
   let lift;
   if (vw <= 520) lift = Math.min(-12, Math.max(-28, -vh * 0.028));
   else if (vw <= 900) lift = -4;
-  else lift = Math.round(Math.min(100, Math.max(84, vh * 0.11)));
+  /* Slightly less drop than before so a smaller card still holds ~55px under the headline. */
+  else lift = Math.round(Math.min(92, Math.max(76, vh * 0.098)));
   stage.style.setProperty('--lift', lift + 'px');
 }
 
