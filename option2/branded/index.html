@@ -240,6 +240,48 @@ body.lock{overflow:hidden}
 }
 
 
+
+
+.cta-disclaimer{
+  margin:2.2vmin 0 0;
+  max-width:min(52rem, 88vw);
+  font-size:clamp(10px, 1.5vmin, 12px);
+  line-height:1.45;
+  letter-spacing:0.01em;
+  color:rgba(245,241,236,.55);
+}
+@media(max-width:640px){
+  .cta-disclaimer{font-size:10px; max-width:90vw; margin-top:14px}
+}
+
+/* site-wide single disclaimer footer */
+#site-disclaimer{
+  position:relative; z-index:3;
+  margin-top:2.4vmin;
+  padding:0;
+  background:transparent;
+  border:0;
+  text-align:left;
+  max-width:min(52rem, 88vw);
+}
+#site-disclaimer p{
+  margin:0;
+  font-size:clamp(10px, 1.5vmin, 12px);
+  line-height:1.45;
+  letter-spacing:0.01em;
+  color:rgba(245,241,236,.55);
+}
+@media(max-width:640px){
+  #site-disclaimer{margin-top:14px; max-width:90vw}
+  #site-disclaimer p{font-size:10px; line-height:1.45}
+}
+/* Browse overlay readable over neon dashboard */
+.browse h2{
+  text-shadow:0 2px 18px rgba(0,0,0,.75), 0 0 40px rgba(0,0,0,.45);
+  background:radial-gradient(closest-side, rgba(0,0,0,.45), rgba(0,0,0,0));
+  padding:1.2em 1.4em; border-radius:12px;
+}
+
 /* full-bleed tunnel hero: no inset frame / black letterbox bands */
 .hero-slider{
   border-radius:var(--radius-card);
@@ -488,13 +530,13 @@ body.detail-open .track{pointer-events:none}
               <div class="hero-slider-outer">
                 <div class="hero-slider" id="hero-slider">
                   <img class="slide slide-a" src="../assets/branded-cards/maxine-tunnel.webp" alt="" draggable="false">
-                  <img class="slide slide-b" src="../assets/branded-cards/maxine.webp" alt="" draggable="false">
+                  <img class="slide slide-b" src="../assets/branded-cards/browse-credit-dashboard.webp" alt="" draggable="false">
                 </div>
               </div>
               <div class="hero-bottom" id="hero-bottom">
                 <p class="subhead">The All-in-One Operating System for Credit Repair Agencies.</p>
                 <p class="lead">Everything you need to launch, manage, automate, and grow your agency in one platform.</p>
-                <p class="hero-disclaimer">Results vary; no score increase is guaranteed.</p>
+                
                 <div class="hero-btns">
                   <a class="btn-ghost" href="#pricing">See plans</a>
                   <a class="btn-solid" href="#get-started">Start free</a>
@@ -526,7 +568,7 @@ body.detail-open .track{pointer-events:none}
                 <div><div class="sub">Score Tracking</div><div class="tit">Goal-driven</div></div>
                 <div class="plus">+</div>
               </div>
-              <div class="bottom"><p class="cc-body">Score OS is goal-driven, with tailored strategies for mortgage readiness, new car purchases, and personal and business funding.</p><p class="cc-fine">Results vary. Funding is subject to lender approval.</p></div>
+              <div class="bottom"><p class="cc-body">Score OS is goal-driven, with tailored strategies for mortgage readiness, new car purchases, and personal and business funding.</p></div>
             </div>
           </div>
           <!-- Card 3 Catalist light -->
@@ -560,8 +602,8 @@ body.detail-open .track{pointer-events:none}
                 </h2>
                 <div class="sphere-body" id="sphere-body">
                   <p>Maxine picks the next client, preps letters, and keeps your Work Next queue moving — with a Manual or Fully automatic switch. A person approves every letter before it is sent.</p>
-                  <p>Score OS brings monitoring, strategy, funding applications, and automations into one agency OS. Results vary; no score increase is guaranteed.</p>
-                  <p class="sphere-disclaimer">Results vary; no score increase is guaranteed.</p>
+                  <p>Score OS brings monitoring, strategy, funding applications, and automations into one agency OS.</p>
+                  
                 </div>
               </div>
             </div>
@@ -573,8 +615,9 @@ body.detail-open .track{pointer-events:none}
           <div class="target-frame" id="target-frame"></div>
           <div class="cta-block" id="cta-block">
             <h2><span>Run your agency</span><span class="dim">in one place</span></h2>
-            <p>Agency OS and DIY OS — features marked Coming soon until they ship. Results vary; no score increase is guaranteed.</p>
+            <p>Agency OS and DIY OS — features marked Coming soon until they ship.</p>
             <a href="#get-started">Get started</a>
+            <footer id="site-disclaimer"><p>Example scores shown. Results vary; no score increase is guaranteed. Funding is subject to lender approval. Score OS is software for credit repair businesses.</p></footer>
           </div>
         </div>
       </div>
@@ -622,7 +665,7 @@ body.detail-open .track{pointer-events:none}
         <div id="sr-detail-tier"></div>
         <p id="sr-detail-blurb"></p>
         <ul id="sr-detail-bullets"></ul>
-        <p id="sr-detail-croa">Results vary; no score increase is guaranteed. Dispute letters are reviewed by a person before sending. Coming soon features are labeled clearly.</p>
+        
         <div id="sr-detail-actions"></div>
       </div>
     </div>
@@ -1770,5 +1813,6 @@ if (IS_BRANDED && FEATURES) {
 // expose for QA
 window.__showreel = { computeP, apply, gp, vScroll, phase1, phase2, phase3, phase4 };
 </script>
+
 </body>
 </html>
