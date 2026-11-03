@@ -18,3 +18,5 @@ Interactive homepage hero: 3D Colosseum carousel for Score OS.
 python3 -m http.server 8765
 # open http://127.0.0.1:8765/
 ```
+
+- `/cards/` — Arsenal carousel with 16 prompt-extracted feature cards (neon green cinematic art). Keep `/branded-green/` as the approved baseline.
