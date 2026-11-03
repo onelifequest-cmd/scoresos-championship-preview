@@ -262,6 +262,64 @@ body.lock{overflow:hidden}
 }
 .hero-bottom p.lead{opacity:1;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.55),0 0 2px rgba(0,0,0,.4)}
 
+/* first-card premium headline / subhead / disclaimer */
+.hero-headline h1{
+  font-size:clamp(22px, 4.6vw, 52px);
+  font-weight:500;
+  letter-spacing:0.06em;
+  line-height:1.08;
+  gap:0.08em;
+  max-width:min(100%, 16ch);
+  text-shadow:0 2px 18px rgba(0,0,0,.35);
+}
+.hero-headline .l1,
+.hero-headline .l2,
+.hero-headline .l3{opacity:1}
+.hero-headline .l2{opacity:0.88}
+.hero-headline .l3{opacity:0.72}
+.hero-bottom .subhead{
+  margin:0;
+  max-width:36rem;
+  font-size:clamp(14px, 1.25vw, 20px);
+  font-weight:500;
+  line-height:1.35;
+  letter-spacing:0.01em;
+  color:#fff;
+  text-shadow:0 1px 10px rgba(0,0,0,.5);
+}
+.hero-bottom .hero-disclaimer{
+  margin:-8px 0 0;
+  max-width:28rem;
+  font-size:11px;
+  line-height:1.4;
+  letter-spacing:0.02em;
+  opacity:0.62;
+  color:#fff;
+}
+.hero-bottom p.lead{max-width:34rem}
+@media(max-width:640px){
+  .hero-headline{padding:14px 16px 0; z-index:8}
+  .hero-headline h1{font-size:21px; max-width:100%; letter-spacing:0.05em}
+  .hero-bottom{gap:12px}
+  .hero-bottom .subhead{font-size:13.5px}
+  .hero-bottom .hero-disclaimer{font-size:10px; margin-top:-4px}
+  .hero-bottom p.lead{font-size:13.5px; line-height:1.5}
+}
+@media(min-width:641px){
+  .hero-headline{padding:28px 40px 0; z-index:8; align-items:flex-start; height:auto; bottom:auto; inset:auto; left:0; top:0; right:0}
+  .hero-headline h1{max-width:18ch; font-size:clamp(28px, 3.2vw, 48px)}
+  .hero-bottom{
+    background:linear-gradient(to top,
+      rgba(0,0,0,.86) 0%,
+      rgba(0,0,0,.58) 42%,
+      rgba(0,0,0,.25) 72%,
+      rgba(0,0,0,0) 100%) !important;
+  }
+  .hero-bottom .subhead,
+  .hero-bottom p.lead{max-width:32rem}
+}
+
+
 @media(max-width:640px){
   .hero-bottom{
     background:linear-gradient(to top,
@@ -386,8 +444,9 @@ body.detail-open .track{pointer-events:none}
               <canvas id="hero-canvas"></canvas>
               <div class="hero-headline" id="hero-headline">
                 <h1>
-                  <span class="l1" data-letters="Run your agency"></span>
-                  <span class="l2" data-letters="in one place"></span>
+                  <span class="l1" data-letters="YOUR AGENCY."></span>
+                  <span class="l2" data-letters="YOUR PLAYBOOK."></span>
+                  <span class="l3" data-letters="YOUR LEGACY."></span>
                 </h1>
               </div>
               <div class="browse"><h2 id="browse-h2" data-letters="Browse our\nfeatures"></h2></div>
@@ -398,7 +457,9 @@ body.detail-open .track{pointer-events:none}
                 </div>
               </div>
               <div class="hero-bottom" id="hero-bottom">
-                <p class="lead">Score OS is the operating system for credit repair agencies — disputes, clients, funding applications, and Maxine AI in one workspace. Results vary; no score increase is guaranteed.</p>
+                <p class="subhead">The All-in-One Operating System for Credit Repair Agencies.</p>
+                <p class="lead">Everything you need to launch, manage, automate, and grow your agency in one platform.</p>
+                <p class="hero-disclaimer">Results vary; no score increase is guaranteed.</p>
                 <div class="hero-btns">
                   <a class="btn-ghost" href="#pricing">See plans</a>
                   <a class="btn-solid" href="#get-started">Start free</a>
