@@ -154,14 +154,20 @@
     #nav { display: none; }
     #cta { padding: 8px 13px; }
     #frame { inset: 10px; }
-    #mast { top: clamp(74px, 11vh, 104px); }
+    #mast { top: clamp(68px, 9.5vh, 96px); }
+    #headline { font-size: clamp(24px, 6.2vw, 34px); margin-top: 10px; }
     #dock { grid-template-columns: auto 1fr auto; gap: 12px; align-items: center;
-      padding-bottom: clamp(18px, 3vh, 28px); }
+      padding-bottom: clamp(16px, 2.6vh, 26px); }
     .dock__count b { font-size: 24px; }
     .dock__count i, .dock__count .of { display: none; }
     .dock__c { gap: 9px; }
+    .dock__title { font-size: clamp(18px, 4.6vw, 26px); }
     .hint { display: none; }
     .navbtn { width: 44px; height: 44px; }
+    /* Larger face: keep labels clear, curb hover blow-up into chrome */
+    #section { --corner: 18px; --hover: 1.03; --title-size: 18px; }
+    .card__no { top: 14px; left: 15px; font-size: 12px; }
+    .card__foot { left: 16px; right: 16px; bottom: 14px; }
   }
   @media (max-width: 420px) {
     #dots { display: none; }
@@ -576,14 +582,36 @@ function buildDots() {
 
 function layout() {
   const vw = innerWidth;
-  const cw = Math.min(238, Math.max(150, vw * 0.17)) * CFG.cardScale;
-  const ch = cw * CFG.cardRatio;
-  const r  = cw * CFG.radiusK;
+  const vh = innerHeight;
+  /* Bigger cards: phones ~58% vw (was ~150px / ~38% vw); scale desktop up too. */
+  let cw;
+  if (vw <= 520) {
+    cw = Math.min(255, Math.max(215, vw * 0.58)) * CFG.cardScale;
+  } else if (vw <= 900) {
+    cw = Math.min(275, Math.max(220, vw * 0.34)) * CFG.cardScale;
+  } else {
+    cw = Math.min(300, Math.max(240, vw * 0.175)) * CFG.cardScale;
+  }
+  let ch = cw * CFG.cardRatio;
+  /* Keep the center card between the masthead and the dock. */
+  const mastReserve = Math.min(168, Math.max(120, vh * 0.22));
+  const dockReserve = Math.min(150, Math.max(110, vh * 0.17));
+  const maxCh = Math.max(260, vh - mastReserve - dockReserve - 16);
+  if (ch > maxCh) {
+    ch = maxCh;
+    cw = ch / CFG.cardRatio;
+  }
+  /* Slightly tighter ring on phones so side cards still peek at the edges. */
+  const radiusK = vw <= 520 ? 2.85 : (vw <= 900 ? 3.05 : CFG.radiusK);
+  const r  = cw * radiusK;
   stage.style.setProperty('--cw', cw + 'px');
   stage.style.setProperty('--ch', ch + 'px');
   stage.style.setProperty('--r',  r + 'px');
   stage.style.setProperty('--push', (r * (1 - CFG.arcDepth)) + 'px');
   stage.style.perspective = Math.max(700, vw * 0.8 * CFG.perspective) + 'px';
+  /* Title scales with card so labels stay readable on the larger face. */
+  const titlePx = Math.max(15, Math.min(22, cw * 0.078));
+  document.getElementById('section').style.setProperty('--title-size', titlePx + 'px');
 }
 
 let rot = 0, vel = 0, dragging = false, lastX = 0, downX = 0, moved = false, targetIndex = 0, settled = true, lastRot = NaN;
