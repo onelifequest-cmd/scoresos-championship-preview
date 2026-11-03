@@ -230,6 +230,80 @@ body.lock{overflow:hidden}
   will-change:transform,filter,opacity}
 #loader .star img{width:100%;height:100%;display:block;filter:invert(1)}
 .sparkle{fill:currentColor}
+/* slide-B must stay fully off-canvas at p≈0 (rotate+scale would otherwise peek) */
+.hero-slider .slide-b{opacity:0;visibility:hidden;pointer-events:none;will-change:transform,opacity}
+.hero-slider .slide-b.is-on{opacity:1;visibility:visible}
+/* preview badge: keep clear of mobile nav */
+@media(max-width:640px){
+  #preview-badge{top:56px;bottom:auto;right:8px;left:auto;max-width:62vw;
+    font-size:8px;letter-spacing:.1em;z-index:90}
+}
+
+/* clickable affordances */
+.is-clickable{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.is-clickable.is-hot{box-shadow:0 0 0 2px rgba(34,229,132,.55),0 18px 40px -18px rgba(0,0,0,.45)}
+.grid-tile.is-clickable{cursor:pointer;transition:filter .25s ease,box-shadow .25s ease}
+.grid-tile.is-clickable:hover{filter:brightness(1.08);box-shadow:0 0 0 2px rgba(34,229,132,.5)}
+.pf-card.is-clickable{cursor:pointer;transition:transform .25s ease,box-shadow .25s ease}
+.pf-card.is-clickable:hover{transform:translateY(-6px);box-shadow:0 24px 48px -20px rgba(0,0,0,.55)}
+.card.is-clickable{cursor:pointer}
+body.detail-open{overflow:hidden !important}
+body.detail-open .track{pointer-events:none}
+/* detail overlay (video-cards pattern) */
+#sr-detail{position:fixed;inset:0;z-index:500;display:none;font-family:Inter,system-ui,sans-serif}
+#sr-detail.-open{display:block}
+#sr-detail-backdrop{position:absolute;inset:0;background:rgba(10,14,18,.55);opacity:0;
+  transition:opacity .4s ease;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#sr-detail.-open #sr-detail-backdrop{opacity:1}
+#sr-detail-fly{position:fixed;z-index:501;border-radius:16px;overflow:hidden;background:#0a0e18;
+  pointer-events:none;box-shadow:0 40px 90px -20px rgba(0,0,0,.55);
+  transition:transform .45s cubic-bezier(.22,.61,.36,1),width .45s cubic-bezier(.22,.61,.36,1),
+    height .45s cubic-bezier(.22,.61,.36,1),left .45s cubic-bezier(.22,.61,.36,1),
+    top .45s cubic-bezier(.22,.61,.36,1),border-radius .45s ease;will-change:left,top,width,height}
+#sr-detail-fly img{width:100%;height:100%;object-fit:cover;display:block}
+#sr-detail-panel{position:absolute;inset:0;z-index:502;display:flex;align-items:center;justify-content:center;
+  padding:clamp(16px,4vw,48px);opacity:0;transform:translateY(12px);
+  transition:opacity .35s ease .12s,transform .35s ease .12s;pointer-events:none}
+#sr-detail.-ready #sr-detail-panel{opacity:1;transform:none}
+#sr-detail.-ready #sr-detail-sheet,#sr-detail.-ready #sr-detail-close{pointer-events:auto}
+#sr-detail-sheet{width:min(920px,100%);max-height:min(92vh,860px);display:grid;
+  grid-template-columns:minmax(220px,38%) 1fr;gap:0;background:#fff;border-radius:20px;overflow:hidden;
+  border:1px solid rgba(18,20,26,.08);box-shadow:0 40px 90px -20px rgba(0,0,0,.4)}
+#sr-detail-media{position:relative;min-height:280px;background:#0a0e18}
+#sr-detail-media img,#sr-detail-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#sr-detail-body{padding:clamp(22px,3.4vw,40px);display:flex;flex-direction:column;gap:14px;overflow:auto}
+#sr-detail-kicker{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#6b7280}
+#sr-detail-title{margin:0;font-weight:500;font-size:clamp(26px,3.4vw,40px);line-height:1.05;
+  letter-spacing:-.02em;color:#111}
+#sr-detail-tier{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;
+  color:#059669;letter-spacing:.04em}
+#sr-detail-tier .soon{color:#9ca3af;font-weight:500}
+#sr-detail-blurb{margin:0;font-size:15px;line-height:1.55;color:#374151}
+#sr-detail-bullets{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+#sr-detail-bullets li{position:relative;padding-left:16px;font-size:14px;line-height:1.4;color:#111;font-weight:500}
+#sr-detail-bullets li::before{content:'';position:absolute;left:0;top:.55em;width:7px;height:7px;
+  border-radius:50%;background:#22e584}
+#sr-detail-croa{margin:0;font-size:12px;line-height:1.45;color:#6b7280}
+#sr-detail-actions{margin-top:auto;display:flex;align-items:center;gap:12px;padding-top:8px}
+#sr-detail-close{position:absolute;top:clamp(12px,2.4vw,22px);right:clamp(12px,2.4vw,22px);z-index:503;
+  width:44px;height:44px;border-radius:999px;border:1px solid rgba(18,20,26,.12);
+  background:rgba(255,255,255,.9);backdrop-filter:blur(6px);color:#111;font-size:22px;
+  cursor:pointer;display:grid;place-items:center}
+#sr-detail-close:hover{background:#111;color:#fff}
+#sr-vid-ctrl{position:absolute;left:12px;bottom:12px;z-index:3;display:inline-flex;align-items:center;
+  gap:6px;padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.22);
+  background:rgba(10,14,24,.55);color:#fff;font-size:12px;font-weight:600;letter-spacing:.04em;
+  cursor:pointer;backdrop-filter:blur(6px)}
+#sr-vid-ctrl[hidden]{display:none!important}
+@media(max-width:760px){
+  #sr-detail-panel{padding:0;align-items:stretch}
+  #sr-detail-sheet{width:100%;max-height:100%;height:100%;border-radius:0;
+    grid-template-columns:1fr;grid-template-rows:minmax(38vh,42vh) 1fr}
+  #sr-detail-media{min-height:0}
+  #sr-detail-body{padding:22px 20px 28px}
+  #sr-detail-close{top:14px;right:14px}
+}
+
 </style>
 </head>
 <body class="lock">
@@ -263,7 +337,7 @@ body.lock{overflow:hidden}
       <div class="cam-rig" id="cam-rig">
         <div class="carousel" id="carousel">
           <!-- Card 1 Hero -->
-          <div class="card" id="card1">
+          <div class="card is-clickable" id="card1" data-feature="score-tracking">
             <div class="hero-card" id="hero-card">
               <canvas id="hero-canvas"></canvas>
               <div class="hero-headline" id="hero-headline">
@@ -275,8 +349,8 @@ body.lock{overflow:hidden}
               <div class="browse"><h2 id="browse-h2" data-letters="Browse our\nfeatures"></h2></div>
               <div class="hero-slider-outer">
                 <div class="hero-slider" id="hero-slider">
-                  <img class="slide slide-a" src="../assets/branded-cards/maxine.webp" alt="" draggable="false">
-                  <img class="slide slide-b" src="../assets/branded-cards/score-tracking.webp" alt="" draggable="false">
+                  <img class="slide slide-a" src="../assets/branded-cards/score-tracking.webp" alt="" draggable="false">
+                  <img class="slide slide-b" src="../assets/branded-cards/maxine.webp" alt="" draggable="false">
                 </div>
               </div>
               <div class="hero-bottom" id="hero-bottom">
@@ -301,7 +375,7 @@ body.lock{overflow:hidden}
             </div>
           </div>
           <!-- Card 2 Catalist dark -->
-          <div class="card card-side cc cc-dark" id="card2">
+          <div class="card card-side cc cc-dark is-clickable" id="card2" data-feature="ai-dispute">
             <img class="bg" src="../assets/branded-cards/ai-dispute.webp" alt="">
             <div class="overlay">
               <div class="top">
@@ -316,7 +390,7 @@ body.lock{overflow:hidden}
             </div>
           </div>
           <!-- Card 3 Catalist light -->
-          <div class="card card-side cc cc-light" id="card3">
+          <div class="card card-side cc cc-light is-clickable" id="card3" data-feature="agency-crm">
             <img class="bg" src="../assets/branded-cards/agency-crm.webp" alt="">
             <div class="overlay">
               <div class="top">
@@ -328,7 +402,7 @@ body.lock{overflow:hidden}
             </div>
           </div>
           <!-- Card 4 Sphere -->
-          <div class="card card-sphere" id="card4">
+          <div class="card card-sphere is-clickable" id="card4" data-feature="maxine">
             <div class="sphere-face" id="sphere-face">
               <div class="inner">
                 <div class="top"><span class="pill">Maxine AI</span><span class="url">scoresos.com</span></div>
@@ -373,22 +447,48 @@ body.lock{overflow:hidden}
 
 <section id="portfolio">
   <div class="pf-track" id="pf-track">
-    <article class="pf-card" data-pf="0">
+    <article class="pf-card is-clickable" data-pf="0" data-feature="maxine">
       <video class="pf-video" muted loop playsinline preload="none" data-src="../assets/branded-videos/maxine.mp4"></video>
       <div class="pf-meta"><span>Score OS</span><span class="dot">·</span><span>Coming soon</span><span class="dot">·</span><span>AI Work Next</span></div>
       <h3>Maxine</h3>
     </article>
-    <article class="pf-card" data-pf="1">
+    <article class="pf-card is-clickable" data-pf="1" data-feature="ai-dispute">
       <video class="pf-video" muted loop playsinline preload="none" data-src="../assets/branded-videos/ai-dispute.mp4"></video>
       <div class="pf-meta"><span>Score OS</span><span class="dot">·</span><span>Coming soon</span><span class="dot">·</span><span>Person-approved letters</span></div>
       <h3>Disputes</h3>
     </article>
-    <article class="pf-card" data-pf="2">
+    <article class="pf-card is-clickable" data-pf="2" data-feature="score-tracking">
       <video class="pf-video" muted loop playsinline preload="none" data-src="../assets/branded-videos/score-tracking.mp4"></video>
       <div class="pf-meta"><span>Score OS</span><span class="dot">·</span><span>Coming soon</span><span class="dot">·</span><span>Client progress</span></div>
       <h3>Portal</h3>
     </article></div>
 </section>
+
+
+<div id="sr-detail" role="dialog" aria-modal="true" aria-labelledby="sr-detail-title" hidden>
+  <div id="sr-detail-backdrop"></div>
+  <div id="sr-detail-fly" aria-hidden="true"><img alt=""></div>
+  <div id="sr-detail-panel">
+    <button id="sr-detail-close" type="button" aria-label="Close detail">×</button>
+    <div id="sr-detail-sheet">
+      <div id="sr-detail-media">
+        <img id="sr-detail-img" class="poster-fallback" alt="">
+        <video id="sr-detail-video" muted loop playsinline webkit-playsinline preload="none"></video>
+        <button id="sr-vid-ctrl" type="button" hidden>❚❚ Pause</button>
+      </div>
+      <div id="sr-detail-body">
+        <div id="sr-detail-kicker"></div>
+        <h2 id="sr-detail-title"></h2>
+        <div id="sr-detail-tier"></div>
+        <p id="sr-detail-blurb"></p>
+        <ul id="sr-detail-bullets"></ul>
+        <p id="sr-detail-croa">Results vary; no score increase is guaranteed. Dispute letters are reviewed by a person before sending. Coming soon features are labeled clearly.</p>
+        <div id="sr-detail-actions"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div id="loader">
   <div class="bloom" id="loader-bloom"></div>
@@ -401,7 +501,9 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
 const ASSET_BASE = "https://api.getlayers.ai/storage/v1/object/public/public/assets/ai-studio-0b8d365222";
-const GRID_IMAGES = ["../assets/branded-cards/maxine.webp","../assets/branded-cards/score-tracking.webp","../assets/branded-cards/ai-dispute.webp","../assets/branded-cards/agency-crm.webp","../assets/branded-cards/credit-monitoring.webp","../assets/branded-cards/white-label.webp","../assets/branded-cards/automations.webp","../assets/branded-cards/marketing.webp","../assets/branded-cards/community.webp"];
+const GRID_IMAGES = ["../assets/branded-cards/score-tracking.webp","../assets/branded-cards/ai-dispute.webp","../assets/branded-cards/agency-crm.webp","../assets/branded-cards/credit-monitoring.webp","../assets/branded-cards/white-label.webp","../assets/branded-cards/automations.webp","../assets/branded-cards/marketing.webp","../assets/branded-cards/community.webp","../assets/branded-cards/three-bureau.webp","../assets/branded-cards/booking-calendar.webp","../assets/branded-cards/messaging.webp","../assets/branded-cards/free-website.webp","../assets/branded-cards/support.webp","../assets/branded-cards/training.webp"];
+const GRID_FEATURE_KEYS = ["score-tracking","ai-dispute","agency-crm","credit-monitoring","white-label","automations","marketing","community","three-bureau","booking-calendar","messaging","free-website","support","training"];
+const IS_BRANDED = true;
 const STAR_URL = "../assets/showreel/star.svg";
 const MODEL_URL = "../assets/showreel/model.glb";
 const HERO_FRAG = "\nprecision mediump float;\nuniform vec2 u_resolution;\nuniform float u_time;\nuniform vec2 u_mouse;\n\nvec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }\nvec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }\nvec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }\n\nfloat snoise(vec2 v) {\n    const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);\n    vec2 i  = floor(v + dot(v, C.yy));\n    vec2 x0 = v -   i + dot(i, C.xx);\n    vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);\n    vec4 x12 = x0.xyxy + C.xxzz;\n    x12.xy -= i1;\n    i = mod289(i);\n    vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 ));\n    vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);\n    m = m*m ; m = m*m ;\n    vec3 x = 2.0 * fract(p * C.www) - 1.0;\n    vec3 h = abs(x) - 0.5;\n    vec3 ox = floor(x + 0.5);\n    vec3 a0 = x - ox;\n    m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );\n    vec3 g;\n    g.x  = a0.x  * x0.x  + h.x  * x0.y;\n    g.yz = a0.yz * x12.xz + h.yz * x12.yw;\n    return 130.0 * dot(m, g);\n}\n\nvoid addBlob(inout vec3 acc, inout float wsum, vec2 uv, vec2 center, float radius, vec3 color) {\n    float d = distance(uv, center);\n    float w = exp(-(d * d) / (radius * radius));\n    acc += color * w;\n    wsum += w;\n}\n\nvoid main() {\n    vec2 st = gl_FragCoord.xy / u_resolution.xy;\n    float t = u_time * 0.22;\n\n    vec2 uv = st;\n    uv.x += 0.16 * snoise(st * 1.1 + vec2(0.0, t));\n    uv.y += 0.16 * snoise(st * 1.1 + vec2(7.3, -t * 0.9));\n\n    vec2 mouse = u_mouse / u_resolution.xy;\n    mouse.y = 1.0 - mouse.y;\n    float infl = exp(-distance(st, mouse) * 1.8);\n    uv += (st - mouse) * infl * 0.22;\n\n    vec3 night    = vec3(0.015, 0.030, 0.022);\n    vec3 indigo   = vec3(0.04,  0.18,  0.12);\n    vec3 violet   = vec3(0.08,  0.55,  0.32);\n    vec3 electric = vec3(0.13, 0.90, 0.52);\n    vec3 glow     = vec3(0.70,  0.98,  0.85);\n\n    vec3 acc = vec3(0.0);\n    float wsum = 0.0;\n\n    addBlob(acc, wsum, uv, vec2(0.5  + 0.05 * sin(t * 0.5), 1.18), 0.58, night);\n    addBlob(acc, wsum, uv, vec2(-0.12, 1.05 + 0.05 * cos(t * 0.6)), 0.36, night);\n    addBlob(acc, wsum, uv, vec2(1.12,  1.05 + 0.05 * sin(t * 0.6)), 0.36, night);\n\n    addBlob(acc, wsum, uv, vec2(0.5  + 0.05 * sin(t * 0.4), 0.66 + 0.05 * cos(t * 0.5)), 0.40, indigo);\n    addBlob(acc, wsum, uv, vec2(0.16 + 0.05 * cos(t * 0.8), 0.46), 0.26, indigo);\n    addBlob(acc, wsum, uv, vec2(0.84 + 0.05 * sin(t * 0.8), 0.46), 0.26, indigo);\n\n    addBlob(acc, wsum, uv, vec2(0.5  + 0.07 * sin(t * 0.6), 0.30 + 0.05 * cos(t * 0.6)), 0.42, violet);\n    addBlob(acc, wsum, uv, vec2(0.5  + 0.06 * sin(t * 0.9), 0.12 + 0.04 * cos(t * 0.8)), 0.34, electric);\n\n    addBlob(acc, wsum, uv, vec2(0.44 + 0.05 * sin(t * 1.1), 0.02 + 0.03 * cos(t)), 0.17, glow);\n\n    addBlob(acc, wsum, uv, vec2(-0.10, -0.05), 0.28, night);\n    addBlob(acc, wsum, uv, vec2(1.10,  -0.05), 0.28, night);\n\n    vec3 col = acc / max(wsum, 0.0001);\n\n    vec2 hot = vec2(0.44 + 0.05 * sin(t * 1.1), 0.02 + 0.03 * cos(t));\n    float hotGlow = exp(-distance(uv, hot) * 4.5);\n    col += vec3(0.55, 1.0, 0.75) * hotGlow * 0.7;\n\n    float luma = dot(col, vec3(0.299, 0.587, 0.114));\n    col = mix(vec3(luma), col, 1.4);\n    col = max(col, 0.0);\n    col = clamp(col, 0.0, 1.0);\n    col = pow(col, vec3(0.90));\n\n    float vig = smoothstep(1.20, 0.32, distance(st, vec2(0.5, 0.22)));\n    col *= 0.50 + 0.50 * vig;\n\n    float grain = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + u_time * 0.5) * 43758.5453);\n    col += (grain - 0.5) * 0.05;\n\n    col = clamp(col, 0.0, 1.0);\n    gl_FragColor = vec4(col, 1.0);\n}";
@@ -638,8 +740,11 @@ const GRID_ITEMS = RAW_GRID.map((it, index) => {
   const z = -500 - pr*2500;
   const scale = 1500 / (1500 - z);
   const imgRand = Math.abs(Math.sin((index+1)*78.233) * 12345.678) % 1;
-  const image = GRID_IMAGES[Math.floor(imgRand * GRID_IMAGES.length)];
-  return { ...it, z, scale, image };
+  const image = (IS_BRANDED && GRID_IMAGES[index])
+    ? GRID_IMAGES[index]
+    : GRID_IMAGES[Math.floor(imgRand * GRID_IMAGES.length)];
+  const featureKey = (IS_BRANDED && GRID_FEATURE_KEYS[index]) ? GRID_FEATURE_KEYS[index] : null;
+  return { ...it, z, scale, image, featureKey };
 });
 const gridItemTransform = it =>
   `translate(calc(-50% + ${it.tx}vw), calc(-50% + ${it.ty}vh)) translateZ(${it.z}px) scale(${it.scale})`;
@@ -867,8 +972,8 @@ function renderTarget(t, dt){
   if (!targetActive) return;
   resizeTarget();
   targetBgUniforms.u_time.value = t;
-  starGroup.position.set(1.46,-0.43,-0.33);
-  starGroup.scale.setScalar(1.74);
+  starGroup.position.set(0.95,-0.28,-0.33);
+  starGroup.scale.setScalar(1.45);
   const spin = -(t % 12) / 12 * Math.PI * 2;
   starGroup.rotation.set(-44*Math.PI/180, -44*Math.PI/180, spin);
   targetRenderer.render(targetScene, targetCam);
@@ -930,7 +1035,8 @@ botSpans.forEach(el => { el._indexOffset = boff; boff += el._letterCount; });
 // grid tiles
 GRID_ITEMS.forEach(it => {
   const d = document.createElement('div');
-  d.className = 'grid-tile';
+  d.className = 'grid-tile' + (it.featureKey ? ' is-clickable' : '');
+  if (it.featureKey) d.dataset.feature = it.featureKey;
   d.style.width = it.w; d.style.height = it.h;
   d.style.backgroundImage = `url("${it.image}")`;
   d.style.transform = gridItemTransform(it);
@@ -1048,7 +1154,11 @@ function setPortfolioVideos(on){
 
 /* ── Main scroll apply ── */
 let p = 0;
+let scrollLocked = false;
+let lockedP = 0;
+let lockedScrollY = 0;
 function computeP(){
+  if (scrollLocked) return lockedP;
   const track = els.track;
   const th = track.offsetHeight;
   const ih = innerHeight;
@@ -1098,9 +1208,16 @@ function apply(p){
   els.heroSlider.style.transform = `translate(-50%,-50%) rotateX(${tiltRX*f}deg) rotateY(${tiltRY*f}deg)`;
   const pan = heroSlidePan(p);
   els.heroSlider.querySelectorAll('.slide').forEach(img => {
-    img.style.transform = img.classList.contains('slide-b')
-      ? `translateX(${pan}%) rotate(-90deg) scale(1.65)`
-      : `translateX(${pan}%)`;
+    if (img.classList.contains('slide-b')) {
+      img.style.transform = `translateX(${pan}%) rotate(-90deg) scale(1.65)`;
+      // Keep Maxine (slide B) fully hidden until the hero slide actually pans
+      const on = Math.abs(pan) > 2;
+      img.classList.toggle('is-on', on);
+      img.style.opacity = on ? '1' : '0';
+      img.style.visibility = on ? 'visible' : 'hidden';
+    } else {
+      img.style.transform = `translateX(${pan}%)`;
+    }
   });
 
   // sphere
@@ -1128,7 +1245,10 @@ function apply(p){
 
   // grid
   const go = gridOpacity(p);
-  els.gridRoot.querySelectorAll('.grid-tile').forEach(d => { d.style.opacity = go; });
+  els.gridRoot.querySelectorAll('.grid-tile').forEach(d => {
+    d.style.opacity = go;
+    if (d.dataset.feature) d.style.pointerEvents = (!scrollLocked && go > 0.35) ? 'auto' : 'none';
+  });
 
   // target
   els.target.style.opacity = targetOpacity(p);
@@ -1193,6 +1313,319 @@ onResize();
 document.getElementById('target').style.transform = targetTransform();
 runLoader();
 requestAnimationFrame(frame);
+
+
+/* ── Branded feature detail overlay ── */
+const FEATURES = IS_BRANDED ? {
+  'score-tracking': {
+    title: 'Score Tracking', tier: 'Agency OS · DIY OS', soon: true,
+    kicker: 'Both · Example scoreboard',
+    blurb: 'A sample credit monitoring scoreboard with Equifax, Experian, TransUnion views, history, and report updates. Any scores shown are fictional examples — Score OS helps you organize monitoring, not promise a specific score change.',
+    bullets: ['Side-by-side bureau views for each client','Change history your team can reference','Clear status so nothing slips through'],
+    video: '../assets/branded-videos/score-tracking.mp4',
+    poster: '../assets/branded-cards/score-tracking.webp'
+  },
+  'maxine': {
+    title: 'Maxine AI', tier: 'Agency OS', soon: true,
+    kicker: 'Agency OS · AI Work Next',
+    blurb: 'Maxine picks the next client, preps letters, and keeps your Work Next queue moving — with a Manual or Fully automatic switch. A person approves every letter before it is sent.',
+    bullets: ['Works from a sample or imported report your team reviews','Flags items that may warrant investigation','Prepares dispute language for human approval before anything is sent'],
+    video: '../assets/branded-videos/maxine.mp4',
+    poster: '../assets/branded-cards/maxine.webp'
+  },
+  'ai-dispute': {
+    title: 'AI Dispute Engine', tier: 'Agency OS', soon: true,
+    kicker: 'Agency OS · Person-approved letters',
+    blurb: 'AI agents pull the report at onboarding, flag every negative item with a reason and instructions, and put the letters in the mailing queue for a person to approve. Drafts are for human approval — not guaranteed deletions or bureau outcomes.',
+    bullets: ['Report analysis for your team to review','Sample dispute letter previews','Human approval before anything is filed'],
+    video: '../assets/branded-videos/ai-dispute.mp4',
+    poster: '../assets/branded-cards/ai-dispute.webp'
+  },
+  'agency-crm': {
+    title: 'Agency CRM', tier: 'Agency OS', soon: true,
+    kicker: 'Agency OS · Leads & clients',
+    blurb: 'Manage leads, clients, documents, and notes from one roster so your agency stays organized as it grows. Your team sees the same client file instead of scattered spreadsheets.',
+    bullets: ['Leads and clients in one list','Documents and notes on each file','Built for agency day-to-day operations'],
+    video: '../assets/branded-videos/agency-crm.mp4',
+    poster: '../assets/branded-cards/agency-crm.webp'
+  },
+  'credit-monitoring': {
+    title: 'Credit Monitoring', tier: 'Agency OS · DIY OS', soon: true,
+    kicker: 'Both · Client report data',
+    blurb: 'See how an agency accesses credit monitoring information and client report data in one place. Built so your team can review reports without juggling separate tools.',
+    bullets: ['Central place for client monitoring data','Report views your staff can work from','Organized for agency and DIY workflows'],
+    video: '../assets/branded-videos/credit-monitoring.mp4',
+    poster: '../assets/branded-cards/credit-monitoring.webp'
+  },
+  'white-label': {
+    title: 'White-Label Portal', tier: 'Agency OS', soon: true,
+    kicker: 'Agency OS · Your brand',
+    blurb: 'Customize the client portal with your logo, colors, and identity so clients see your agency — not ours. Your brand. Your clients. Your home field.',
+    bullets: ['Sample logo and brand color previews','Desktop and mobile portal views','Professional client experience under your name'],
+    video: '../assets/branded-videos/white-label.mp4',
+    poster: '../assets/branded-cards/white-label.webp'
+  },
+  'automations': {
+    title: 'Automations', tier: 'Agency OS', soon: true,
+    kicker: 'Agency OS · Workflows',
+    blurb: 'Onboarding, reminders, follow-ups, and workflow automations that turn your playbooks into repeatable steps. Your team still reviews what goes out.',
+    bullets: ['Onboarding and reminder workflows','Follow-ups that do not rely on memory','Fewer dropped balls between team members'],
+    video: '../assets/branded-videos/automations.mp4',
+    poster: '../assets/branded-cards/automations.webp'
+  },
+  'marketing': {
+    title: 'Marketing', tier: 'Agency OS', soon: true,
+    kicker: 'Agency OS · Lead capture',
+    blurb: 'Lead capture and marketing tools that feed prospects into your CRM. Keep campaigns and intake connected to the same operating system.',
+    bullets: ['Capture leads into your agency workflow','Connect marketing to client onboarding','Fewer handoffs between tools'],
+    video: '../assets/branded-videos/marketing.mp4',
+    poster: '../assets/branded-cards/marketing.webp'
+  },
+  'community': {
+    title: 'Community', tier: 'Agency OS', soon: true,
+    kicker: 'Agency OS · Agency owners',
+    blurb: 'Preview the agency-owner community experience — connect with peers running credit repair businesses on the same platform.',
+    bullets: ['Agency-owner community access','Peer learning and shared playbooks','Stay connected as your agency grows'],
+    video: '../assets/branded-videos/community.mp4',
+    poster: '../assets/branded-cards/community.webp'
+  },
+  'three-bureau': {
+    title: 'Three-Bureau Tracking', tier: 'Agency OS · DIY OS', soon: true,
+    kicker: 'Both · EQ · EX · TU',
+    blurb: 'Track credit bureau information and disputes across Equifax, Experian, and TransUnion. Demonstration metrics are fictional examples labeled as such.',
+    bullets: ['Equifax, Experian, and TransUnion side by side','Dispute tracking across bureaus','Example scores clearly marked as samples'],
+    video: '../assets/branded-videos/three-bureau.mp4',
+    poster: '../assets/branded-cards/three-bureau.webp'
+  },
+  'booking-calendar': {
+    title: 'Booking Calendar', tier: 'Agency OS', soon: true,
+    kicker: 'Agency OS · Scheduling',
+    blurb: 'Appointment scheduling and calendar management for consultations and follow-ups. Keep bookings next to the client file instead of a separate calendar app.',
+    bullets: ['Schedule client appointments','Calendar view for your team','Tied into onboarding and follow-ups'],
+    video: '../assets/branded-videos/booking-calendar.mp4',
+    poster: '../assets/branded-cards/booking-calendar.webp'
+  },
+  'messaging': {
+    title: 'Two-Way Messaging', tier: 'Agency OS', soon: true,
+    kicker: 'Agency OS · Client inbox',
+    blurb: 'Client communication inside the software so conversations stay tied to each file. Your team replies with context already open.',
+    bullets: ['Threads linked to each client file','Shared team inbox','Fewer lost texts and emails'],
+    video: '../assets/branded-videos/messaging.mp4',
+    poster: '../assets/branded-cards/messaging.webp'
+  },
+  'free-website': {
+    title: 'Free Website', tier: 'Agency OS', soon: true,
+    kicker: 'Agency OS · Agency templates',
+    blurb: 'Sample agency website templates so you can present a professional front end without building from scratch. Pair it with your portal and branding.',
+    bullets: ['Ready agency website templates','Preview how your site can look','Tied into the rest of Score OS'],
+    video: '../assets/branded-videos/free-website.mp4',
+    poster: '../assets/branded-cards/free-website.webp'
+  },
+  'support': {
+    title: 'Support System', tier: 'Agency OS', soon: true,
+    kicker: 'Agency OS · Help when you need it',
+    blurb: 'Access support when your agency needs help with the platform. Keep operations moving while questions get answered.',
+    bullets: ['Support access for agency owners','Help tied to the product you use','Less time stuck on platform questions'],
+    video: '../assets/branded-videos/support.mp4',
+    poster: '../assets/branded-cards/support.webp'
+  },
+  'training': {
+    title: 'Training Videos', tier: 'Agency OS', soon: true,
+    kicker: 'Agency OS · Education library',
+    blurb: 'Training library and educational resources so new hires and owners can learn Score OS workflows at their own pace.',
+    bullets: ['On-demand training library','Educational resources for your team','Ramp staff on the same playbook'],
+    video: '../assets/branded-videos/training.mp4',
+    poster: '../assets/branded-cards/training.webp'
+  },
+  'mentorship': {
+    title: 'Mentorship', tier: 'Agency OS', soon: true,
+    kicker: 'Agency OS · Guidance',
+    blurb: 'Mentorship resources already offered through Score OS so agency owners can learn the playbook, not invent one alone.',
+    bullets: ['Guidance for agency owners','Resources alongside the software','Support as you build your operation'],
+    video: '../assets/branded-videos/mentorship.mp4',
+    poster: '../assets/branded-cards/mentorship.webp'
+  }
+} : null;
+
+if (IS_BRANDED && FEATURES) {
+  const detail = document.getElementById('sr-detail');
+  const detailBackdrop = document.getElementById('sr-detail-backdrop');
+  const detailFly = document.getElementById('sr-detail-fly');
+  const detailFlyImg = detailFly.querySelector('img');
+  const detailClose = document.getElementById('sr-detail-close');
+  const detailImg = document.getElementById('sr-detail-img');
+  const detailVideo = document.getElementById('sr-detail-video');
+  const vidCtrl = document.getElementById('sr-vid-ctrl');
+  const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let detailOpen = false;
+  let lastFocus = null;
+
+  function fillDetail(cd) {
+    document.getElementById('sr-detail-kicker').textContent = cd.kicker;
+    document.getElementById('sr-detail-title').textContent = cd.title;
+    document.getElementById('sr-detail-tier').innerHTML = cd.tier + (cd.soon ? ' <span class="soon">· Coming soon</span>' : '');
+    document.getElementById('sr-detail-blurb').textContent = cd.blurb;
+    document.getElementById('sr-detail-bullets').innerHTML = (cd.bullets||[]).map(b => '<li>'+b+'</li>').join('');
+    detailImg.src = cd.poster;
+    detailImg.alt = cd.title;
+    detailFlyImg.src = cd.poster;
+    detailFlyImg.alt = '';
+    detailVideo.pause();
+    detailVideo.removeAttribute('src');
+    detailVideo.querySelectorAll('source').forEach(n => n.remove());
+    if (cd.video) {
+      const src = document.createElement('source');
+      src.src = cd.video; src.type = 'video/mp4';
+      detailVideo.appendChild(src);
+      detailVideo.poster = cd.poster;
+      detailVideo.load();
+    }
+  }
+
+  function lockScroll() {
+    lockedP = computeP();
+    lockedScrollY = scrollY;
+    scrollLocked = true;
+    document.body.classList.add('detail-open');
+  }
+  function unlockScroll() {
+    scrollLocked = false;
+    document.body.classList.remove('detail-open');
+    scrollTo(0, lockedScrollY);
+  }
+
+  function openDetail(key, fromEl) {
+    if (detailOpen) return;
+    const cd = FEATURES[key];
+    if (!cd) return;
+    fillDetail(cd);
+    lastFocus = document.activeElement;
+    detailOpen = true;
+    detail.hidden = false;
+    detail.classList.add('-open');
+    detail.classList.remove('-ready');
+    lockScroll();
+
+    const rect = (fromEl || document.body).getBoundingClientRect();
+    detailFly.style.transition = 'none';
+    detailFly.style.opacity = '1';
+    detailFly.style.left = rect.left + 'px';
+    detailFly.style.top = rect.top + 'px';
+    detailFly.style.width = Math.max(40, rect.width) + 'px';
+    detailFly.style.height = Math.max(40, rect.height) + 'px';
+    detailFly.style.borderRadius = '16px';
+
+    const mobile = innerWidth <= 760;
+    let final;
+    if (mobile) {
+      final = { left: 0, top: 0, width: innerWidth, height: Math.max(innerHeight * 0.4, 260) };
+    } else {
+      const sheetW = Math.min(920, innerWidth - 96);
+      const sheetH = Math.min(innerHeight * 0.86, 720);
+      const sheetL = (innerWidth - sheetW) / 2;
+      const sheetT = (innerHeight - sheetH) / 2;
+      final = { left: sheetL, top: sheetT, width: sheetW * 0.38, height: sheetH };
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (!REDUCE) {
+          detailFly.style.transition = '';
+          detailFly.style.left = final.left + 'px';
+          detailFly.style.top = final.top + 'px';
+          detailFly.style.width = final.width + 'px';
+          detailFly.style.height = final.height + 'px';
+          detailFly.style.borderRadius = mobile ? '0px' : '20px 0 0 20px';
+        } else {
+          detailFly.style.opacity = '0';
+        }
+        setTimeout(() => {
+          detail.classList.add('-ready');
+          detailFly.style.opacity = '0';
+          detailClose.focus();
+          if (!REDUCE && cd.video) {
+            vidCtrl.hidden = false;
+            vidCtrl.textContent = '❚❚ Pause';
+            const playDetail = () => {
+              detailVideo.currentTime = 0;
+              const pr = detailVideo.play();
+              if (pr && pr.catch) pr.catch(() => {});
+            };
+            if (detailVideo.readyState >= 2) playDetail();
+            else detailVideo.addEventListener('loadeddata', playDetail, { once: true });
+          } else {
+            vidCtrl.hidden = true;
+          }
+        }, REDUCE ? 0 : 450);
+      });
+    });
+  }
+
+  function closeDetail() {
+    if (!detailOpen) return;
+    detail.classList.remove('-ready');
+    try { detailVideo.pause(); } catch (_) {}
+    vidCtrl.hidden = true;
+    detailFly.style.opacity = '0';
+    setTimeout(() => {
+      detail.classList.remove('-open');
+      detail.hidden = true;
+      unlockScroll();
+      detailOpen = false;
+      detailVideo.removeAttribute('src');
+      detailVideo.querySelectorAll('source').forEach(n => n.remove());
+      detailVideo.load();
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }, REDUCE ? 0 : 280);
+  }
+
+  vidCtrl.addEventListener('click', () => {
+    if (detailVideo.paused) {
+      detailVideo.play().catch(()=>{});
+      vidCtrl.textContent = '❚❚ Pause';
+    } else {
+      detailVideo.pause();
+      vidCtrl.textContent = '▶ Replay';
+    }
+  });
+  detailClose.addEventListener('click', closeDetail);
+  detailBackdrop.addEventListener('click', closeDetail);
+  addEventListener('keydown', e => {
+    if (!detailOpen) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeDetail(); }
+  });
+  // Keep scroll frozen while open
+  addEventListener('wheel', e => { if (scrollLocked) e.preventDefault(); }, { passive: false });
+  addEventListener('touchmove', e => { if (scrollLocked) e.preventDefault(); }, { passive: false });
+
+  // Tap≠scroll: pointer tracking on clickable targets
+  const TAP_PX = 10;
+  const TAP_MS = 450;
+  let down = null;
+  function onDown(e) {
+    if (detailOpen) return;
+    const t = e.target.closest('[data-feature]');
+    if (!t) return;
+    if (e.target.closest('a,button,#sr-detail')) return;
+    down = { x: e.clientX, y: e.clientY, t: performance.now(), el: t, key: t.dataset.feature };
+  }
+  function onUp(e) {
+    if (!down) return;
+    const dx = e.clientX - down.x, dy = e.clientY - down.y;
+    const dt = performance.now() - down.t;
+    const el = down.el, key = down.key;
+    down = null;
+    if (Math.hypot(dx, dy) > TAP_PX || dt > TAP_MS) return;
+    if (e.target.closest('a,button')) return;
+    openDetail(key, el);
+  }
+  function onCancel() { down = null; }
+  document.addEventListener('pointerdown', onDown, true);
+  document.addEventListener('pointerup', onUp, true);
+  document.addEventListener('pointercancel', onCancel, true);
+
+  window.__showreelDetail = { openDetail, closeDetail, FEATURES };
+}
 
 // expose for QA
 window.__showreel = { computeP, apply, gp, vScroll, phase1, phase2, phase3, phase4 };
