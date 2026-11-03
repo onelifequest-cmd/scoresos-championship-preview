@@ -280,26 +280,26 @@ body.lock{overflow:hidden}
   position:absolute !important;
   inset:0 !important;
   z-index:8;
-  display:flex !important;
-  align-items:flex-start !important;
-  justify-content:center !important;
-  padding: clamp(14px, 10%, 56px) 0 0 !important;
+  display:block !important;
   margin:0 !important;
+  padding:0 !important;
   box-sizing:border-box;
   pointer-events:none;
   transform:none !important;
 }
 .browse.browse--badge h2{
-  /* kill base rotate(-90deg) + drop-shadow that offsets the block */
-  transform:none !important;
+  /* Anchor to inner image center — same container as slides */
+  position:absolute !important;
+  left:50% !important;
+  top:12% !important;
+  right:auto !important;
+  bottom:auto !important;
+  transform:translateX(-50%) !important; /* kills base rotate(-90deg) */
   filter:none !important;
-  position:relative;
-  left:auto;
-  right:auto;
   display:block;
   width:max-content;
   max-width:85%;
-  margin:0 auto;
+  margin:0 !important;
   box-sizing:border-box;
   padding:1.05em 1.25em;
   border-radius:18px;
@@ -320,8 +320,10 @@ body.lock{overflow:hidden}
   text-shadow:0 1px 0 rgba(255,255,255,.25);
 }
 .browse.browse--badge h2 .letter{
-  /* letter stagger is translateY only; keep inline so box stays centered */
   display:inline-block;
+  /* neutralize any inherited horizontal drift from stagger */
+  margin:0 !important;
+  padding:0 !important;
 }
 
 
@@ -907,7 +909,9 @@ const templatesLetterStyle = (p, index) => {
   const per = 0.001;
   const span = 0.35;
   const t = clamp01((phase1(p) - start - index*per) / span);
-  return { transform:`translateY(${(1-smooth(t))*150}%)`, filter:`blur(${(1-t)*1.5}vmin)`,
+  const yMove = 0;
+  const blurAmt = (1-t)*0.35;
+  return { transform:`translateY(${yMove}%)`, filter:`blur(${blurAmt}vmin)`,
            opacity: t };
 };
 const sceneVisibility = p => {
