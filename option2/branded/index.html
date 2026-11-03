@@ -298,7 +298,7 @@ body.lock{overflow:hidden}
 }
 .hero-bottom p.lead{max-width:34rem}
 @media(max-width:640px){
-  .hero-headline{padding:14px 16px 0; z-index:8}
+  .hero-headline{padding:72px 16px 0; z-index:8}
   .hero-headline h1{font-size:21px; max-width:100%; letter-spacing:0.05em}
   .hero-bottom{gap:12px}
   .hero-bottom .subhead{font-size:13.5px}
@@ -306,7 +306,7 @@ body.lock{overflow:hidden}
   .hero-bottom p.lead{font-size:13.5px; line-height:1.5}
 }
 @media(min-width:641px){
-  .hero-headline{padding:28px 40px 0; z-index:8; align-items:flex-start; height:auto; bottom:auto; inset:auto; left:0; top:0; right:0}
+  .hero-headline{padding:76px 40px 0; z-index:8; align-items:flex-start; height:auto; bottom:auto; inset:auto; left:0; top:0; right:0}
   .hero-headline h1{max-width:18ch; font-size:clamp(28px, 3.2vw, 48px)}
   .hero-bottom{
     background:linear-gradient(to top,
@@ -341,6 +341,34 @@ body.lock{overflow:hidden}
   /* keep CTAs above the badge */
   .hero-btns{margin-bottom:36px !important}
 }
+/* card2 long caption + fine print over tunnel */
+.cc-dark .cc-body{
+  margin:0;
+  max-width:92%;
+  font-size:2.55vmin;
+  font-weight:450;
+  line-height:1.28;
+  letter-spacing:0.01em;
+  color:#fff;
+  text-shadow:0 1px 10px rgba(0,0,0,.55);
+}
+.cc-dark .cc-fine{
+  margin:1.2vmin 0 0;
+  max-width:90%;
+  font-size:1.45vmin;
+  line-height:1.35;
+  letter-spacing:0.02em;
+  opacity:0.62;
+  color:#fff;
+}
+.cc-dark .bottom{
+  padding-top:2vmin;
+  background:linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.35) 55%, rgba(0,0,0,0) 100%);
+  margin-left:-3.2vmin; margin-right:-3.2vmin; margin-bottom:-3.2vmin;
+  padding:3.2vmin;
+  border-radius:0 0 var(--radius-card) var(--radius-card);
+}
+
 /* clickable affordances */
 .is-clickable{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .is-clickable.is-hot{box-shadow:0 0 0 2px rgba(34,229,132,.55),0 18px 40px -18px rgba(0,0,0,.45)}
@@ -481,17 +509,17 @@ body.detail-open .track{pointer-events:none}
           </div>
           <!-- Card 2 Catalist dark -->
           <div class="card card-side cc cc-dark is-clickable" id="card2" data-feature="score-tracking">
-            <img class="bg" src="../assets/branded-cards/score-tracking.webp" alt="">
+            <img class="bg" src="../assets/branded-cards/score-tracking-tunnel.webp" alt="">
             <div class="overlay">
               <div class="top">
                 <div class="logo"><svg viewBox="0 0 24 24" class="sparkle"><path d="M12 2 L13.9 10.1 L22 12 L13.9 13.9 L12 22 L10.1 13.9 L2 12 L10.1 10.1 Z"/></svg></div>
                 <span class="url">scoresos.com</span>
               </div>
               <div class="glass">
-                <div><div class="sub">Score Tracking</div><div class="tit">Live gauge</div></div>
+                <div><div class="sub">Score Tracking</div><div class="tit">Goal-driven</div></div>
                 <div class="plus">+</div>
               </div>
-              <div class="bottom"><h3>Watch the score. <strong>Run the plan.</strong></h3></div>
+              <div class="bottom"><p class="cc-body">Score OS is goal-driven, with tailored strategies for mortgage readiness, new car purchases, and personal and business funding.</p><p class="cc-fine">Results vary. Funding is subject to lender approval.</p></div>
             </div>
           </div>
           <!-- Card 3 Catalist light -->
@@ -1427,8 +1455,8 @@ const FEATURES = IS_BRANDED ? {
     kicker: 'Both · Example scoreboard',
     blurb: 'A sample credit monitoring scoreboard with Equifax, Experian, TransUnion views, history, and report updates. Any scores shown are fictional examples — Score OS helps you organize monitoring, not promise a specific score change.',
     bullets: ['Side-by-side bureau views for each client','Change history your team can reference','Clear status so nothing slips through'],
-    video: '../assets/branded-videos/score-tracking.mp4',
-    poster: '../assets/branded-cards/score-tracking.webp'
+    video: '../assets/branded-videos/score-tracking-tunnel.mp4',
+    poster: '../assets/branded-cards/score-tracking-tunnel.webp'
   },
   'maxine': {
     title: 'Maxine AI', tier: 'Agency OS', soon: true,
