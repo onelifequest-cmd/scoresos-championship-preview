@@ -141,7 +141,7 @@ body.lock{overflow:hidden}
 .sphere-face .top{display:flex;align-items:center;justify-content:space-between}
 .sphere-face h3{margin-top:auto;max-width:88%;font-size:4.4vmin;line-height:1.05;font-weight:400}
 .star-mask{position:absolute;left:50%;top:50%;height:300vh;width:300vw;background:#000;
-  -webkit-mask-image:url('../assets/showreel/star.svg');mask-image:url('../assets/showreel/star.svg');
+  -webkit-mask-image:url('../assets/branded-cards/score-os-logo-mask.png');mask-image:url('../assets/branded-cards/score-os-logo-mask.png');
   -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
   -webkit-mask-position:center;mask-position:center;
   -webkit-mask-size:8vmin;mask-size:8vmin}
@@ -149,7 +149,7 @@ body.lock{overflow:hidden}
 .particle-wrap{position:absolute;left:50%;top:50%;z-index:2;width:100%;height:100%;transform:translate(-50%,-50%)}
 .particle-wrap canvas{width:100%;height:100%;display:block}
 .sphere-logo{position:absolute;left:50%;top:50%;z-index:3;height:12vh;width:12vh;background:#fff;
-  -webkit-mask-image:url('../assets/showreel/star.svg');mask-image:url('../assets/showreel/star.svg');
+  -webkit-mask-image:url('../assets/branded-cards/score-os-logo-mask.png');mask-image:url('../assets/branded-cards/score-os-logo-mask.png');
   -webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
   -webkit-mask-position:center;mask-position:center;opacity:0}
 .sphere-h-top{position:absolute;left:4vmin;top:4vmin;z-index:4;font-size:var(--sr-heading-1);
@@ -366,6 +366,161 @@ body.lock{overflow:hidden}
 .cc-light .badge{
   color: #04140c;
   background: linear-gradient(180deg, #d4ff8a 0%, #7CFF3F 42%, #22c55e 100%);
+}
+
+/* card4 Maxine face: same neon badge as GOAL-DRIVEN + cycling AI features */
+.sphere-face .badge{
+  margin: 3.2vmin auto 0;
+  display: block;
+  width: max-content;
+  max-width: 86%;
+  padding: 1.15vmin 2.6vmin;
+  border-radius: 999px;
+  text-align: center;
+  font-size: 1.85vmin;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  line-height: 1.2;
+  color: #04140c;
+  background: linear-gradient(180deg, #b9ff6a 0%, #39ff14 45%, #1db954 100%);
+  border: 1px solid rgba(180,255,120,.85);
+  box-shadow:
+    0 0 10px rgba(57,255,20,.55),
+    0 0 28px rgba(57,255,20,.35),
+    0 0 48px rgba(29,185,84,.25),
+    inset 0 1px 0 rgba(255,255,255,.45);
+  text-shadow: 0 1px 0 rgba(255,255,255,.25);
+  pointer-events: none;
+  position: relative;
+  z-index: 2;
+}
+.sphere-face .ai-cycle{
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 42%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 4.5vmin 5.5vmin;
+  pointer-events: none;
+  z-index: 2;
+  box-sizing: border-box;
+}
+.sphere-face .ai-cycle-scrim{
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+    rgba(0,0,0,.72) 0%,
+    rgba(0,0,0,.42) 55%,
+    rgba(0,0,0,0) 100%);
+  pointer-events: none;
+}
+.sphere-face .ai-cycle-stage{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 7.2vmin;
+  display: grid;
+  place-items: center;
+}
+.sphere-face .ai-cycle-item{
+  grid-area: 1 / 1;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(13px, 3.2vmin, 19px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  color: #fff;
+  text-shadow: 0 2px 14px rgba(0,0,0,.45);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .35s ease, transform .35s ease;
+  pointer-events: none;
+}
+.sphere-face .ai-cycle-item.is-on{
+  opacity: 1;
+  transform: translateY(0);
+}
+.sphere-face .ai-cycle-meta{
+  position: relative;
+  z-index: 1;
+  margin-top: 2.2vmin;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2vmin;
+}
+.sphere-face .ai-cycle-count{
+  font-size: 1.55vmin;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: rgba(255,255,255,.72);
+  font-variant-numeric: tabular-nums;
+}
+.sphere-face .ai-cycle-dots{
+  display: flex;
+  gap: 1.1vmin;
+  align-items: center;
+}
+.sphere-face .ai-cycle-dots .dot{
+  width: 1.15vmin;
+  height: 1.15vmin;
+  border-radius: 999px;
+  background: rgba(255,255,255,.28);
+  box-shadow: 0 0 0 0 rgba(57,255,20,0);
+  transition: background .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+.sphere-face .ai-cycle-dots .dot.is-on{
+  background: #39ff14;
+  box-shadow: 0 0 8px rgba(57,255,20,.65);
+  transform: scale(1.15);
+}
+.sphere-face .ai-cycle-static{
+  position: relative;
+  z-index: 1;
+  display: none;
+  margin: 0;
+  padding: 0 0 0 1.2em;
+  list-style: disc;
+  width: 100%;
+  max-width: 92%;
+  color: #fff;
+  font-size: clamp(12px, 2.6vmin, 16px);
+  font-weight: 500;
+  line-height: 1.45;
+  text-shadow: 0 1px 8px rgba(0,0,0,.4);
+}
+.sphere-face .ai-cycle-static li{ margin: 0.15em 0; }
+.sphere-face.has-ai-cycle h3{ display: none; }
+.sphere-face .score-logo{
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  transform: translate(-50%, -50%);
+  width: min(58%, 34vmin);
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.4));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.sphere-face.has-ai-cycle .ai-cycle{
+  height: 36%;
+}
+.sphere-face.has-logo .badge{
+  margin-top: 2.4vmin;
+}
+@media (prefers-reduced-motion: reduce){
+  .sphere-face .ai-cycle-stage,
+  .sphere-face .ai-cycle-meta{ display: none !important; }
+  .sphere-face .ai-cycle-static{ display: block; }
+  .sphere-face .ai-cycle-item{
+    transition: none !important;
+  }
 }
 
 /* skinny catalist cards → match Maxine (#card4) size exactly.
@@ -662,10 +817,21 @@ body.detail-open .track{pointer-events:none}
           </div>
           <!-- Card 4 Sphere -->
           <div class="card card-sphere is-clickable" id="card4" data-feature="maxine">
-            <div class="sphere-face" id="sphere-face">
+            <div class="sphere-face has-ai-cycle has-logo" id="sphere-face">
               <div class="inner">
                 <div class="top"><span class="pill">Maxine AI</span><span class="url">scoresos.com</span></div>
+                <div class="badge" aria-hidden="true">AI-POWERED</div>
+                <img class="score-logo" src="../assets/branded-cards/score-os-logo.webp" alt="Score OS" width="900" height="975" decoding="async">
                 <h3>Your AI that works the queue</h3>
+                <div class="ai-cycle" id="ai-cycle" aria-live="polite">
+                  <div class="ai-cycle-scrim" aria-hidden="true"></div>
+                  <div class="ai-cycle-stage"><p class="ai-cycle-item is-on" data-i="0">Fully Automatic Disputes</p><p class="ai-cycle-item" data-i="1">Automations</p><p class="ai-cycle-item" data-i="2">Receptionist</p><p class="ai-cycle-item" data-i="3">Invoicing</p><p class="ai-cycle-item" data-i="4">Communication</p></div>
+                  <div class="ai-cycle-meta" aria-hidden="true">
+                    <span class="ai-cycle-count"><span data-n>01</span>/05</span>
+                    <div class="ai-cycle-dots"><span class="dot is-on" data-i="0"></span><span class="dot" data-i="1"></span><span class="dot" data-i="2"></span><span class="dot" data-i="3"></span><span class="dot" data-i="4"></span></div>
+                  </div>
+                  <ul class="ai-cycle-static"><li>Fully Automatic Disputes</li><li>Automations</li><li>Receptionist</li><li>Invoicing</li><li>Communication</li></ul>
+                </div>
               </div>
             </div>
             <div class="star-mask" id="star-mask">
@@ -1891,6 +2057,39 @@ if (IS_BRANDED && FEATURES) {
 
   window.__showreelDetail = { openDetail, closeDetail, FEATURES };
 }
+
+// card4 AI feature cycle (branded)
+(function initAiCycle(){
+  if (!IS_BRANDED) return;
+  const root = document.getElementById('ai-cycle');
+  if (!root) return;
+  const items = Array.from(root.querySelectorAll('.ai-cycle-item'));
+  const dots = Array.from(root.querySelectorAll('.ai-cycle-dots .dot'));
+  const countEl = root.querySelector('.ai-cycle-count [data-n]');
+  if (!items.length) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return; // static list shown via CSS
+  let i = 0;
+  const HOLD = 1800;
+  const FADE = 380;
+  function show(idx){
+    items.forEach((el, n) => el.classList.toggle('is-on', n === idx));
+    dots.forEach((el, n) => el.classList.toggle('is-on', n === idx));
+    if (countEl) countEl.textContent = String(idx + 1).padStart(2, '0');
+  }
+  show(0);
+  function tick(){
+    const cur = items[i];
+    cur.classList.remove('is-on');
+    setTimeout(() => {
+      i = (i + 1) % items.length;
+      show(i);
+      setTimeout(tick, HOLD);
+    }, FADE);
+  }
+  setTimeout(tick, HOLD);
+  window.__aiCycle = { show, items: items.map(el => el.textContent) };
+})();
 
 // expose for QA
 window.__showreel = { computeP, apply, gp, vScroll, phase1, phase2, phase3, phase4 };
