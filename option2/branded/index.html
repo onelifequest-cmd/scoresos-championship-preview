@@ -239,6 +239,50 @@ body.lock{overflow:hidden}
     font-size:8px;letter-spacing:.1em;z-index:90}
 }
 
+
+/* skinny catalist cards → match Maxine (#card4) size exactly.
+   .cc{position:relative;width/height:100%} was overriding .card{position:absolute}
+   and .card-side size vars, turning #card2/#card3 into flex-shrunk relative children. */
+.card.card-side.cc{
+  position:absolute;
+  flex-shrink:0;
+  width:var(--sr-card-w);
+  height:var(--sr-card-h);
+}
+
+/* readable body copy over bright hero robot */
+.hero-bottom{
+  background:linear-gradient(to top,
+    rgba(0,0,0,.82) 0%,
+    rgba(0,0,0,.55) 40%,
+    rgba(0,0,0,.22) 70%,
+    rgba(0,0,0,0) 100%);
+  border-radius:0 0 var(--radius-card) var(--radius-card);
+  padding-top:56px !important;
+}
+.hero-bottom p.lead{opacity:1;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.55),0 0 2px rgba(0,0,0,.4)}
+
+@media(max-width:640px){
+  .hero-bottom{
+    background:linear-gradient(to top,
+      rgba(0,0,0,.88) 0%,
+      rgba(0,0,0,.62) 38%,
+      rgba(0,0,0,.28) 68%,
+      rgba(0,0,0,0) 100%) !important;
+  }
+}
+
+
+@media(max-width:640px){
+  #preview-badge{
+    top:auto !important;bottom:10px;left:8px;right:auto;
+    max-width:min(72vw,270px);z-index:90;
+    font-size:7.5px;letter-spacing:.08em;line-height:1.25;
+    padding:6px 10px;
+  }
+  /* keep CTAs above the badge */
+  .hero-btns{margin-bottom:36px !important}
+}
 /* clickable affordances */
 .is-clickable{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .is-clickable.is-hot{box-shadow:0 0 0 2px rgba(34,229,132,.55),0 18px 40px -18px rgba(0,0,0,.45)}
