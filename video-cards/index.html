@@ -366,7 +366,7 @@
 <script type="module">
 const ASSET_BASE_URL = './assets';
 const CFG = {
-  slots: 16,
+  slots: 19,
   cardScale: 1.0,
   cardRatio: 1.36,
   radiusK: 3.25,
@@ -398,6 +398,20 @@ const CARDS = [
     bullets: ['Side-by-side bureau views for each client', 'Change history your team can reference', 'Clear status so nothing slips through']
   },
   {
+    img: 'goal-based-strategies.webp', title: 'Goal-Based Strategies', rating: 'Both', meta: 'Funding readiness',
+    kicker: 'Agency OS · DIY OS · Funding readiness',
+    blurb: 'Help clients organize tailored plans around goals like mortgage readiness, a new car purchase, or personal and business funding. Strategies support preparation and documentation — they do not guarantee loan approval, funding, or credit outcomes.',
+    bullets: ['Plans framed around the client\'s stated goals', 'Checklists your team can walk through together', 'Clear that lenders and underwriters make final decisions'],
+    steps: [
+      'Choose a goal category with the client (home, auto, or funding).',
+      'Review current report data and open items together.',
+      'Build a preparation checklist tailored to that goal.',
+      'Track progress notes inside the client file.',
+      'Update the plan as monitoring data changes.',
+      'Hand off documentation when the client is ready to apply elsewhere.'
+    ]
+  },
+  {
     img: 'credit-monitoring.webp', title: 'Credit Monitoring', rating: 'Both', meta: 'Client report data',
     kicker: 'Agency OS · DIY OS · Client report data',
     blurb: 'See how an agency accesses credit monitoring information and client report data in one place. Built so your team can review reports without juggling separate tools.',
@@ -408,6 +422,20 @@ const CARDS = [
     kicker: 'Agency OS · Leads & clients',
     blurb: 'Manage leads, clients, documents, and notes from one roster so your agency stays organized as it grows. Your team sees the same client file instead of scattered spreadsheets.',
     bullets: ['Leads and clients in one list', 'Documents and notes on each file', 'Built for agency day-to-day operations']
+  },
+  {
+    img: 'invoicing.webp', title: 'Invoicing', rating: 'Agency OS', meta: 'Billing & payments',
+    kicker: 'Agency OS · Billing & payments',
+    blurb: 'Bill clients and track payments from the same operating system as your CRM. Keep invoices and payment status next to each client file so your team is not chasing balances across spreadsheets.',
+    bullets: ['Create and send client invoices', 'Track payment status on the file', 'Fewer handoffs between billing and account managers'],
+    steps: [
+      'Open the client file and start a new invoice.',
+      'Add the agreed services and due date.',
+      'Send the invoice through your usual channel.',
+      'Record payments as they arrive.',
+      'See outstanding balances beside the client record.',
+      'Follow up from the same workspace when needed.'
+    ]
   },
   {
     img: 'marketing.webp', title: 'Marketing', rating: 'Agency OS', meta: 'Lead capture',
@@ -480,6 +508,20 @@ const CARDS = [
     kicker: 'Agency OS · Workflows',
     blurb: 'Onboarding, reminders, follow-ups, and workflow automations that turn your playbooks into repeatable steps. Your team still reviews what goes out.',
     bullets: ['Onboarding and reminder workflows', 'Follow-ups that do not rely on memory', 'Fewer dropped balls between team members']
+  },
+  {
+    img: 'ai-receptionist.webp', title: 'AI Receptionist', rating: 'Agency OS', meta: 'Calls & bookings',
+    kicker: 'Agency OS · Calls & bookings',
+    blurb: 'An AI receptionist that answers agency calls and books appointments into your calendar so leads are not left on voicemail. Your team reviews bookings and can take over any conversation — it does not replace licensed advice or guarantee a closed sale.',
+    bullets: ['Answers inbound calls for your agency', 'Books appointments into your scheduling flow', 'Hands off to your team when a person should take over'],
+    steps: [
+      'A prospect calls your agency line.',
+      'The AI receptionist greets them and captures intent.',
+      'Available consultation times are offered from your calendar.',
+      'The appointment is booked on the shared schedule.',
+      'Your team gets a notification with the new lead.',
+      'Staff can call back or join when a human should continue.'
+    ]
   },
 ];
 const UI = {
