@@ -325,16 +325,86 @@
   #detail-media img.poster-fallback {
     position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
   }
-  #vid-ctrl {
-    position: absolute; left: 12px; bottom: 12px; z-index: 3;
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 7px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.22);
-    background: rgba(10,14,24,.55); color: #fff; font-size: 12px; font-weight: 600;
-    letter-spacing: .04em; cursor: pointer; backdrop-filter: blur(6px);
-    font-family: 'Inter', system-ui, sans-serif;
+  /* Frosted play control on every card */
+  .card__play {
+    position: absolute; left: 50%; top: 46%;
+    transform: translate(-50%, -50%) scale(var(--play-s, 0.72));
+    z-index: 5;
+    /* 70→~56 visual after cylinder perspective; 80→~64 on desktop */
+    width: 70px; height: 70px; border-radius: 50%;
+    border: 1.5px solid transparent;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,.34), rgba(255,255,255,.10)) padding-box,
+      linear-gradient(135deg, #025D25, #FCC325) border-box;
+    background-clip: padding-box, border-box;
+    -webkit-background-clip: padding-box, border-box;
+    box-shadow:
+      0 8px 28px rgba(2,93,37,.28),
+      inset 0 1px 0 rgba(255,255,255,.45);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    cursor: pointer;
+    display: grid; place-items: center;
+    padding: 0; margin: 0;
+    opacity: 0.48;
+    transition: opacity .28s ease, transform .28s ease, box-shadow .28s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    appearance: none; -webkit-appearance: none;
+    color: transparent; font-size: 0; line-height: 0;
   }
-  #vid-ctrl:hover { background: rgba(10,14,24,.78); }
+  .card__play svg {
+    width: 22px; height: 22px;
+    margin-left: 2px; /* optical center for triangle */
+    fill: #fff;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
+    pointer-events: none;
+  }
+  .card:not(.-front) .card__play { --play-s: 0.72; opacity: 0.42; }
+  .card.-front .card__play {
+    --play-s: 1;
+    opacity: 1;
+    box-shadow:
+      0 10px 32px rgba(2,93,37,.38),
+      0 0 0 0 rgba(252,195,37,.35),
+      inset 0 1px 0 rgba(255,255,255,.5);
+  }
+  .card.-front .card__play.-pulse {
+    animation: playPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes playPulse {
+    0%, 100% { box-shadow: 0 10px 32px rgba(2,93,37,.38), 0 0 0 0 rgba(252,195,37,.40), inset 0 1px 0 rgba(255,255,255,.5); }
+    50% { box-shadow: 0 12px 36px rgba(2,93,37,.45), 0 0 0 10px rgba(252,195,37,0), inset 0 1px 0 rgba(255,255,255,.5); }
+  }
+  @media (min-width: 901px) {
+    .card__play { width: 80px; height: 80px; }
+    .card__play svg { width: 28px; height: 28px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card.-front .card__play.-pulse { animation: none; }
+  }
+
+  /* Icon-only pause / replay while detail video plays */
+  #vid-ctrl {
+    position: absolute; left: 50%; bottom: 18px; z-index: 3;
+    transform: translateX(-50%);
+    width: 52px; height: 52px; border-radius: 50%;
+    display: grid; place-items: center;
+    padding: 0; border: 1.5px solid transparent;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,.28), rgba(10,14,24,.45)) padding-box,
+      linear-gradient(135deg, #025D25, #FCC325) border-box;
+    background-clip: padding-box, border-box;
+    -webkit-background-clip: padding-box, border-box;
+    color: #fff; cursor: pointer;
+    backdrop-filter: blur(12px) saturate(1.15);
+    -webkit-backdrop-filter: blur(12px) saturate(1.15);
+    box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  }
+  #vid-ctrl:hover { filter: brightness(1.08); }
   #vid-ctrl[hidden] { display: none !important; }
+  #vid-ctrl svg { width: 20px; height: 20px; fill: #fff; pointer-events: none; }
+  #vid-ctrl[data-state="play"] svg { margin-left: 2px; }
 </style>
 </head>
 <body>
@@ -362,7 +432,7 @@
   </div>
   <div class="edge -l" id="edge-l"></div>
   <div class="edge -r" id="edge-r"></div>
-  <div class="hint">Drag · swipe · tap for video</div>
+  <div class="hint">Drag · swipe · play</div>
   <footer id="dock">
     <div class="dock__l">
       <div class="dock__count"><b id="d-cur">01</b> <i class="of">/ <span id="d-total">20</span></i></div>
@@ -396,7 +466,9 @@
       <div id="detail-media">
         <img id="detail-img" class="poster-fallback" alt="">
         <video id="detail-video" muted loop playsinline webkit-playsinline preload="none"></video>
-        <button id="vid-ctrl" type="button" hidden aria-label="Pause video">❚❚ Pause</button>
+        <button id="vid-ctrl" type="button" hidden aria-label="Pause video" data-state="pause">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+        </button>
       </div>
       <div id="detail-body">
         <div id="detail-handle" aria-hidden="true"></div>
@@ -604,6 +676,40 @@ const CARDS = [
     bullets: ['Support access for agency owners', 'Help tied to the product you use', 'Less time stuck on platform questions']
   },
 ]
+
+/* card id (img basename without ext) → video sources.
+   Current loops are placeholders — drop Patrick's finals in assets/ and update paths here. */
+const VIDEO_BY_CARD = {
+  'score-os': { webm: './assets/score-os.webm', mp4: './assets/score-os.mp4', poster: './assets/score-os-poster.jpg' },
+  'maxine': { webm: './assets/maxine.webm', mp4: './assets/maxine.mp4', poster: './assets/maxine-poster.jpg' },
+  'ai-dispute': { webm: './assets/ai-dispute.webm', mp4: './assets/ai-dispute.mp4', poster: './assets/ai-dispute-poster.jpg' },
+  'ai-receptionist': { webm: './assets/ai-receptionist.webm', mp4: './assets/ai-receptionist.mp4', poster: './assets/ai-receptionist-poster.jpg' },
+  'score-tracking': { webm: './assets/score-tracking.webm', mp4: './assets/score-tracking.mp4', poster: './assets/score-tracking-poster.jpg' },
+  'credit-monitoring': { webm: './assets/credit-monitoring.webm', mp4: './assets/credit-monitoring.mp4', poster: './assets/credit-monitoring-poster.jpg' },
+  'three-bureau': { webm: './assets/three-bureau.webm', mp4: './assets/three-bureau.mp4', poster: './assets/three-bureau-poster.jpg' },
+  'smartcredit-compatible': { webm: './assets/smartcredit-compatible.webm', mp4: './assets/smartcredit-compatible.mp4', poster: './assets/smartcredit-compatible-poster.jpg' },
+  'goal-based-strategies': { webm: './assets/goal-based-strategies.webm', mp4: './assets/goal-based-strategies.mp4', poster: './assets/goal-based-strategies-poster.jpg' },
+  'funding-in-app': { webm: './assets/funding-in-app.webm', mp4: './assets/funding-in-app.mp4', poster: './assets/funding-in-app-poster.jpg' },
+  'client-portal-app': { webm: './assets/client-portal-app.webm', mp4: './assets/client-portal-app.mp4', poster: './assets/client-portal-app-poster.jpg' },
+  'messaging': { webm: './assets/messaging.webm', mp4: './assets/messaging.mp4', poster: './assets/messaging-poster.jpg' },
+  'booking-calendar': { webm: './assets/booking-calendar.webm', mp4: './assets/booking-calendar.mp4', poster: './assets/booking-calendar-poster.jpg' },
+  'white-label': { webm: './assets/white-label.webm', mp4: './assets/white-label.mp4', poster: './assets/white-label-poster.jpg' },
+  'free-website': { webm: './assets/free-website.webm', mp4: './assets/free-website.mp4', poster: './assets/free-website-poster.jpg' },
+  'marketing': { webm: './assets/marketing.webm', mp4: './assets/marketing.mp4', poster: './assets/marketing-poster.jpg' },
+  'automations': { webm: './assets/automations.webm', mp4: './assets/automations.mp4', poster: './assets/automations-poster.jpg' },
+  'business-launch-tools': { webm: './assets/business-launch-tools.webm', mp4: './assets/business-launch-tools.mp4', poster: './assets/business-launch-tools-poster.jpg' },
+  'referral-tracking': { webm: './assets/referral-tracking.webm', mp4: './assets/referral-tracking.mp4', poster: './assets/referral-tracking-poster.jpg' },
+  'agency-crm': { webm: './assets/agency-crm.webm', mp4: './assets/agency-crm.mp4', poster: './assets/agency-crm-poster.jpg' },
+  'invoicing': { webm: './assets/invoicing.webm', mp4: './assets/invoicing.mp4', poster: './assets/invoicing-poster.jpg' },
+  'outsource-portal': { webm: './assets/outsource-portal.webm', mp4: './assets/outsource-portal.mp4', poster: './assets/outsource-portal-poster.jpg' },
+  'mail-print-queue': { webm: './assets/mail-print-queue.webm', mp4: './assets/mail-print-queue.mp4', poster: './assets/mail-print-queue-poster.jpg' },
+  'owner-dashboard': { webm: './assets/owner-dashboard.webm', mp4: './assets/owner-dashboard.mp4', poster: './assets/owner-dashboard-poster.jpg' },
+  'mentorship': { webm: './assets/mentorship.webm', mp4: './assets/mentorship.mp4', poster: './assets/mentorship-poster.jpg' },
+  'community': { webm: './assets/community.webm', mp4: './assets/community.mp4', poster: './assets/community-poster.jpg' },
+  'training': { webm: './assets/training.webm', mp4: './assets/training.mp4', poster: './assets/training-poster.jpg' },
+  'support': { webm: './assets/support.webm', mp4: './assets/support.mp4', poster: './assets/support-poster.jpg' },
+};
+window.VIDEO_BY_CARD = VIDEO_BY_CARD;
 const UI = {
   brand:    'Score OS',
   nav:      ['Platform', 'Maxine AI', 'Pricing', 'DIY OS'],
@@ -661,8 +767,28 @@ function applyStyles() {
   for (const [k,v] of Object.entries(s)) section.style.setProperty(k, v);
 }
 
-function clipBase(cd) {
-  return (cd.clip || cd.img.replace(/\.(webp|jpg|jpeg|png)$/i, ''));
+function cardId(cd) {
+  return (cd.id || cd.clip || cd.img.replace(/\.(webp|jpg|jpeg|png)$/i, ''));
+}
+function clipBase(cd) { return cardId(cd); }
+function videoFor(cd) {
+  const id = cardId(cd);
+  const mapped = VIDEO_BY_CARD[id];
+  if (mapped) return mapped;
+  /* placeholder fallback from assets naming convention */
+  return {
+    webm: ASSET_BASE_URL + '/' + id + '.webm',
+    mp4: ASSET_BASE_URL + '/' + id + '.mp4',
+    poster: ASSET_BASE_URL + '/' + id + '-poster.jpg',
+  };
+}
+const PLAY_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5z"/></svg>';
+const PAUSE_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+function setVidCtrlState(state) {
+  /* state: pause | play (play = show triangle / replay) */
+  vidCtrl.dataset.state = state;
+  vidCtrl.setAttribute('aria-label', state === 'pause' ? 'Pause video' : 'Replay video');
+  vidCtrl.innerHTML = state === 'pause' ? PAUSE_SVG : PLAY_SVG;
 }
 function buildRing() {
   ring.innerHTML = '';
@@ -672,19 +798,21 @@ function buildRing() {
     art.className = 'card';
     art.dataset.slot = i;
     art.dataset.card = String(i % CARDS.length);
+    art.dataset.cardId = cardId(cd);
     art.style.setProperty('--a', (i * stepDeg()) + 'deg');
-    const base = clipBase(cd);
+    const src = videoFor(cd);
     art.innerHTML = `
       <div class="card__inner">
         <div class="card__media">
           <img src="${ASSET_BASE_URL}/${cd.img}" alt="${cd.title}" draggable="false" loading="lazy" decoding="async">
           <video muted loop playsinline webkit-playsinline preload="none"
-            data-src-mp4="${ASSET_BASE_URL}/${base}.mp4"
-            data-src-webm="${ASSET_BASE_URL}/${base}.webm"
-            data-poster="${ASSET_BASE_URL}/${base}-poster.jpg"
+            data-src-mp4="${src.mp4}"
+            data-src-webm="${src.webm}"
+            data-poster="${src.poster}"
             aria-hidden="true"></video>
         </div>
         <div class="card__scrim"></div>
+        <button type="button" class="card__play" aria-label="Play ${cd.title} video">${PLAY_SVG}</button>
         <span class="card__no">${pad2((i % CARDS.length) + 1)}</span>
         <div class="card__foot"><h3 class="card__title">${cd.title}</h3></div>
       </div>`;
@@ -875,10 +1003,12 @@ function render() {
   });
   if (fs !== lastFrontSlot) {
     lastFrontSlot = fs;
+    stopFrontVideo(); /* posters + play buttons only; video starts on play tap */
+    ring.querySelectorAll('.card__play').forEach(btn => btn.classList.remove('-pulse'));
     const neu = ring.querySelector(`.card[data-slot="${fs}"]`);
-    if (!detailOpen) {
-      if (neu) playFrontVideo(neu);
-      else stopFrontVideo();
+    if (neu && !detailOpen) {
+      const playBtn = neu.querySelector('.card__play');
+      if (playBtn && !REDUCE) playBtn.classList.add('-pulse');
     }
   }
   const ci = fs % CARDS.length;
@@ -915,24 +1045,24 @@ function fillDetail(cd) {
     stepsEl.innerHTML = '';
     ul.innerHTML = cd.bullets.map(b => '<li>'+b+'</li>').join('');
   }
-  const base = clipBase(cd);
-  detailImg.src = ASSET_BASE_URL + '/' + base + '-poster.jpg';
+  const src = videoFor(cd);
+  detailImg.src = src.poster;
   detailImg.alt = cd.title;
   detailFlyImg.src = ASSET_BASE_URL + '/' + cd.img;
   detailFlyImg.alt = '';
-  // Prepare detail video (lazy source assign)
+  // Prepare detail video from VIDEO_BY_CARD (placeholders until Patrick drops finals)
   detailVideo.pause();
   detailVideo.removeAttribute('src');
   detailVideo.querySelectorAll('source').forEach(s => s.remove());
   const sWebm = document.createElement('source');
-  sWebm.src = ASSET_BASE_URL + '/' + base + '.webm';
+  sWebm.src = src.webm;
   sWebm.type = 'video/webm';
   const sMp4 = document.createElement('source');
-  sMp4.src = ASSET_BASE_URL + '/' + base + '.mp4';
+  sMp4.src = src.mp4;
   sMp4.type = 'video/mp4';
   detailVideo.appendChild(sWebm);
   detailVideo.appendChild(sMp4);
-  detailVideo.poster = ASSET_BASE_URL + '/' + base + '-poster.jpg';
+  detailVideo.poster = src.poster;
   detailVideo.load();
   detailLearn.href = '#';
   detailLearn.innerHTML = 'Learn more <span aria-hidden="true">→</span>';
@@ -993,8 +1123,7 @@ function openDetail(cardIndex, cardEl) {
         // Play detail clip
         if (!REDUCE) {
           vidCtrl.hidden = false;
-          vidCtrl.textContent = '❚❚ Pause';
-          vidCtrl.setAttribute('aria-label', 'Pause video');
+          setVidCtrlState('pause');
           const playDetail = () => {
             detailVideo.currentTime = 0;
             const p = detailVideo.play();
@@ -1036,8 +1165,8 @@ function closeDetail() {
     detailVideo.removeAttribute('src');
     detailVideo.querySelectorAll('source').forEach(s => s.remove());
     detailVideo.load();
-    const frontCard = ring.querySelector('.card.-front');
-    if (frontCard) playFrontVideo(frontCard);
+    const frontPlay = ring.querySelector('.card.-front .card__play');
+    if (frontPlay && !REDUCE) frontPlay.classList.add('-pulse');
     if (lastFocus && lastFocus.focus) lastFocus.focus();
     else stage.focus();
   }, REDUCE ? 0 : 450);
@@ -1070,7 +1199,15 @@ stage.addEventListener('pointerup', e => {
   dragging = false; settled = false; stage.classList.remove('-drag');
   if (!moved) {
     const el = document.elementFromPoint(e.clientX, e.clientY);
+    const playBtn = el && el.closest('.card__play');
     const card = el && el.closest('.card');
+    if (playBtn && card) {
+      const slot = +card.dataset.slot;
+      /* Play always opens that card's detail + starts its mapped video */
+      if (slot !== frontSlot()) focusSlot(slot);
+      openDetail(+card.dataset.card, card);
+      return;
+    }
     if (card) {
       const slot = +card.dataset.slot;
       if (slot === frontSlot()) openDetail(slot % CARDS.length, card);
@@ -1129,30 +1266,22 @@ function tick() {
 vidCtrl.addEventListener('click', () => {
   if (detailVideo.paused) {
     detailVideo.play().catch(() => {});
-    vidCtrl.textContent = '❚❚ Pause';
-    vidCtrl.setAttribute('aria-label', 'Pause video');
+    setVidCtrlState('pause');
   } else {
     detailVideo.pause();
-    vidCtrl.textContent = '▶ Replay';
-    vidCtrl.setAttribute('aria-label', 'Replay video');
+    setVidCtrlState('play');
   }
 });
-detailVideo.addEventListener('play', () => {
-  vidCtrl.textContent = '❚❚ Pause';
-  vidCtrl.setAttribute('aria-label', 'Pause video');
-});
+detailVideo.addEventListener('play', () => { setVidCtrlState('pause'); });
 detailVideo.addEventListener('pause', () => {
-  if (detailOpen) {
-    vidCtrl.textContent = '▶ Replay';
-    vidCtrl.setAttribute('aria-label', 'Replay video');
-  }
+  if (detailOpen) setVidCtrlState('play');
 });
 
 buildRing(); buildDots(); layout(); applyStyles(); applyRot(); render(); tick();
-// Kick front-card clip once settled
+// Pulse the center play button once settled (no autoplay — tap play to open + start)
 requestAnimationFrame(() => {
-  const front = ring.querySelector('.card.-front');
-  if (front) playFrontVideo(front);
+  const front = ring.querySelector('.card.-front .card__play');
+  if (front && !REDUCE) front.classList.add('-pulse');
 });
 window.addEventListener('resize', layout);
 </script>
