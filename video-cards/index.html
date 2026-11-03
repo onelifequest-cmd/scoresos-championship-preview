@@ -583,14 +583,25 @@ function buildDots() {
 function layout() {
   const vw = innerWidth;
   const vh = innerHeight;
-  /* Bigger cards: phones ~58% vw (was ~150px / ~38% vw); scale desktop up too. */
-  let cw;
+  /* Bigger cards: phones aim ~55–62% *projected* viewport width (was ~101px / ~26% vw).
+     CSS size alone is not enough — 3D depth shrinks the face, so we also pull the ring
+     forward (lower arcDepth) and tighten radiusK on small screens. */
+  let cw, radiusK, arcDepth, persp;
   if (vw <= 520) {
-    cw = Math.min(255, Math.max(215, vw * 0.58)) * CFG.cardScale;
+    cw = Math.min(280, Math.max(248, vw * 0.68)) * CFG.cardScale;
+    radiusK = 2.12;
+    arcDepth = 0.24;
+    persp = Math.max(1200, vw * 1.4);
   } else if (vw <= 900) {
-    cw = Math.min(275, Math.max(220, vw * 0.34)) * CFG.cardScale;
+    cw = Math.min(290, Math.max(240, vw * 0.38)) * CFG.cardScale;
+    radiusK = 2.55;
+    arcDepth = 0.42;
+    persp = Math.max(900, vw * 1.05);
   } else {
-    cw = Math.min(300, Math.max(240, vw * 0.175)) * CFG.cardScale;
+    cw = Math.min(310, Math.max(250, vw * 0.19)) * CFG.cardScale;
+    radiusK = CFG.radiusK;
+    arcDepth = CFG.arcDepth;
+    persp = Math.max(800, vw * 0.85 * CFG.perspective);
   }
   let ch = cw * CFG.cardRatio;
   /* Keep the center card between the masthead and the dock. */
@@ -601,14 +612,12 @@ function layout() {
     ch = maxCh;
     cw = ch / CFG.cardRatio;
   }
-  /* Slightly tighter ring on phones so side cards still peek at the edges. */
-  const radiusK = vw <= 520 ? 2.85 : (vw <= 900 ? 3.05 : CFG.radiusK);
   const r  = cw * radiusK;
   stage.style.setProperty('--cw', cw + 'px');
   stage.style.setProperty('--ch', ch + 'px');
   stage.style.setProperty('--r',  r + 'px');
-  stage.style.setProperty('--push', (r * (1 - CFG.arcDepth)) + 'px');
-  stage.style.perspective = Math.max(700, vw * 0.8 * CFG.perspective) + 'px';
+  stage.style.setProperty('--push', (r * (1 - arcDepth)) + 'px');
+  stage.style.perspective = persp + 'px';
   /* Title scales with card so labels stay readable on the larger face. */
   const titlePx = Math.max(15, Math.min(22, cw * 0.078));
   document.getElementById('section').style.setProperty('--title-size', titlePx + 'px');
