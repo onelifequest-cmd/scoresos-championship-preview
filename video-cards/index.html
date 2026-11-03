@@ -200,6 +200,21 @@
     .card__inner, #dots button, #nav a::after, #detail-panel, #detail-backdrop, #detail-fly { transition: none !important; }
   }
 
+
+  #site-disclaimer { position: fixed; left: 0; right: 0; bottom: 0; z-index: 7;
+    padding: 6px clamp(12px, 3vw, 28px) max(6px, env(safe-area-inset-bottom));
+    pointer-events: none; text-align: center;
+    background: linear-gradient(180deg, transparent, rgba(247,248,250,.92) 40%); }
+  #site-disclaimer p { margin: 0 auto; max-width: 920px; font-size: 9.5px; line-height: 1.35;
+    letter-spacing: .02em; color: var(--ink-3); font-weight: 500; }
+  @media (max-width: 760px) {
+    #site-disclaimer p { font-size: 8.5px; }
+    #dock { padding-bottom: calc(clamp(16px, 2.6vh, 26px) + 22px); }
+  }
+  @media (min-width: 761px) {
+    #dock { padding-bottom: calc(clamp(22px, 4vh, 40px) + 18px); }
+  }
+
   .dock__rating .tag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
   #preview-badge { position: fixed; top: 8px; right: 12px; z-index: 20; font-size: 9px; font-weight: 600;
     letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
@@ -369,6 +384,7 @@
       <button class="navbtn" id="next" aria-label="Next work">›</button>
     </div>
   </footer>
+  <aside id="site-disclaimer" aria-label="Disclaimer"><p>Example scores shown. Results vary; no score increase is guaranteed. Funding is subject to lender approval. Score OS is software for credit repair businesses.</p></aside>
 </div>
 
 <div id="detail" role="dialog" aria-modal="true" aria-labelledby="detail-title" hidden>
@@ -400,7 +416,7 @@
 <script type="module">
 const ASSET_BASE_URL = './assets';
 const CFG = {
-  slots: 20,
+  slots: 28,
   cardScale: 1.0,
   cardRatio: 1.36,
   radiusK: 3.25,
@@ -414,22 +430,26 @@ const CARDS = [
   {
     img: 'score-os.webp', title: 'Score OS', rating: 'Platform', meta: 'Scale & success',
     kicker: 'Score OS · Platform',
-    blurb: 'Not just a credit repair platform, but software designed for scaling your business and client success.',
-    bullets: ['Built for agencies that want one operating system', 'Organize clients, monitoring, and workflows in one place', 'Designed so your team can scale without losing the ball']
+    blurb: 'Not just a credit repair platform — software built to scale your agency and your clients’ success in one place.',
+    bullets: ['One operating system for agency work', 'Clients, monitoring, and workflows together', 'Built so your team can grow without dropping the ball']
   },
   {
-    img: 'maxine.webp', title: 'Maxine AI', rating: 'Agency OS', meta: 'AI power player',
-    kicker: 'Agency OS · AI power player',
-    blurb: 'Review credit information, identify potential reporting issues, and prepare tailored disputes with Maxine AI. She assists your team with analysis and drafts — she does not guarantee deletions, outcomes, or bureau handling.',
-    bullets: ['Works from a sample or imported report your team reviews', 'Flags items that may warrant investigation', 'Prepares dispute language for human approval before anything is sent'],
-    steps: [
-      'Visitor clicks Analyze Sample Report.',
-      'A fictional credit report appears (clearly labeled example).',
-      'Maxine highlights a potentially inaccurate reporting item.',
-      'The system explains what information may need investigation.',
-      'A sample dispute letter appears for preview.',
-      'Visitor can click Explore Maxine.'
-    ]
+    img: 'maxine.webp', title: 'Maxine AI', rating: 'Agency OS', meta: 'Work Next queue',
+    kicker: 'Agency OS · Work Next queue',
+    blurb: 'Maxine’s Work Next queue picks the next client and preps their letters. Flip Manual or Fully Automatic: on Fully Automatic, as soon as a client signs up, Maxine drafts their letters so they are ready in your portal to approve and send. Drafts wait for human approval — Maxine does not file or guarantee outcomes.',
+    bullets: ['AI picks the next client and preps letters', 'Manual or Fully Automatic switch', 'Ready in your portal to approve and send']
+  },
+  {
+    img: 'ai-dispute.webp', title: 'Fully Automatic Disputing', rating: 'Agency OS', meta: 'Onboarding → mail queue',
+    kicker: 'Agency OS · Onboarding → mail queue',
+    blurb: 'AI agents pull the report at onboarding, mark every negative item with a reason and instructions, and put the letters in the mailing queue for a person to approve. Your team stays in control of what goes out.',
+    bullets: ['Report pulled at onboarding', 'Every negative item marked with a reason and instructions', 'Letters land in the mail queue for human approval']
+  },
+  {
+    img: 'ai-receptionist.webp', title: 'AI Sales Receptionist', rating: 'Agency OS', meta: 'Sales psychology',
+    kicker: 'Agency OS · Sales psychology',
+    blurb: 'Trained in sales psychology: answers calls, qualifies leads, and helps close. Can make outbound calls to affiliates or to collect past-due invoices. Maxine also updates any client who calls in about the status of their credit file. Your team can take over any conversation.',
+    bullets: ['Answers, qualifies, and helps close', 'Outbound to affiliates or past-due collections', 'Credit-file status updates when clients call in']
   },
   {
     img: 'score-tracking.webp', title: 'Score Tracking', rating: 'Both', meta: 'Example scoreboard',
@@ -438,56 +458,10 @@ const CARDS = [
     bullets: ['Side-by-side bureau views for each client', 'Change history your team can reference', 'Clear status so nothing slips through']
   },
   {
-    img: 'goal-based-strategies.webp', title: 'Goal-Based Strategies', rating: 'Both', meta: 'Funding readiness',
-    kicker: 'Agency OS · DIY OS · Funding readiness',
-    blurb: 'Help clients organize tailored plans around goals like mortgage readiness, a new car purchase, or personal and business funding. Strategies support preparation and documentation — they do not guarantee loan approval, funding, or credit outcomes.',
-    bullets: ['Plans framed around the client\'s stated goals', 'Checklists your team can walk through together', 'Clear that lenders and underwriters make final decisions'],
-    steps: [
-      'Choose a goal category with the client (home, auto, or funding).',
-      'Review current report data and open items together.',
-      'Build a preparation checklist tailored to that goal.',
-      'Track progress notes inside the client file.',
-      'Update the plan as monitoring data changes.',
-      'Hand off documentation when the client is ready to apply elsewhere.'
-    ]
-  },
-  {
     img: 'credit-monitoring.webp', title: 'Credit Monitoring', rating: 'Both', meta: 'Client report data',
     kicker: 'Agency OS · DIY OS · Client report data',
     blurb: 'See how an agency accesses credit monitoring information and client report data in one place. Built so your team can review reports without juggling separate tools.',
     bullets: ['Central place for client monitoring data', 'Report views your staff can work from', 'Organized for agency and DIY workflows']
-  },
-  {
-    img: 'agency-crm.webp', title: 'Agency CRM', rating: 'Agency OS', meta: 'Leads & clients',
-    kicker: 'Agency OS · Leads & clients',
-    blurb: 'Manage leads, clients, documents, and notes from one roster so your agency stays organized as it grows. Your team sees the same client file instead of scattered spreadsheets.',
-    bullets: ['Leads and clients in one list', 'Documents and notes on each file', 'Built for agency day-to-day operations']
-  },
-  {
-    img: 'invoicing.webp', title: 'Invoicing', rating: 'Agency OS', meta: 'Billing & payments',
-    kicker: 'Agency OS · Billing & payments',
-    blurb: 'Bill clients and track payments from the same operating system as your CRM. Keep invoices and payment status next to each client file so your team is not chasing balances across spreadsheets.',
-    bullets: ['Create and send client invoices', 'Track payment status on the file', 'Fewer handoffs between billing and account managers'],
-    steps: [
-      'Open the client file and start a new invoice.',
-      'Add the agreed services and due date.',
-      'Send the invoice through your usual channel.',
-      'Record payments as they arrive.',
-      'See outstanding balances beside the client record.',
-      'Follow up from the same workspace when needed.'
-    ]
-  },
-  {
-    img: 'marketing.webp', title: 'Marketing', rating: 'Agency OS', meta: 'Lead capture',
-    kicker: 'Agency OS · Lead capture',
-    blurb: 'Lead capture and marketing tools that feed prospects into your CRM. Keep campaigns and intake connected to the same operating system.',
-    bullets: ['Capture leads into your agency workflow', 'Connect marketing to client onboarding', 'Fewer handoffs between tools']
-  },
-  {
-    img: 'free-website.webp', title: 'Free Website', rating: 'Agency OS', meta: 'Agency templates',
-    kicker: 'Agency OS · Agency templates',
-    blurb: 'Sample agency website templates so you can present a professional front end without building from scratch. Pair it with your portal and branding.',
-    bullets: ['Ready agency website templates', 'Preview how your site can look', 'Tied into the rest of Score OS']
   },
   {
     img: 'three-bureau.webp', title: 'Three-Bureau Tracking', rating: 'Both', meta: 'EQ · EX · TU',
@@ -496,16 +470,36 @@ const CARDS = [
     bullets: ['Equifax, Experian, and TransUnion side by side', 'Dispute tracking across bureaus', 'Example scores clearly marked as samples']
   },
   {
-    img: 'ai-dispute.webp', title: 'AI Dispute Engine', rating: 'Agency OS', meta: 'Maxine workflow',
-    kicker: 'Agency OS · Maxine workflow',
-    blurb: 'Introduce Maxine AI and the report analysis process that prepares tailored disputes for your review. Drafts are for human approval — not guaranteed deletions or bureau outcomes.',
-    bullets: ['Report analysis for your team to review', 'Sample dispute letter previews', 'Human approval before anything is filed']
+    img: 'smartcredit-compatible.webp', title: 'SmartCredit Compatible', rating: 'Both', meta: 'Report import',
+    kicker: 'Agency OS · DIY OS · Report import',
+    blurb: 'Existing SmartCredit reports pull straight into Score OS so your team can keep working from one place. Import is for your workflow — it does not change bureau data on its own.',
+    bullets: ['Pull existing SmartCredit reports into Score OS', 'Keep monitoring and disputes in one workspace', 'No third-party logos — just a clean import path']
   },
   {
-    img: 'white-label.webp', title: 'White-Label Portal', rating: 'Agency OS', meta: 'Your brand',
-    kicker: 'Agency OS · Your brand',
-    blurb: 'Customize the client portal with your logo, colors, and identity so clients see your agency — not ours. Your brand. Your clients. Your home field.',
-    bullets: ['Sample logo and brand color previews', 'Desktop and mobile portal views', 'Professional client experience under your name']
+    img: 'goal-based-strategies.webp', title: 'Custom Game Plan', rating: 'Both', meta: 'Personal plan',
+    kicker: 'Agency OS · DIY OS · Personal plan',
+    blurb: 'Every user gets a personal plan to start and grow their business, based on their experience. Plans can also organize client goals like mortgage readiness, a new car, or personal and business funding. Strategies support preparation — they do not guarantee loan approval, funding, or credit outcomes.',
+    bullets: ['Personal plan based on experience', 'Mortgage, car, and funding goals in the detail', 'Checklists your team can walk through together'],
+    steps: [
+      'Capture the user’s experience and business stage.',
+      'Build a personal start-and-grow plan from that baseline.',
+      'Optionally layer mortgage, auto, or funding goals for clients.',
+      'Review report data and open items together.',
+      'Track progress notes inside the file.',
+      'Update the plan as monitoring data changes.'
+    ]
+  },
+  {
+    img: 'funding-in-app.webp', title: 'Funding in the App', rating: 'Both', meta: 'Applications & alerts',
+    kicker: 'Agency OS · DIY OS · Applications & alerts',
+    blurb: 'Users submit funding applications for review inside the app. New opportunities are added automatically, users are notified when they may qualify, and a new credit strategy follows every round. Score OS organizes the workflow — lenders make their own decisions.',
+    bullets: ['Submit funding applications for review', 'Automatic opportunities and qualify alerts', 'New credit strategy after every round']
+  },
+  {
+    img: 'client-portal-app.webp', title: 'Client Portal & App', rating: 'Both', meta: 'Live progress',
+    kicker: 'Agency OS · DIY OS · Live progress',
+    blurb: 'Clients see progress, deletions, and score changes live, and upload their own documents — so your team spends less time chasing paperwork.',
+    bullets: ['Live progress, deletions, and score changes', 'Clients upload their own documents', 'Fewer back-and-forth requests for files']
   },
   {
     img: 'messaging.webp', title: 'Two-Way Messaging', rating: 'Agency OS', meta: 'Client inbox',
@@ -518,6 +512,72 @@ const CARDS = [
     kicker: 'Agency OS · Scheduling',
     blurb: 'Appointment scheduling and calendar management for consultations and follow-ups. Keep bookings next to the client file instead of a separate calendar app.',
     bullets: ['Schedule client appointments', 'Calendar view for your team', 'Tied into onboarding and follow-ups']
+  },
+  {
+    img: 'white-label.webp', title: 'White Label', rating: 'Agency OS', meta: 'Your brand',
+    kicker: 'Agency OS · Your brand',
+    blurb: 'Agencies run their own front end under their own brand — logo, colors, and identity — so clients see your agency, not ours.',
+    bullets: ['Your own branded front end', 'Logo and colors your clients recognize', 'Professional client experience under your name']
+  },
+  {
+    img: 'free-website.webp', title: 'Free Website', rating: 'Agency OS', meta: 'Agency templates',
+    kicker: 'Agency OS · Agency templates',
+    blurb: 'Sample agency website templates so you can present a professional front end without building from scratch. Pair it with your portal and branding.',
+    bullets: ['Ready agency website templates', 'Preview how your site can look', 'Tied into the rest of Score OS']
+  },
+  {
+    img: 'marketing.webp', title: 'Marketing OS', rating: 'Agency OS', meta: 'White-label HighLevel',
+    kicker: 'Agency OS · White-label HighLevel',
+    blurb: 'A white-label HighLevel account with ready-made texts and emails for moments like round sent, item deleted, and missing documents — plus the kind of automations and nurture campaigns top credit repair and funding companies run.',
+    bullets: ['White-label HighLevel account', 'Ready texts and emails for key moments', 'Automations and nurture campaigns like top companies run']
+  },
+  {
+    img: 'automations.webp', title: 'Automations', rating: 'Agency OS', meta: 'Workflows',
+    kicker: 'Agency OS · Workflows',
+    blurb: 'Onboarding, reminders, follow-ups, and workflow automations that turn your playbooks into repeatable steps. Your team still reviews what goes out.',
+    bullets: ['Onboarding and reminder workflows', 'Follow-ups that do not rely on memory', 'Fewer dropped balls between team members']
+  },
+  {
+    img: 'business-launch-tools.webp', title: 'Business Launch Tools', rating: 'Agency OS', meta: 'Resell add-ons',
+    kicker: 'Agency OS · Resell add-ons',
+    blurb: 'LLC, EIN, and business credit builder add-ons that agencies can resell — extra offer lanes beside your core credit work.',
+    bullets: ['LLC and EIN add-ons', 'Business credit builder options', 'Resell through your agency']
+  },
+  {
+    img: 'referral-tracking.webp', title: 'Referral Tracking', rating: 'Agency OS', meta: 'Affiliates & brokers',
+    kicker: 'Agency OS · Affiliates & brokers',
+    blurb: 'Affiliates and mortgage brokers send clients and see status and payouts in one place, so referral partners stay informed without extra spreadsheets.',
+    bullets: ['Affiliates and mortgage brokers send clients', 'Status visibility for partners', 'Payouts tracked in one view']
+  },
+  {
+    img: 'agency-crm.webp', title: 'Agency CRM', rating: 'Agency OS', meta: 'Leads & clients',
+    kicker: 'Agency OS · Leads & clients',
+    blurb: 'Manage leads, clients, documents, and notes from one roster so your agency stays organized as it grows. Your team sees the same client file instead of scattered spreadsheets.',
+    bullets: ['Leads and clients in one list', 'Documents and notes on each file', 'Built for agency day-to-day operations']
+  },
+  {
+    img: 'invoicing.webp', title: 'Invoicing', rating: 'Agency OS', meta: 'Billing & payments',
+    kicker: 'Agency OS · Billing & payments',
+    blurb: 'Bill clients and track payments from the same operating system as your CRM. Keep invoices and payment status next to each client file so your team is not chasing balances across spreadsheets.',
+    bullets: ['Create and send client invoices', 'Track payment status on the file', 'Fewer handoffs between billing and account managers']
+  },
+  {
+    img: 'outsource-portal.webp', title: 'Outsource Portal', rating: 'Agency OS', meta: 'Affiliate desk',
+    kicker: 'Agency OS · Affiliate desk',
+    blurb: 'Outsourcers and affiliates get their own desk to receive, assign, and work agency clients — so partner capacity stays organized inside Score OS.',
+    bullets: ['Dedicated desk for outsourcers and affiliates', 'Receive and assign agency clients', 'Work stays inside Score OS']
+  },
+  {
+    img: 'mail-print-queue.webp', title: 'Mail & Print Queue', rating: 'Agency OS', meta: 'Print · mail · track',
+    kicker: 'Agency OS · Print · mail · track',
+    blurb: 'Letters print and mail from inside the app, with tracking — so dispute mail does not live in a separate tool.',
+    bullets: ['Print and mail from inside the app', 'Tracking on letters you send', 'Queue stays next to the client file']
+  },
+  {
+    img: 'owner-dashboard.webp', title: 'Owner Dashboard', rating: 'Agency OS', meta: 'One screen',
+    kicker: 'Agency OS · One screen',
+    blurb: 'Deletions, revenue, overdue responses, and team workload on one screen so owners see the pulse of the agency without hopping tools.',
+    bullets: ['Deletions and revenue in one view', 'Overdue responses surfaced', 'Team workload at a glance']
   },
   {
     img: 'mentorship.webp', title: 'Mentorship', rating: 'Agency OS', meta: 'Guidance',
@@ -543,27 +603,7 @@ const CARDS = [
     blurb: 'Access support when your agency needs help with the platform. Keep operations moving while questions get answered.',
     bullets: ['Support access for agency owners', 'Help tied to the product you use', 'Less time stuck on platform questions']
   },
-  {
-    img: 'automations.webp', title: 'Automations', rating: 'Agency OS', meta: 'Workflows',
-    kicker: 'Agency OS · Workflows',
-    blurb: 'Onboarding, reminders, follow-ups, and workflow automations that turn your playbooks into repeatable steps. Your team still reviews what goes out.',
-    bullets: ['Onboarding and reminder workflows', 'Follow-ups that do not rely on memory', 'Fewer dropped balls between team members']
-  },
-  {
-    img: 'ai-receptionist.webp', title: 'AI Receptionist', rating: 'Agency OS', meta: 'Calls & bookings',
-    kicker: 'Agency OS · Calls & bookings',
-    blurb: 'An AI receptionist that answers agency calls and books appointments into your calendar so leads are not left on voicemail. Your team reviews bookings and can take over any conversation — it does not replace licensed advice or guarantee a closed sale.',
-    bullets: ['Answers inbound calls for your agency', 'Books appointments into your scheduling flow', 'Hands off to your team when a person should take over'],
-    steps: [
-      'A prospect calls your agency line.',
-      'The AI receptionist greets them and captures intent.',
-      'Available consultation times are offered from your calendar.',
-      'The appointment is booked on the shared schedule.',
-      'Your team gets a notification with the new lead.',
-      'Staff can call back or join when a human should continue.'
-    ]
-  },
-];
+]
 const UI = {
   brand:    'Score OS',
   nav:      ['Platform', 'Maxine AI', 'Pricing', 'DIY OS'],
@@ -637,7 +677,7 @@ function buildRing() {
     art.innerHTML = `
       <div class="card__inner">
         <div class="card__media">
-          <img src="${ASSET_BASE_URL}/${cd.img}" alt="${cd.title}" draggable="false" loading="lazy">
+          <img src="${ASSET_BASE_URL}/${cd.img}" alt="${cd.title}" draggable="false" loading="lazy" decoding="async">
           <video muted loop playsinline webkit-playsinline preload="none"
             data-src-mp4="${ASSET_BASE_URL}/${base}.mp4"
             data-src-webm="${ASSET_BASE_URL}/${base}.webm"
