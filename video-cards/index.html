@@ -600,10 +600,11 @@ function layout() {
     persp = Math.max(1000, vw * 1.1);
     zsign = 1;
   } else {
-    cw = Math.min(310, Math.max(250, vw * 0.19)) * CFG.cardScale;
-    radiusK = CFG.radiusK;
-    arcDepth = CFG.arcDepth;
-    persp = Math.max(800, vw * 0.85 * CFG.perspective);
+    /* Desktop: ~1.7× prior projected size (~22–26% vw), peeks + gaps, Colosseum concave. */
+    cw = Math.min(400, Math.max(320, vw * 0.28)) * CFG.cardScale;
+    radiusK = 2.55;
+    arcDepth = 0.36;
+    persp = Math.max(1200, vw * 1.05 * CFG.perspective);
     zsign = -1;
   }
   let ch = cw * CFG.cardRatio;
