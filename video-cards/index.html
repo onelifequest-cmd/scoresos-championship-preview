@@ -326,7 +326,8 @@
     position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
   }
   /* Frosted play control on every card */
-  .card__play {
+  .card__play { display: none !important; }
+  .card__play-removed {
     /* Bottom-center, clear of .card__foot title (~12px + ~18px title) */
     position: absolute; left: 50%; top: auto; bottom: 48px;
     transform: translate(-50%, 0) scale(var(--play-s, 0.72));
@@ -682,7 +683,7 @@ const CARDS = [
    Current loops are placeholders — drop Patrick's finals in assets/ and update paths here. */
 const VIDEO_BY_CARD = {
   'score-os': { webm: './assets/score-os.webm', mp4: './assets/score-os.mp4', poster: './assets/score-os-poster.jpg' },
-  'maxine': { webm: './assets/maxine.webm', mp4: './assets/maxine.mp4', poster: './assets/maxine-poster.jpg' },
+  'maxine': { webm: '', mp4: '', poster: './assets/maxine-poster.jpg' }, /* no Maxine video approved yet */
   'ai-dispute': { webm: './assets/ai-dispute.webm', mp4: './assets/ai-dispute.mp4', poster: './assets/ai-dispute-poster.jpg' },
   'ai-receptionist': { webm: './assets/ai-receptionist.webm', mp4: './assets/ai-receptionist.mp4', poster: './assets/ai-receptionist-poster.jpg' },
   'score-tracking': { webm: './assets/score-tracking.webm', mp4: './assets/score-tracking.mp4', poster: './assets/score-tracking-poster.jpg' },
@@ -813,7 +814,6 @@ function buildRing() {
             aria-hidden="true"></video>
         </div>
         <div class="card__scrim"></div>
-        <button type="button" class="card__play" aria-label="Play ${cd.title} video">${PLAY_SVG}</button>
         <span class="card__no">${pad2((i % CARDS.length) + 1)}</span>
         <div class="card__foot"><h3 class="card__title">${cd.title}</h3></div>
       </div>`;
@@ -1055,6 +1055,9 @@ function fillDetail(cd) {
   detailVideo.pause();
   detailVideo.removeAttribute('src');
   detailVideo.querySelectorAll('source').forEach(s => s.remove());
+  const hasVid = !!(src.mp4 || src.webm);
+  detailVideo.dataset.none = hasVid ? '' : '1';
+  if (hasVid) {
   const sWebm = document.createElement('source');
   sWebm.src = src.webm;
   sWebm.type = 'video/webm';
@@ -1063,8 +1066,9 @@ function fillDetail(cd) {
   sMp4.type = 'video/mp4';
   detailVideo.appendChild(sWebm);
   detailVideo.appendChild(sMp4);
+  }
   detailVideo.poster = src.poster;
-  detailVideo.load();
+  if (hasVid) detailVideo.load();
   detailLearn.href = '#';
   detailLearn.innerHTML = 'Learn more <span aria-hidden="true">→</span>';
 }
@@ -1122,7 +1126,7 @@ function openDetail(cardIndex, cardEl) {
         detailClose.focus();
         stopFrontVideo();
         // Play detail clip
-        if (!REDUCE) {
+        if (!REDUCE && detailVideo.dataset.none !== '1') {
           vidCtrl.hidden = false;
           setVidCtrlState('pause');
           const playDetail = () => {
