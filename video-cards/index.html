@@ -68,6 +68,12 @@
     font-size: var(--title-size); line-height: 1.05; letter-spacing: -.01em;
     color: var(--title-color); text-shadow: 0 1px 10px rgba(0,0,0,.35); }
 
+  /* t181u: Score OS card on pure white */
+  .card[data-card-id="score-os"] .card__inner { background: #FFFFFF; }
+  .card[data-card-id="score-os"] .card__scrim { display: none; }
+  .card[data-card-id="score-os"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
+  .card[data-card-id="score-os"] .card__title { color: #12141a; text-shadow: none; }
+  #detail-media.-white { background: #FFFFFF; }
   #frame { position: fixed; inset: 16px; z-index: 3; pointer-events: none;
     border: 1px solid var(--line-2); border-radius: 6px; }
   #frame i { position: absolute; width: 9px; height: 9px; }
@@ -1032,6 +1038,7 @@ function render() {
 }
 
 function fillDetail(cd) {
+  document.getElementById('detail-media').classList.toggle('-white', cardId(cd) === 'score-os');
   document.getElementById('detail-kicker').textContent = cd.kicker;
   document.getElementById('detail-title').textContent = cd.title;
   document.getElementById('detail-blurb').textContent = cd.blurb;
