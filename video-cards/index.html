@@ -83,6 +83,19 @@
   .card[data-card-id="maxine"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
   .card[data-card-id="maxine"] .card__title { color: #12141a; text-shadow: none; }
   #detail-media.-contain video, #detail-media.-contain img { object-fit: contain; }
+  #detail-media.-white video { background: #FFFFFF; }
+  /* card 02: video dominates the opened view */
+  #detail.-tall #vid-ctrl { left: auto; right: 12px; bottom: 12px; transform: none;
+    width: 36px; height: 36px; opacity: .72; box-shadow: 0 4px 12px rgba(0,0,0,.2); }
+  #detail.-tall #vid-ctrl svg { width: 14px; height: 14px; }
+  @media (min-width: 761px) {
+    #detail.-tall #detail-sheet { grid-template-columns: minmax(0, 470px) 1fr; height: min(92vh, 860px); }
+  }
+  @media (max-width: 760px) {
+    #detail.-tall #detail-sheet { grid-template-rows: 74vh auto; overflow-y: auto; display: block; }
+    #detail.-tall #detail-media { height: 74vh; }
+    #detail.-tall #detail-body { overflow: visible; }
+  }
   #frame { position: fixed; inset: 16px; z-index: 3; pointer-events: none;
     border: 1px solid var(--line-2); border-radius: 6px; }
   #frame i { position: absolute; width: 9px; height: 9px; }
@@ -523,13 +536,13 @@ const CARDS = [
     bullets: ['One operating system for agency work', 'Clients, monitoring, and workflows together', 'Built so your team can grow without dropping the ball']
   },
   {
-    img: 'dispute-v7-9x16-poster.webp', id: 'maxine', title: 'Maxine AI', rating: 'Agency OS', meta: 'Work Next queue',
-    kicker: 'Agency OS · Work Next queue',
-    blurb: 'Maxine’s Work Next queue picks the next client and preps their letters. Flip Manual or Fully Automatic: on Fully Automatic, as soon as a client signs up, Maxine drafts their letters so they are ready in your portal to approve and send. Drafts wait for human approval — Maxine does not file or guarantee outcomes.',
-    bullets: ['AI picks the next client and preps letters', 'Manual or Fully Automatic switch', 'Ready in your portal to approve and send']
+    img: 'dispute-v7-9x16-poster.webp', id: 'maxine', title: 'Fully Automatic Disputing', rating: 'Agency OS', meta: 'Fully Automatic',
+    kicker: 'Agency OS · Fully Automatic',
+    blurb: 'Switch to Fully Automatic Disputing. As soon as your client signs up and onboards, the rest of the process is done for you, with letters waiting for you to approve and send. A person approves every letter. Results vary; no outcome is guaranteed.',
+    bullets: ['Credit report pulled automatically', 'Negative items identified', 'Letters filled and ready', 'You review, approve & send']
   },
   {
-    img: 'ai-dispute.webp', title: 'Fully Automatic Disputing', rating: 'Agency OS', meta: 'Onboarding → mail queue',
+    img: 'ai-dispute.webp', title: 'Dispute Letter Queue', rating: 'Agency OS', meta: 'Onboarding → mail queue',
     kicker: 'Agency OS · Onboarding → mail queue',
     blurb: 'AI agents pull the report at onboarding, mark every negative item with a reason and instructions, and put the letters in the mailing queue for a person to approve. Your team stays in control of what goes out.',
     bullets: ['Report pulled at onboarding', 'Every negative item marked with a reason and instructions', 'Letters land in the mail queue for human approval']
@@ -1097,6 +1110,7 @@ function fillDetail(cd) {
   }
   detailVideo.poster = src.poster;
   document.getElementById('detail-media').classList.toggle('-contain', !!src.contain);
+  document.getElementById('detail').classList.toggle('-tall', !!src.contain);
   if (hasVid) detailVideo.load();
   detailLearn.href = '#';
   detailLearn.innerHTML = 'Learn more <span aria-hidden="true">→</span>';
