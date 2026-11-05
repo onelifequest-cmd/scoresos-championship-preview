@@ -545,8 +545,9 @@ const CARDS = [
   {
     img: 'dispute-v8-9x16-poster.webp', id: 'maxine', title: 'Fully Automatic Disputing', rating: 'Agency OS', meta: 'Fully Automatic',
     kicker: 'Agency OS · Fully Automatic',
-    blurb: 'Switch to Fully Automatic Disputing. As soon as your client signs up and onboards, the rest of the process is done for you, with letters waiting for you to approve and send. A person approves every letter. Results vary; no outcome is guaranteed.',
-    bullets: ['Credit report pulled automatically', 'Negative items identified', 'Letters filled and ready', 'You review, approve & send']
+    lead: 'Your client signs up. Scores OS takes it from there.',
+    blurb: "The report pulls itself, every negative item gets flagged, and the letters are built and ready, all before you've touched a thing. All that's left is one click: approve and send.",
+    bullets: ['Credit report pulled the moment they onboard', 'Every negative item found in seconds', 'Letters filled, stacked and ready to go', "You approve and send, that's it"]
   },
   {
     img: 'ai-dispute.webp', title: 'Dispute Letter Queue', rating: 'Agency OS', meta: 'Onboarding → mail queue',
@@ -1083,7 +1084,8 @@ function fillDetail(cd) {
   document.getElementById('detail-media').classList.toggle('-white', cardId(cd) === 'score-os' || !!(VIDEO_BY_CARD[cardId(cd)] || {}).contain);
   document.getElementById('detail-kicker').textContent = cd.kicker;
   document.getElementById('detail-title').textContent = cd.title;
-  document.getElementById('detail-blurb').textContent = cd.blurb;
+  { const bl = document.getElementById('detail-blurb'); bl.textContent = cd.blurb;
+    if (cd.lead) { const st = document.createElement('strong'); st.textContent = cd.lead; st.style.color = 'var(--ink)'; bl.prepend(st, ' '); } }
   const stepsEl = document.getElementById('detail-steps');
   const ul = document.getElementById('detail-bullets');
   if (cd.steps && cd.steps.length) {
