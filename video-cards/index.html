@@ -443,6 +443,10 @@
   #vid-ctrl svg { width: 20px; height: 20px; fill: #fff; pointer-events: none; }
   #vid-ctrl[data-state="play"] svg { margin-left: 2px; }
 
+  /* Card 2 centered text (swipe face + opened view) */
+  .card[data-card-id="maxine"] .card__foot { text-align: center; }
+  #detail.-c2 #detail-kicker, #detail.-c2 #detail-title, #detail.-c2 #detail-blurb { text-align: center; }
+  #detail.-c2 #detail-bullets { width: fit-content; max-width: 100%; margin-left: auto; margin-right: auto; text-align: left; }
   /* Card 2 (maxine) opened-view styling */
   #detail-title.c2t { font-family: 'Inter', -apple-system, system-ui, sans-serif !important; font-weight: 800;
     font-size: clamp(34px, 9.6vw, 46px); line-height: 1.02; letter-spacing: -0.03em; color: #12141a; }
@@ -450,7 +454,7 @@
     background: linear-gradient(100deg, #014A1D 0%, #025D25 45%, #C99A0E 82%, #E0AC12 100%);
     -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .05em; }
   .c2t .l2 { display: block; white-space: nowrap; }
-  .c2t .bolt { width: .5em; height: .62em; margin-left: .12em; vertical-align: .38em; }
+  .c2t .bolt { position: absolute; right: -.62em; top: -.08em; width: .5em; height: .62em; }
   .send-ic { display: inline-block; width: 1.05em; height: 1.05em; margin-left: .3em; vertical-align: -0.17em; color: #014A1D; }
   #detail.-c2 .c2t .l1 .sh { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
   #detail.-c2 .c2t .l1 .sh::before { content: ''; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%;
@@ -1106,7 +1110,7 @@ function fillDetail(cd) {
   const SEND = '<svg class="send-ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M21.5 2.5 10.6 13.4"/><path d="M21.5 2.5 14.6 21.5l-4-8.1-8.1-4z" fill="#FCC325" fill-opacity=".9"/></svg>';
   const tEl = document.getElementById('detail-title');
   tEl.classList.toggle('c2t', isC2);
-  if (isC2) tEl.innerHTML = '<span class="l1">Fully Automatic<span class="sh"></span></span><svg class="bolt" viewBox="0 0 16 20" aria-hidden="true"><path d="M9.5 0 1 11.5h6L5.5 20 15 7.5H9z" fill="#FCC325" stroke="#014A1D" stroke-width="1.2" stroke-linejoin="round"/></svg><span class="l2">Disputing</span>';
+  if (isC2) tEl.innerHTML = '<span class="l1">Fully Automatic<span class="sh"></span><svg class="bolt" viewBox="0 0 16 20" aria-hidden="true"><path d="M9.5 0 1 11.5h6L5.5 20 15 7.5H9z" fill="#FCC325" stroke="#014A1D" stroke-width="1.2" stroke-linejoin="round"/></svg></span><span class="l2">Disputing</span>';
   else tEl.textContent = cd.title;
   const det = document.getElementById('detail'); det.classList.remove('-c2'); void det.offsetWidth; det.classList.toggle('-c2', isC2);
   { const bl = document.getElementById('detail-blurb'); bl.textContent = cd.blurb;
