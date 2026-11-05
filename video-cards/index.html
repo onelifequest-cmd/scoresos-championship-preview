@@ -82,6 +82,13 @@
   .card[data-card-id="maxine"] .card__media img.-dim { opacity: 1; }
   .card[data-card-id="maxine"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
   .card[data-card-id="maxine"] .card__title { color: #12141a; text-shadow: none; }
+  .card[data-card-id="goal-based-strategies"] .card__inner { background: #FFFFFF; }
+  .card[data-card-id="goal-based-strategies"] .card__scrim { display: none; }
+  .card[data-card-id="goal-based-strategies"] .card__media img,
+  .card[data-card-id="goal-based-strategies"] .card__media video { object-fit: contain; background: #FFFFFF; }
+  .card[data-card-id="goal-based-strategies"] .card__media img.-dim { opacity: 1; }
+  .card[data-card-id="goal-based-strategies"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
+  .card[data-card-id="goal-based-strategies"] .card__title { color: #12141a; text-shadow: none; }
   #detail-media.-contain video, #detail-media.-contain img { object-fit: contain; }
   #detail-media.-white video { background: #FFFFFF; }
   /* card 02: video dominates the opened view */
@@ -536,7 +543,7 @@ const CARDS = [
     bullets: ['One operating system for agency work', 'Clients, monitoring, and workflows together', 'Built so your team can grow without dropping the ball']
   },
   {
-    img: 'dispute-v7-9x16-poster.webp', id: 'maxine', title: 'Fully Automatic Disputing', rating: 'Agency OS', meta: 'Fully Automatic',
+    img: 'dispute-v8-9x16-poster.webp', id: 'maxine', title: 'Fully Automatic Disputing', rating: 'Agency OS', meta: 'Fully Automatic',
     kicker: 'Agency OS · Fully Automatic',
     blurb: 'Switch to Fully Automatic Disputing. As soon as your client signs up and onboards, the rest of the process is done for you, with letters waiting for you to approve and send. A person approves every letter. Results vary; no outcome is guaranteed.',
     bullets: ['Credit report pulled automatically', 'Negative items identified', 'Letters filled and ready', 'You review, approve & send']
@@ -548,7 +555,7 @@ const CARDS = [
     bullets: ['Report pulled at onboarding', 'Every negative item marked with a reason and instructions', 'Letters land in the mail queue for human approval']
   },
   {
-    img: 'goal-based-strategies.webp', title: 'Custom Game Plan', rating: 'Both', meta: 'Personal plan',
+    img: 'game-plan-v2-9x16-poster.webp', id: 'goal-based-strategies', title: 'Custom Game Plan', rating: 'Both', meta: 'Personal plan',
     kicker: 'Agency OS · DIY OS · Personal plan',
     blurb: 'Every user gets a personal plan to start and grow their business, based on their experience. Plans can also organize client goals like mortgage readiness, a new car, or personal and business funding. Strategies support preparation — they do not guarantee loan approval, funding, or credit outcomes.',
     bullets: ['Personal plan based on experience', 'Mortgage, car, and funding goals in the detail', 'Checklists your team can walk through together'],
@@ -713,7 +720,7 @@ const VIDEO_BY_CARD = {
   'score-os': { webm: './assets/score-os.webm', mp4: './assets/score-os.mp4', poster: './assets/score-os-poster.jpg' },
   /* v7 dispute clip (approved by Patrick). Card is portrait → 9x16 on the card everywhere;
      detail panel is portrait too, so 9x16 there as well (16x9 files kept in assets/ for later). Old maxine.* kept. */
-  'maxine': { webm: '', mp4: './assets/dispute-v7-9x16.mp4', poster: './assets/dispute-v7-9x16-poster.jpg',
+  'maxine': { webm: '', mp4: './assets/dispute-v8-9x16.mp4', poster: './assets/dispute-v8-9x16-poster.jpg',
               contain: true, autoplay: true },
   'ai-dispute': { webm: './assets/ai-dispute.webm', mp4: './assets/ai-dispute.mp4', poster: './assets/ai-dispute-poster.jpg' },
   'ai-receptionist': { webm: './assets/ai-receptionist.webm', mp4: './assets/ai-receptionist.mp4', poster: './assets/ai-receptionist-poster.jpg' },
@@ -721,7 +728,8 @@ const VIDEO_BY_CARD = {
   'credit-monitoring': { webm: './assets/credit-monitoring.webm', mp4: './assets/credit-monitoring.mp4', poster: './assets/credit-monitoring-poster.jpg' },
   'three-bureau': { webm: './assets/three-bureau.webm', mp4: './assets/three-bureau.mp4', poster: './assets/three-bureau-poster.jpg' },
   'smartcredit-compatible': { webm: './assets/smartcredit-compatible.webm', mp4: './assets/smartcredit-compatible.mp4', poster: './assets/smartcredit-compatible-poster.jpg' },
-  'goal-based-strategies': { webm: './assets/goal-based-strategies.webm', mp4: './assets/goal-based-strategies.mp4', poster: './assets/goal-based-strategies-poster.jpg' },
+  /* Custom Game Plan v2 clip (approved). Old goal-based-strategies.* kept in assets/. */
+  'goal-based-strategies': { webm: '', mp4: './assets/game-plan-v2-9x16.mp4', poster: './assets/game-plan-v2-9x16-poster.jpg', contain: true, autoplay: true },
   'funding-in-app': { webm: './assets/funding-in-app.webm', mp4: './assets/funding-in-app.mp4', poster: './assets/funding-in-app-poster.jpg' },
   'client-portal-app': { webm: './assets/client-portal-app.webm', mp4: './assets/client-portal-app.mp4', poster: './assets/client-portal-app-poster.jpg' },
   'messaging': { webm: './assets/messaging.webm', mp4: './assets/messaging.mp4', poster: './assets/messaging-poster.jpg' },
@@ -1072,7 +1080,7 @@ function render() {
 }
 
 function fillDetail(cd) {
-  document.getElementById('detail-media').classList.toggle('-white', cardId(cd) === 'score-os' || cardId(cd) === 'maxine');
+  document.getElementById('detail-media').classList.toggle('-white', cardId(cd) === 'score-os' || !!(VIDEO_BY_CARD[cardId(cd)] || {}).contain);
   document.getElementById('detail-kicker').textContent = cd.kicker;
   document.getElementById('detail-title').textContent = cd.title;
   document.getElementById('detail-blurb').textContent = cd.blurb;
