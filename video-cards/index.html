@@ -74,6 +74,15 @@
   .card[data-card-id="score-os"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
   .card[data-card-id="score-os"] .card__title { color: #12141a; text-shadow: none; }
   #detail-media.-white { background: #FFFFFF; }
+  /* v7 dispute clip replaces card 02 image: white card, whole frame visible (contain) */
+  .card[data-card-id="maxine"] .card__inner { background: #FFFFFF; }
+  .card[data-card-id="maxine"] .card__scrim { display: none; }
+  .card[data-card-id="maxine"] .card__media img,
+  .card[data-card-id="maxine"] .card__media video { object-fit: contain; background: #FFFFFF; }
+  .card[data-card-id="maxine"] .card__media img.-dim { opacity: 1; }
+  .card[data-card-id="maxine"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
+  .card[data-card-id="maxine"] .card__title { color: #12141a; text-shadow: none; }
+  #detail-media.-contain video, #detail-media.-contain img { object-fit: contain; }
   #frame { position: fixed; inset: 16px; z-index: 3; pointer-events: none;
     border: 1px solid var(--line-2); border-radius: 6px; }
   #frame i { position: absolute; width: 9px; height: 9px; }
@@ -514,7 +523,7 @@ const CARDS = [
     bullets: ['One operating system for agency work', 'Clients, monitoring, and workflows together', 'Built so your team can grow without dropping the ball']
   },
   {
-    img: 'maxine.webp', title: 'Maxine AI', rating: 'Agency OS', meta: 'Work Next queue',
+    img: 'dispute-v7-9x16-poster.webp', id: 'maxine', title: 'Maxine AI', rating: 'Agency OS', meta: 'Work Next queue',
     kicker: 'Agency OS · Work Next queue',
     blurb: 'Maxine’s Work Next queue picks the next client and preps their letters. Flip Manual or Fully Automatic: on Fully Automatic, as soon as a client signs up, Maxine drafts their letters so they are ready in your portal to approve and send. Drafts wait for human approval — Maxine does not file or guarantee outcomes.',
     bullets: ['AI picks the next client and preps letters', 'Manual or Fully Automatic switch', 'Ready in your portal to approve and send']
@@ -524,6 +533,20 @@ const CARDS = [
     kicker: 'Agency OS · Onboarding → mail queue',
     blurb: 'AI agents pull the report at onboarding, mark every negative item with a reason and instructions, and put the letters in the mailing queue for a person to approve. Your team stays in control of what goes out.',
     bullets: ['Report pulled at onboarding', 'Every negative item marked with a reason and instructions', 'Letters land in the mail queue for human approval']
+  },
+  {
+    img: 'goal-based-strategies.webp', title: 'Custom Game Plan', rating: 'Both', meta: 'Personal plan',
+    kicker: 'Agency OS · DIY OS · Personal plan',
+    blurb: 'Every user gets a personal plan to start and grow their business, based on their experience. Plans can also organize client goals like mortgage readiness, a new car, or personal and business funding. Strategies support preparation — they do not guarantee loan approval, funding, or credit outcomes.',
+    bullets: ['Personal plan based on experience', 'Mortgage, car, and funding goals in the detail', 'Checklists your team can walk through together'],
+    steps: [
+      'Capture the user’s experience and business stage.',
+      'Build a personal start-and-grow plan from that baseline.',
+      'Optionally layer mortgage, auto, or funding goals for clients.',
+      'Review report data and open items together.',
+      'Track progress notes inside the file.',
+      'Update the plan as monitoring data changes.'
+    ]
   },
   {
     img: 'ai-receptionist.webp', title: 'AI Sales Receptionist', rating: 'Agency OS', meta: 'Sales psychology',
@@ -554,20 +577,6 @@ const CARDS = [
     kicker: 'Agency OS · DIY OS · Report import',
     blurb: 'Existing SmartCredit reports pull straight into Score OS so your team can keep working from one place. Import is for your workflow — it does not change bureau data on its own.',
     bullets: ['Pull existing SmartCredit reports into Score OS', 'Keep monitoring and disputes in one workspace', 'No third-party logos — just a clean import path']
-  },
-  {
-    img: 'goal-based-strategies.webp', title: 'Custom Game Plan', rating: 'Both', meta: 'Personal plan',
-    kicker: 'Agency OS · DIY OS · Personal plan',
-    blurb: 'Every user gets a personal plan to start and grow their business, based on their experience. Plans can also organize client goals like mortgage readiness, a new car, or personal and business funding. Strategies support preparation — they do not guarantee loan approval, funding, or credit outcomes.',
-    bullets: ['Personal plan based on experience', 'Mortgage, car, and funding goals in the detail', 'Checklists your team can walk through together'],
-    steps: [
-      'Capture the user’s experience and business stage.',
-      'Build a personal start-and-grow plan from that baseline.',
-      'Optionally layer mortgage, auto, or funding goals for clients.',
-      'Review report data and open items together.',
-      'Track progress notes inside the file.',
-      'Update the plan as monitoring data changes.'
-    ]
   },
   {
     img: 'funding-in-app.webp', title: 'Funding in the App', rating: 'Both', meta: 'Applications & alerts',
@@ -689,7 +698,10 @@ const CARDS = [
    Current loops are placeholders — drop Patrick's finals in assets/ and update paths here. */
 const VIDEO_BY_CARD = {
   'score-os': { webm: './assets/score-os.webm', mp4: './assets/score-os.mp4', poster: './assets/score-os-poster.jpg' },
-  'maxine': { webm: '', mp4: '', poster: './assets/maxine-poster.jpg' }, /* no Maxine video approved yet */
+  /* v7 dispute clip (approved by Patrick). Card is portrait → 9x16 on the card everywhere;
+     detail panel is portrait too, so 9x16 there as well (16x9 files kept in assets/ for later). Old maxine.* kept. */
+  'maxine': { webm: '', mp4: './assets/dispute-v7-9x16.mp4', poster: './assets/dispute-v7-9x16-poster.jpg',
+              contain: true, autoplay: true },
   'ai-dispute': { webm: './assets/ai-dispute.webm', mp4: './assets/ai-dispute.mp4', poster: './assets/ai-dispute-poster.jpg' },
   'ai-receptionist': { webm: './assets/ai-receptionist.webm', mp4: './assets/ai-receptionist.mp4', poster: './assets/ai-receptionist-poster.jpg' },
   'score-tracking': { webm: './assets/score-tracking.webm', mp4: './assets/score-tracking.mp4', poster: './assets/score-tracking-poster.jpg' },
@@ -961,6 +973,7 @@ function playFrontVideo(cardEl) {
   stopFrontVideo();
   const vid = ensureCardVideo(cardEl);
   if (!vid) return;
+  vid.muted = true; vid.defaultMuted = true; vid.playsInline = true;
   frontVideoEl = vid;
   const img = vid.parentElement.querySelector('img');
   const tryPlay = () => {
@@ -1016,6 +1029,14 @@ function render() {
     if (neu && !detailOpen) {
       const playBtn = neu.querySelector('.card__play');
       if (playBtn && !REDUCE) playBtn.classList.add('-pulse');
+      /* Autoplay cards flagged in VIDEO_BY_CARD (v7 dispute clip): muted inline, from 0s */
+      const v = VIDEO_BY_CARD[neu.dataset.cardId];
+      if (v && v.autoplay) {
+        clearTimeout(window.__apT);
+        window.__apT = setTimeout(() => {
+          if (!detailOpen && neu.classList.contains('-front')) playFrontVideo(neu);
+        }, 120);
+      }
     }
   }
   const ci = fs % CARDS.length;
@@ -1038,7 +1059,7 @@ function render() {
 }
 
 function fillDetail(cd) {
-  document.getElementById('detail-media').classList.toggle('-white', cardId(cd) === 'score-os');
+  document.getElementById('detail-media').classList.toggle('-white', cardId(cd) === 'score-os' || cardId(cd) === 'maxine');
   document.getElementById('detail-kicker').textContent = cd.kicker;
   document.getElementById('detail-title').textContent = cd.title;
   document.getElementById('detail-blurb').textContent = cd.blurb;
@@ -1053,7 +1074,7 @@ function fillDetail(cd) {
     stepsEl.innerHTML = '';
     ul.innerHTML = cd.bullets.map(b => '<li>'+b+'</li>').join('');
   }
-  const src = videoFor(cd);
+  let src = videoFor(cd);
   detailImg.src = src.poster;
   detailImg.alt = cd.title;
   detailFlyImg.src = ASSET_BASE_URL + '/' + cd.img;
@@ -1071,10 +1092,11 @@ function fillDetail(cd) {
   const sMp4 = document.createElement('source');
   sMp4.src = src.mp4;
   sMp4.type = 'video/mp4';
-  detailVideo.appendChild(sWebm);
+  if (src.webm) detailVideo.appendChild(sWebm);
   detailVideo.appendChild(sMp4);
   }
   detailVideo.poster = src.poster;
+  document.getElementById('detail-media').classList.toggle('-contain', !!src.contain);
   if (hasVid) detailVideo.load();
   detailLearn.href = '#';
   detailLearn.innerHTML = 'Learn more <span aria-hidden="true">→</span>';
