@@ -96,6 +96,13 @@
   .card[data-card-id="funding-in-app"] .card__media img.-dim { opacity: 1; }
   .card[data-card-id="funding-in-app"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
   .card[data-card-id="funding-in-app"] .card__title { color: #12141a; text-shadow: none; }
+  .card[data-card-id="ai-receptionist"] .card__inner { background: #FFFFFF; }
+  .card[data-card-id="ai-receptionist"] .card__scrim { display: none; }
+  .card[data-card-id="ai-receptionist"] .card__media img,
+  .card[data-card-id="ai-receptionist"] .card__media video { object-fit: contain; background: #FFFFFF; }
+  .card[data-card-id="ai-receptionist"] .card__media img.-dim { opacity: 1; }
+  .card[data-card-id="ai-receptionist"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
+  .card[data-card-id="ai-receptionist"] .card__title { color: #12141a; text-shadow: none; }
   #detail-media.-contain video, #detail-media.-contain img { object-fit: contain; }
   #detail-media.-white video { background: #FFFFFF; }
   /* card 02: video dominates the opened view */
@@ -603,7 +610,7 @@ const CARDS = [
     bullets: ['Submit funding applications for review', 'Automatic opportunities and qualify alerts', 'New credit strategy after every round']
   },
   {
-    img: 'ai-receptionist.webp', title: 'AI Sales Receptionist', rating: 'Agency OS', meta: 'Sales psychology',
+    img: 'receptionist-v4-9x16-poster.webp', id: 'ai-receptionist', title: 'AI Sales Receptionist', rating: 'Agency OS', meta: 'Sales psychology',
     kicker: 'Agency OS · Sales psychology',
     blurb: 'Trained in sales psychology: answers calls, qualifies leads, and helps close. Can make outbound calls to affiliates or to collect past-due invoices. Maxine also updates any client who calls in about the status of their credit file. Your team can take over any conversation.',
     bullets: ['Answers, qualifies, and helps close', 'Outbound to affiliates or past-due collections', 'Credit-file status updates when clients call in']
@@ -751,7 +758,8 @@ const VIDEO_BY_CARD = {
   'maxine': { webm: '', mp4: './assets/dispute-v8-9x16.mp4', poster: './assets/dispute-v8-9x16-poster.jpg',
               contain: true, autoplay: true },
   'ai-dispute': { webm: './assets/ai-dispute.webm', mp4: './assets/ai-dispute.mp4', poster: './assets/ai-dispute-poster.jpg' },
-  'ai-receptionist': { webm: './assets/ai-receptionist.webm', mp4: './assets/ai-receptionist.mp4', poster: './assets/ai-receptionist-poster.jpg' },
+  /* Receptionist v4 clip (approved by Patrick). Old ai-receptionist.* kept in assets/. */
+  'ai-receptionist': { webm: '', mp4: './assets/receptionist-v4-9x16.mp4', poster: './assets/receptionist-v4-9x16-poster.jpg', contain: true, autoplay: true },
   'score-tracking': { webm: './assets/score-tracking.webm', mp4: './assets/score-tracking.mp4', poster: './assets/score-tracking-poster.jpg' },
   'credit-monitoring': { webm: './assets/credit-monitoring.webm', mp4: './assets/credit-monitoring.mp4', poster: './assets/credit-monitoring-poster.jpg' },
   'three-bureau': { webm: './assets/three-bureau.webm', mp4: './assets/three-bureau.mp4', poster: './assets/three-bureau-poster.jpg' },
