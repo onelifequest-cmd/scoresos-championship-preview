@@ -117,6 +117,13 @@
   .card[data-card-id="marketing-os"] .card__media img.-dim { opacity: 1; }
   .card[data-card-id="marketing-os"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
   .card[data-card-id="marketing-os"] .card__title { color: #12141a; text-shadow: none; }
+  .card[data-card-id="outsource-portal"] .card__inner { background: #FFFFFF; }
+  .card[data-card-id="outsource-portal"] .card__scrim { display: none; }
+  .card[data-card-id="outsource-portal"] .card__media img,
+  .card[data-card-id="outsource-portal"] .card__media video { object-fit: contain; background: #FFFFFF; }
+  .card[data-card-id="outsource-portal"] .card__media img.-dim { opacity: 1; }
+  .card[data-card-id="outsource-portal"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
+  .card[data-card-id="outsource-portal"] .card__title { color: #12141a; text-shadow: none; }
   #detail-media.-contain video, #detail-media.-contain img { object-fit: contain; }
   #detail-media.-white video { background: #FFFFFF; }
   /* card 02: video dominates the opened view */
@@ -644,6 +651,13 @@ const CARDS = [
     bullets: ['Free HighLevel sub-account with your software', 'Fully loaded with credit-repair automations', '100% customizable']
   },
   {
+    img: 'outsource-portal-v1-9x16-poster.webp', id: 'outsource-portal', title: 'Outsource Portal', rating: 'Agency OS', meta: 'Affiliate desk',
+    kicker: 'Agency OS · Affiliate desk',
+    lead: 'Outsource to multiple agencies — or run it as your affiliate portal.',
+    blurb: 'Connect outsourcers and hand off client work without sharing your account. It works great for outsourcing to multiple agencies, and it works as an affiliate portal too — every invitation and assignment is tracked inside Score OS.',
+    bullets: ['Outsource to multiple agencies', 'Works as an affiliate portal', 'Hand off work without sharing your login']
+  },
+  {
     img: 'score-tracking.webp', title: 'Score Tracking', rating: 'Both', meta: 'Example scoreboard',
     kicker: 'Agency OS · DIY OS · Example scoreboard',
     blurb: 'A sample credit monitoring scoreboard with Equifax, Experian, TransUnion views, history, and report updates. Any scores shown are fictional examples — Score OS helps you organize monitoring, not promise a specific score change.',
@@ -728,12 +742,6 @@ const CARDS = [
     bullets: ['Create and send client invoices', 'Track payment status on the file', 'Fewer handoffs between billing and account managers']
   },
   {
-    img: 'outsource-portal.webp', title: 'Outsource Portal', rating: 'Agency OS', meta: 'Affiliate desk',
-    kicker: 'Agency OS · Affiliate desk',
-    blurb: 'Outsourcers and affiliates get their own desk to receive, assign, and work agency clients — so partner capacity stays organized inside Score OS.',
-    bullets: ['Dedicated desk for outsourcers and affiliates', 'Receive and assign agency clients', 'Work stays inside Score OS']
-  },
-  {
     img: 'mail-print-queue.webp', title: 'Mail & Print Queue', rating: 'Agency OS', meta: 'Print · mail · track',
     kicker: 'Agency OS · Print · mail · track',
     blurb: 'Letters print and mail from inside the app, with tracking — so dispute mail does not live in a separate tool.',
@@ -805,7 +813,8 @@ const VIDEO_BY_CARD = {
   'referral-tracking': { webm: './assets/referral-tracking.webm', mp4: './assets/referral-tracking.mp4', poster: './assets/referral-tracking-poster.jpg' },
   'agency-crm': { webm: './assets/agency-crm.webm', mp4: './assets/agency-crm.mp4', poster: './assets/agency-crm-poster.jpg' },
   'invoicing': { webm: './assets/invoicing.webm', mp4: './assets/invoicing.mp4', poster: './assets/invoicing-poster.jpg' },
-  'outsource-portal': { webm: './assets/outsource-portal.webm', mp4: './assets/outsource-portal.mp4', poster: './assets/outsource-portal-poster.jpg' },
+  /* Outsource Portal v1 clip (agency Outsourcing UI). Old outsource-portal.* kept in assets/. */
+  'outsource-portal': { webm: '', mp4: './assets/outsource-portal-v1-9x16.mp4', poster: './assets/outsource-portal-v1-9x16-poster.jpg', contain: true, autoplay: true },
   'mail-print-queue': { webm: './assets/mail-print-queue.webm', mp4: './assets/mail-print-queue.mp4', poster: './assets/mail-print-queue-poster.jpg' },
   'owner-dashboard': { webm: './assets/owner-dashboard.webm', mp4: './assets/owner-dashboard.mp4', poster: './assets/owner-dashboard-poster.jpg' },
   'mentorship': { webm: './assets/mentorship.webm', mp4: './assets/mentorship.mp4', poster: './assets/mentorship-poster.jpg' },
