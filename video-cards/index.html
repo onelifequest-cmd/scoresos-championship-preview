@@ -103,6 +103,20 @@
   .card[data-card-id="ai-receptionist"] .card__media img.-dim { opacity: 1; }
   .card[data-card-id="ai-receptionist"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
   .card[data-card-id="ai-receptionist"] .card__title { color: #12141a; text-shadow: none; }
+  .card[data-card-id="score-marketplace"] .card__inner { background: #FFFFFF; }
+  .card[data-card-id="score-marketplace"] .card__scrim { display: none; }
+  .card[data-card-id="score-marketplace"] .card__media img,
+  .card[data-card-id="score-marketplace"] .card__media video { object-fit: contain; background: #FFFFFF; }
+  .card[data-card-id="score-marketplace"] .card__media img.-dim { opacity: 1; }
+  .card[data-card-id="score-marketplace"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
+  .card[data-card-id="score-marketplace"] .card__title { color: #12141a; text-shadow: none; }
+  .card[data-card-id="marketing-os"] .card__inner { background: #FFFFFF; }
+  .card[data-card-id="marketing-os"] .card__scrim { display: none; }
+  .card[data-card-id="marketing-os"] .card__media img,
+  .card[data-card-id="marketing-os"] .card__media video { object-fit: contain; background: #FFFFFF; }
+  .card[data-card-id="marketing-os"] .card__media img.-dim { opacity: 1; }
+  .card[data-card-id="marketing-os"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
+  .card[data-card-id="marketing-os"] .card__title { color: #12141a; text-shadow: none; }
   #detail-media.-contain video, #detail-media.-contain img { object-fit: contain; }
   #detail-media.-white video { background: #FFFFFF; }
   /* card 02: video dominates the opened view */
@@ -616,6 +630,13 @@ const CARDS = [
     bullets: ['Answers, qualifies, and helps close', 'Outbound to affiliates or past-due collections', 'Credit-file status updates when clients call in']
   },
   {
+    img: 'marketplace-v2-9x16-poster.webp', id: 'score-marketplace', title: 'Score Marketplace', rating: 'Agency OS', meta: 'Agency Growth Suite',
+    kicker: 'Agency OS · Agency Growth Suite',
+    lead: 'Everything you need to scale — without burning out.',
+    blurb: 'Staff up without hiring a team, get a website or funnel built for you, plug in automations starting at $50, and apply for RISE Mentorship. Not sure where to start? Book a free strategy call.',
+    bullets: ['Staff up without hiring a team', 'Get a website ($350) or funnel ($250) built for you', 'Automations starting at $50', 'RISE Mentorship and a free strategy call']
+  },
+  {
     img: 'score-tracking.webp', title: 'Score Tracking', rating: 'Both', meta: 'Example scoreboard',
     kicker: 'Agency OS · DIY OS · Example scoreboard',
     blurb: 'A sample credit monitoring scoreboard with Equifax, Experian, TransUnion views, history, and report updates. Any scores shown are fictional examples — Score OS helps you organize monitoring, not promise a specific score change.',
@@ -670,10 +691,11 @@ const CARDS = [
     bullets: ['Ready agency website templates', 'Preview how your site can look', 'Tied into the rest of Score OS']
   },
   {
-    img: 'marketing.webp', title: 'Marketing OS', rating: 'Agency OS', meta: 'White-label HighLevel',
-    kicker: 'Agency OS · White-label HighLevel',
-    blurb: 'A white-label HighLevel account with ready-made texts and emails for moments like round sent, item deleted, and missing documents — plus the kind of automations and nurture campaigns top credit repair and funding companies run.',
-    bullets: ['White-label HighLevel account', 'Ready texts and emails for key moments', 'Automations and nurture campaigns like top companies run']
+    img: 'marketing-os-v1-9x16-poster.webp', id: 'marketing-os', title: 'Marketing OS', rating: 'Agency OS', meta: 'HighLevel included',
+    kicker: 'Agency OS · White-label HighLevel included',
+    lead: 'A free HighLevel account comes with the software.',
+    blurb: 'It’s fully loaded with automations for the moments that matter — welcome, round sent, item deleted, missing documents, failed payment, and more — and it’s 100% customizable.',
+    bullets: ['Free HighLevel sub-account with your software', 'Fully loaded with credit-repair automations', '100% customizable']
   },
   {
     img: 'automations.webp', title: 'Automations', rating: 'Agency OS', meta: 'Workflows',
@@ -760,6 +782,10 @@ const VIDEO_BY_CARD = {
   'ai-dispute': { webm: './assets/ai-dispute.webm', mp4: './assets/ai-dispute.mp4', poster: './assets/ai-dispute-poster.jpg' },
   /* Receptionist v4 clip (approved by Patrick). Old ai-receptionist.* kept in assets/. */
   'ai-receptionist': { webm: '', mp4: './assets/receptionist-v5-9x16.mp4', poster: './assets/receptionist-v5-9x16-poster.jpg', contain: true, autoplay: true },
+  /* Marketplace v2 clip (no company name). */
+  'score-marketplace': { webm: '', mp4: './assets/marketplace-v2-9x16.mp4', poster: './assets/marketplace-v2-9x16-poster.jpg', contain: true, autoplay: true },
+  /* Marketing OS v1 clip (real HighLevel workflows UI). Old marketing.* kept in assets/. */
+  'marketing-os': { webm: '', mp4: './assets/marketing-os-v1-9x16.mp4', poster: './assets/marketing-os-v1-9x16-poster.jpg', contain: true, autoplay: true },
   'score-tracking': { webm: './assets/score-tracking.webm', mp4: './assets/score-tracking.mp4', poster: './assets/score-tracking-poster.jpg' },
   'credit-monitoring': { webm: './assets/credit-monitoring.webm', mp4: './assets/credit-monitoring.mp4', poster: './assets/credit-monitoring-poster.jpg' },
   'three-bureau': { webm: './assets/three-bureau.webm', mp4: './assets/three-bureau.mp4', poster: './assets/three-bureau-poster.jpg' },
