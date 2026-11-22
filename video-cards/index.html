@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,400;0,9..144,500;1,9..144,340&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; background: #f4f6fa; overflow: hidden;
+  html, body { margin: 0; background: #f4f6fa; overflow-x: hidden;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
   #section { position: fixed; inset: 0;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
@@ -523,6 +523,64 @@
   @keyframes c2fly { from { opacity: 0; transform: translate(-10px, 5px) rotate(-8deg); } to { opacity: 1; transform: none; } }
   @keyframes c2float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2.5px); } }
   @media (prefers-reduced-motion: reduce) { #detail.-c2 .send-ic, #detail.-c2 .c2t .l1 .sh::before { animation: none !important; } }
+
+  /* ===== Page scroll: carousel is a 100svh hero; fixed chrome is contained by #section (transform). ===== */
+  #section { position: relative; inset: auto; height: 100vh; height: 100svh; overflow: hidden; transform: translateZ(0); }
+  #stage { touch-action: pan-y; }  /* vertical swipe scrolls to the feature section; horizontal drag still spins */
+  html.-detail-open, html.-detail-open body { overflow: hidden; }
+  #more-cue { position: fixed; left: 50%; bottom: max(7px, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 7;
+    font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; font-weight: 700; color: var(--accent);
+    text-decoration: none; white-space: nowrap; padding: 4px 10px; }
+  #more-cue span { display: inline-block; animation: cueBob 1.8s ease-in-out infinite; }
+  @keyframes cueBob { 50% { transform: translateY(3px); } }
+  @media (min-width: 761px) { #dock { padding-bottom: calc(clamp(22px, 4vh, 40px) + 16px); } }
+  @media (prefers-reduced-motion: reduce) { #more-cue span { animation: none; } }
+
+  /* ===== More-info section ===== */
+  #features { --fg: #014A1D; --fg2: #025D25; --gold: #FCC325;
+    background: var(--fg); color: #fff; font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
+  .ft-intro { text-align: center; padding: 64px 22px 44px; max-width: 680px; margin: 0 auto; }
+  .ft-eyebrow { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .26em; text-transform: uppercase;
+    color: var(--gold); }
+  .ft-intro h2 { margin: 14px 0 0; font-family: 'Fraunces', Georgia, serif; font-weight: 400; font-size: clamp(30px, 8vw, 48px);
+    line-height: 1.08; letter-spacing: -.015em; text-wrap: balance; }
+  .ft-intro p { margin: 14px auto 0; max-width: 32em; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,.78); }
+  .fblock { scroll-margin-top: 0; padding: 52px 22px; border-top: 1px solid rgba(252,195,37,.16); }
+  .fblock:nth-of-type(even) { background: var(--fg2); }
+  .fblock__in { max-width: 640px; margin: 0 auto; text-align: center; }
+  .fblock__kick { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--gold); }
+  .fblock__kick b { font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0;
+    padding: 3px 9px; border: 1px solid rgba(252,195,37,.5); border-radius: 999px; }
+  .fblock h3 { margin: 14px 0 0; font-family: 'Fraunces', Georgia, serif; font-weight: 400; font-size: clamp(27px, 7.2vw, 42px);
+    line-height: 1.1; letter-spacing: -.012em; color: #fff; text-wrap: balance; overflow-wrap: break-word; }
+  .fblock p { margin: 16px auto 0; max-width: 34em; font-size: 16px; line-height: 1.62; color: rgba(255,255,255,.84); }
+  .fblock ul { list-style: none; margin: 24px auto 0; padding: 18px 18px; max-width: 520px; text-align: left;
+    background: rgba(0,0,0,.16); border: 1px solid rgba(252,195,37,.22); border-radius: 16px; display: grid; gap: 12px; }
+  .fblock li { position: relative; padding-left: 30px; font-size: 15px; line-height: 1.45; font-weight: 500; color: #fff; }
+  .fblock li::before { content: ''; position: absolute; left: 0; top: 2px; width: 19px; height: 19px; border-radius: 50%;
+    background: var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 7' fill='none' stroke='%23014A1D' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/13px no-repeat; }
+  .signup { display: inline-flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none;
+    background: var(--gold); color: var(--fg); font-weight: 800; letter-spacing: .01em; border-radius: 999px;
+    box-shadow: 0 10px 28px -10px rgba(252,195,37,.55), inset 0 -2px 0 rgba(0,0,0,.12);
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
+  .signup:hover { transform: translateY(-2px); background: #ffd24d; box-shadow: 0 16px 34px -12px rgba(252,195,37,.7); }
+  .signup:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  .signup.-sm { margin-top: 26px; font-size: 15px; padding: 13px 26px; }
+  .signup.-lg { width: 100%; max-width: 380px; font-size: 19px; padding: 19px 32px; }
+  .ft-cta { text-align: center; padding: 64px 22px 72px; background: radial-gradient(120% 90% at 50% 0%, #025D25 0%, #014A1D 70%);
+    border-top: 1px solid rgba(252,195,37,.3); }
+  .ft-cta h2 { margin: 0 auto 26px; max-width: 14em; font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+    font-size: clamp(30px, 8vw, 46px); line-height: 1.08; color: #fff; text-wrap: balance; }
+  #site-footer { background: #f4f6fa; }
+  #site-footer #site-disclaimer { position: static; pointer-events: auto; background: none;
+    padding: 18px clamp(16px, 4vw, 32px) max(18px, env(safe-area-inset-bottom)); }
+  #site-footer #site-disclaimer p { font-size: 11px; color: var(--ink-2, #565c6b); }
+  @media (min-width: 761px) {
+    .fblock { padding: 72px 32px; }
+    .fblock p { font-size: 17px; }
+    .fblock li { font-size: 16px; }
+  }
 </style>
 </head>
 <body>
@@ -553,7 +611,7 @@
   <div class="hint">Drag · swipe · play</div>
   <footer id="dock">
     <div class="dock__l">
-      <div class="dock__count"><b id="d-cur">01</b> <i class="of">/ <span id="d-total">20</span></i></div>
+      <div class="dock__count"><b id="d-cur">01</b> <i class="of">/ <span id="d-total">11</span></i></div>
     </div>
     <div class="dock__c" aria-live="polite">
       <h2 class="dock__title" id="d-title"></h2>
@@ -572,8 +630,171 @@
       <button class="navbtn" id="next" aria-label="Next work">›</button>
     </div>
   </footer>
-  <aside id="site-disclaimer" aria-label="Disclaimer"><p>Example scores shown. Results vary; no score increase is guaranteed. Funding is subject to lender approval. Score OS is software for credit repair businesses.</p></aside>
+  <a id="more-cue" href="#features">Explore every feature <span aria-hidden="true">↓</span></a>
 </div>
+
+<main id="features" aria-labelledby="ft-title">
+  <header class="ft-intro">
+    <span class="ft-eyebrow">Score OS · Every feature</span>
+    <h2 id="ft-title">Everything we built, in one place.</h2>
+    <p>Software built to scale your agency and your clients’ success. Here’s what each one does.</p>
+  </header>
+  <section class="fblock" id="feature-score-os" aria-labelledby="feature-score-os-h">
+    <div class="fblock__in">
+      <span class="fblock__kick"><b>01</b>Score OS</span>
+      <h3 id="feature-score-os-h">One operating system for your whole agency.</h3>
+      <p>Score OS is the all-in-one operating system for credit repair agencies. Clients, monitoring and workflows live together, so your team can grow without dropping the ball.</p>
+      <ul>
+        <li>One operating system for agency work</li>
+        <li>Clients, monitoring and workflows together</li>
+        <li>Run your own front end under your own brand (white label)</li>
+        <li>Owner dashboard: deletions, revenue, overdue responses and team workload on one screen</li>
+      </ul>
+    </div>
+  </section>
+  <section class="fblock" id="feature-automatic-disputing" aria-labelledby="feature-automatic-disputing-h">
+    <div class="fblock__in">
+      <span class="fblock__kick"><b>02</b>Fully Automatic Disputing</span>
+      <h3 id="feature-automatic-disputing-h">Your client signs up. Score OS takes it from there.</h3>
+      <p>The report pulls itself, every negative item gets flagged, and the letters are built and ready, all before you’ve touched a thing. All that’s left is one click: approve and send.</p>
+      <ul>
+        <li>Credit report pulled the moment they onboard</li>
+        <li>Every negative item found in seconds</li>
+        <li>Letters filled, stacked and ready to go</li>
+        <li>Maxine’s “Work Next” queue picks the next client and preps their letters, with a Manual or Fully automatic switch</li>
+        <li>You approve and send, that’s it</li>
+      </ul>
+    </div>
+  </section>
+  <section class="fblock" id="feature-game-plan" aria-labelledby="feature-game-plan-h">
+    <div class="fblock__in">
+      <span class="fblock__kick"><b>03</b>Custom Game Plan</span>
+      <h3 id="feature-game-plan-h">A personal plan for every user.</h3>
+      <p>Every user gets a personal plan to start and grow their business, based on their experience. Plans can also organize client goals like mortgage readiness, a new car, or personal and business funding.</p>
+      <ul>
+        <li>Personal start-and-grow plan based on experience</li>
+        <li>Mortgage, car and funding goals organized in the plan</li>
+        <li>A credit strategy at onboarding, updated after every dispute round</li>
+        <li>Saved to the client’s file</li>
+        <li>Checklists your team can walk through together</li>
+      </ul>
+    </div>
+  </section>
+  <section class="fblock" id="feature-funding-os" aria-labelledby="feature-funding-os-h">
+    <div class="fblock__in">
+      <span class="fblock__kick"><b>04</b>Funding OS</span>
+      <h3 id="feature-funding-os-h">Every goal, tracked from ready to sent.</h3>
+      <p>See every client by goal and stage, from Funding Ready through send. Score OS checks every opportunity, not just the one they chose, and clients hear “you may qualify,” never “approved.”</p>
+      <ul>
+        <li>Pipeline by goal and stage</li>
+        <li>Submit funding applications for review from inside Score OS</li>
+        <li>New funding opportunities added to the system automatically</li>
+        <li>Users are notified when they may qualify</li>
+        <li>Checks every opportunity, not just their goal</li>
+      </ul>
+    </div>
+  </section>
+  <section class="fblock" id="feature-ai-receptionist" aria-labelledby="feature-ai-receptionist-h">
+    <div class="fblock__in">
+      <span class="fblock__kick"><b>05</b>AI Sales Receptionist</span>
+      <h3 id="feature-ai-receptionist-h">A receptionist trained in sales psychology.</h3>
+      <p>It answers calls, qualifies leads and helps close. It can make outbound calls to affiliates or to collect past-due invoices, and Maxine updates any client who calls in about the status of their credit file.</p>
+      <ul>
+        <li>Answers calls, qualifies leads and helps close</li>
+        <li>Outbound calls to affiliates or past-due collections</li>
+        <li>Credit-file status updates when clients call in</li>
+        <li>Your team can take over any conversation</li>
+      </ul>
+    </div>
+  </section>
+  <section class="fblock" id="feature-ai-agent-human-backup" aria-labelledby="feature-ai-agent-human-backup-h">
+    <div class="fblock__in">
+      <span class="fblock__kick"><b>06</b>AI Agent, Human Backup</span>
+      <h3 id="feature-ai-agent-human-backup-h">An AI agent with a real team behind it.</h3>
+      <p>Text your agent and watch the work get done: one inbox, calendar booking and calls. When something needs a human, real people back it up.</p>
+      <ul>
+        <li>A dedicated AI agent you can text</li>
+        <li>Unified inbox, calendar booking and calls</li>
+        <li>Real people backing it up when you need them</li>
+      </ul>
+      <a class="signup -sm" href="https://checkout.square.site/merchant/MLGEBVXJC0JRS/checkout/6A2Q2LWRQHPQDXV3LPI3BSBZ" target="_blank" rel="noopener noreferrer">Sign Up Today <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+  <section class="fblock" id="feature-score-marketplace" aria-labelledby="feature-score-marketplace-h">
+    <div class="fblock__in">
+      <span class="fblock__kick"><b>07</b>Score Marketplace</span>
+      <h3 id="feature-score-marketplace-h">Everything you need to scale, without burning out.</h3>
+      <p>Staff up without hiring a team, get a website or funnel built for you, plug in automations starting at $50, and apply for RISE Mentorship. Not sure where to start? Book a free strategy call.</p>
+      <ul>
+        <li>Staff up without hiring a team</li>
+        <li>Get a website ($350) or funnel ($250) built for you</li>
+        <li>Automations starting at $50</li>
+        <li>RISE Mentorship and a free strategy call</li>
+      </ul>
+    </div>
+  </section>
+  <section class="fblock" id="feature-marketing-os" aria-labelledby="feature-marketing-os-h">
+    <div class="fblock__in">
+      <span class="fblock__kick"><b>08</b>Marketing OS</span>
+      <h3 id="feature-marketing-os-h">A free HighLevel account comes with the software.</h3>
+      <p>It’s a white-label HighLevel account, fully loaded with automations for the moments that matter, and it’s 100% customizable.</p>
+      <ul>
+        <li>Free white-label HighLevel sub-account with your software</li>
+        <li>Ready-made texts and emails for round sent, item deleted, missing documents and failed payment</li>
+        <li>Fully loaded with credit-repair automations</li>
+        <li>100% customizable</li>
+      </ul>
+    </div>
+  </section>
+  <section class="fblock" id="feature-outsource-portal" aria-labelledby="feature-outsource-portal-h">
+    <div class="fblock__in">
+      <span class="fblock__kick"><b>09</b>Outsource Portal</span>
+      <h3 id="feature-outsource-portal-h">Outsource to multiple agencies, or run it as your affiliate portal.</h3>
+      <p>Connect outsourcers and hand off client work without sharing your account. The same portal works as an affiliate portal too.</p>
+      <ul>
+        <li>Outsource to multiple agencies</li>
+        <li>Works as an affiliate portal</li>
+        <li>Hand off work without sharing your login</li>
+        <li>Every invitation and assignment tracked inside Score OS</li>
+      </ul>
+    </div>
+  </section>
+  <section class="fblock" id="feature-letter-library" aria-labelledby="feature-letter-library-h">
+    <div class="fblock__in">
+      <span class="fblock__kick"><b>10</b>Letter Library</span>
+      <h3 id="feature-letter-library-h">Consumer-law dispute letters for every scenario.</h3>
+      <p>Sixty-two ScoreOS originals cover bureau, furnisher, collector, identity theft, medical, student loan, mortgage, auto, CFPB and state AG scenarios, plus ~50 law-cited reasons and room for your own letters. A person reviews and approves before anything goes out.</p>
+      <ul>
+        <li>62 ScoreOS original letter templates</li>
+        <li>~50 law-cited dispute reasons</li>
+        <li>Add your own letters to the library</li>
+        <li>Person approves before send</li>
+        <li>Letters print and mail from inside the app, with tracking</li>
+      </ul>
+    </div>
+  </section>
+  <section class="fblock" id="feature-client-portal" aria-labelledby="feature-client-portal-h">
+    <div class="fblock__in">
+      <span class="fblock__kick"><b>11</b>Mobile-Friendly Client Portal</span>
+      <h3 id="feature-client-portal-h">Their whole credit journey, right on their phone.</h3>
+      <p>Clients sign in from their phone to see their to-do list, upload documents securely, and follow dispute details across all three bureaus. A built-in Resource Center adds financial calculators, a budget and payment calendar, rent reporting, credit-building and secured card options, and credit education.</p>
+      <ul>
+        <li>Dashboard, to-do list and secure document uploads</li>
+        <li>Dispute details across all three bureaus</li>
+        <li>Message their credit repair team anytime</li>
+        <li>3 financial calculators plus a budget &amp; payment calendar</li>
+        <li>19 credit education articles, in English or Español</li>
+      </ul>
+    </div>
+  </section>
+  <section class="ft-cta" aria-labelledby="ft-cta-h">
+    <h2 id="ft-cta-h">Ready to build a championship agency?</h2>
+    <a class="signup -lg" href="https://checkout.square.site/merchant/MLGEBVXJC0JRS/checkout/6A2Q2LWRQHPQDXV3LPI3BSBZ" target="_blank" rel="noopener noreferrer">Sign Up Today <span aria-hidden="true">→</span></a>
+  </section>
+</main>
+<footer id="site-footer">
+  <aside id="site-disclaimer" aria-label="Disclaimer"><p>Example scores shown. Results vary; no score increase is guaranteed. Funding is subject to lender approval. Score OS is software for credit repair businesses.</p></aside>
+</footer>
 
 <div id="detail" role="dialog" aria-modal="true" aria-labelledby="detail-title" hidden>
   <div id="detail-backdrop"></div>
@@ -606,7 +827,7 @@
 <script type="module">
 const ASSET_BASE_URL = './assets';
 const CFG = {
-  slots: 28,
+  slots: 22,  /* 2 × 11 cards — must stay a multiple of CARDS.length so the ring wraps 11 → 01 cleanly */
   cardScale: 1.0,
   cardRatio: 1.36,
   radiusK: 3.25,
@@ -700,126 +921,6 @@ const CARDS = [
     blurb: 'Clients sign in from their phone to see their to-do list, upload documents securely, and follow dispute details across all three bureaus. A built-in Resource Center adds 3 financial calculators, a budget and payment calendar, rent reporting, credit-building and secured card options, and 19 credit education articles.',
     bullets: ['Dashboard, to-do list and secure document uploads', 'Dispute details across all three bureaus', '3 financial calculators plus a budget & payment calendar', 'Rent reporting, credit-building and secured card picks', '19 credit education articles']
   },
-  {
-    img: 'score-tracking.webp', title: 'Score Tracking', rating: 'Both', meta: 'Example scoreboard',
-    kicker: 'Agency OS · DIY OS · Example scoreboard',
-    blurb: 'A sample credit monitoring scoreboard with Equifax, Experian, TransUnion views, history, and report updates. Any scores shown are fictional examples — Score OS helps you organize monitoring, not promise a specific score change.',
-    bullets: ['Side-by-side bureau views for each client', 'Change history your team can reference', 'Clear status so nothing slips through']
-  },
-  {
-    img: 'credit-monitoring.webp', title: 'Credit Monitoring', rating: 'Both', meta: 'Client report data',
-    kicker: 'Agency OS · DIY OS · Client report data',
-    blurb: 'See how an agency accesses credit monitoring information and client report data in one place. Built so your team can review reports without juggling separate tools.',
-    bullets: ['Central place for client monitoring data', 'Report views your staff can work from', 'Organized for agency and DIY workflows']
-  },
-  {
-    img: 'three-bureau.webp', title: 'Three-Bureau Tracking', rating: 'Both', meta: 'EQ · EX · TU',
-    kicker: 'Agency OS · DIY OS · EQ · EX · TU',
-    blurb: 'Track credit bureau information and disputes across Equifax, Experian, and TransUnion. Demonstration metrics are fictional examples labeled as such.',
-    bullets: ['Equifax, Experian, and TransUnion side by side', 'Dispute tracking across bureaus', 'Example scores clearly marked as samples']
-  },
-  {
-    img: 'smartcredit-compatible.webp', title: 'SmartCredit Compatible', rating: 'Both', meta: 'Report import',
-    kicker: 'Agency OS · DIY OS · Report import',
-    blurb: 'Existing SmartCredit reports pull straight into Score OS so your team can keep working from one place. Import is for your workflow — it does not change bureau data on its own.',
-    bullets: ['Pull existing SmartCredit reports into Score OS', 'Keep monitoring and disputes in one workspace', 'No third-party logos — just a clean import path']
-  },
-  {
-    img: 'client-portal-app.webp', title: 'Client Portal & App', rating: 'Both', meta: 'Live progress',
-    kicker: 'Agency OS · DIY OS · Live progress',
-    blurb: 'Clients see progress, deletions, and score changes live, and upload their own documents — so your team spends less time chasing paperwork.',
-    bullets: ['Live progress, deletions, and score changes', 'Clients upload their own documents', 'Fewer back-and-forth requests for files']
-  },
-  {
-    img: 'messaging.webp', title: 'Two-Way Messaging', rating: 'Agency OS', meta: 'Client inbox',
-    kicker: 'Agency OS · Client inbox',
-    blurb: 'Client communication inside the software so conversations stay tied to each file. Your team replies with context already open.',
-    bullets: ['Threads linked to each client file', 'Shared team inbox', 'Fewer lost texts and emails']
-  },
-  {
-    img: 'booking-calendar.webp', title: 'Booking Calendar', rating: 'Agency OS', meta: 'Scheduling',
-    kicker: 'Agency OS · Scheduling',
-    blurb: 'Appointment scheduling and calendar management for consultations and follow-ups. Keep bookings next to the client file instead of a separate calendar app.',
-    bullets: ['Schedule client appointments', 'Calendar view for your team', 'Tied into onboarding and follow-ups']
-  },
-  {
-    img: 'white-label.webp', title: 'White Label', rating: 'Agency OS', meta: 'Your brand',
-    kicker: 'Agency OS · Your brand',
-    blurb: 'Agencies run their own front end under their own brand — logo, colors, and identity — so clients see your agency, not ours.',
-    bullets: ['Your own branded front end', 'Logo and colors your clients recognize', 'Professional client experience under your name']
-  },
-  {
-    img: 'free-website.webp', title: 'Free Website', rating: 'Agency OS', meta: 'Agency templates',
-    kicker: 'Agency OS · Agency templates',
-    blurb: 'Sample agency website templates so you can present a professional front end without building from scratch. Pair it with your portal and branding.',
-    bullets: ['Ready agency website templates', 'Preview how your site can look', 'Tied into the rest of Score OS']
-  },
-  {
-    img: 'automations.webp', title: 'Automations', rating: 'Agency OS', meta: 'Workflows',
-    kicker: 'Agency OS · Workflows',
-    blurb: 'Onboarding, reminders, follow-ups, and workflow automations that turn your playbooks into repeatable steps. Your team still reviews what goes out.',
-    bullets: ['Onboarding and reminder workflows', 'Follow-ups that do not rely on memory', 'Fewer dropped balls between team members']
-  },
-  {
-    img: 'business-launch-tools.webp', title: 'Business Launch Tools', rating: 'Agency OS', meta: 'Resell add-ons',
-    kicker: 'Agency OS · Resell add-ons',
-    blurb: 'LLC, EIN, and business credit builder add-ons that agencies can resell — extra offer lanes beside your core credit work.',
-    bullets: ['LLC and EIN add-ons', 'Business credit builder options', 'Resell through your agency']
-  },
-  {
-    img: 'referral-tracking.webp', title: 'Referral Tracking', rating: 'Agency OS', meta: 'Affiliates & brokers',
-    kicker: 'Agency OS · Affiliates & brokers',
-    blurb: 'Affiliates and mortgage brokers send clients and see status and payouts in one place, so referral partners stay informed without extra spreadsheets.',
-    bullets: ['Affiliates and mortgage brokers send clients', 'Status visibility for partners', 'Payouts tracked in one view']
-  },
-  {
-    img: 'agency-crm.webp', title: 'Agency CRM', rating: 'Agency OS', meta: 'Leads & clients',
-    kicker: 'Agency OS · Leads & clients',
-    blurb: 'Manage leads, clients, documents, and notes from one roster so your agency stays organized as it grows. Your team sees the same client file instead of scattered spreadsheets.',
-    bullets: ['Leads and clients in one list', 'Documents and notes on each file', 'Built for agency day-to-day operations']
-  },
-  {
-    img: 'invoicing.webp', title: 'Invoicing', rating: 'Agency OS', meta: 'Billing & payments',
-    kicker: 'Agency OS · Billing & payments',
-    blurb: 'Bill clients and track payments from the same operating system as your CRM. Keep invoices and payment status next to each client file so your team is not chasing balances across spreadsheets.',
-    bullets: ['Create and send client invoices', 'Track payment status on the file', 'Fewer handoffs between billing and account managers']
-  },
-  {
-    img: 'mail-print-queue.webp', title: 'Mail & Print Queue', rating: 'Agency OS', meta: 'Print · mail · track',
-    kicker: 'Agency OS · Print · mail · track',
-    blurb: 'Letters print and mail from inside the app, with tracking — so dispute mail does not live in a separate tool.',
-    bullets: ['Print and mail from inside the app', 'Tracking on letters you send', 'Queue stays next to the client file']
-  },
-  {
-    img: 'owner-dashboard.webp', title: 'Owner Dashboard', rating: 'Agency OS', meta: 'One screen',
-    kicker: 'Agency OS · One screen',
-    blurb: 'Deletions, revenue, overdue responses, and team workload on one screen so owners see the pulse of the agency without hopping tools.',
-    bullets: ['Deletions and revenue in one view', 'Overdue responses surfaced', 'Team workload at a glance']
-  },
-  {
-    img: 'mentorship.webp', title: 'Mentorship', rating: 'Agency OS', meta: 'Guidance',
-    kicker: 'Agency OS · Guidance',
-    blurb: 'Mentorship resources already offered through Score OS so agency owners can learn the playbook, not invent one alone.',
-    bullets: ['Guidance for agency owners', 'Resources alongside the software', 'Support as you build your operation']
-  },
-  {
-    img: 'community.webp', title: 'Community', rating: 'Agency OS', meta: 'Agency owners',
-    kicker: 'Agency OS · Agency owners',
-    blurb: 'Preview the agency-owner community experience — connect with peers running credit repair businesses on the same platform.',
-    bullets: ['Agency-owner community access', 'Peer learning and shared playbooks', 'Stay connected as your agency grows']
-  },
-  {
-    img: 'training.webp', title: 'Training Videos', rating: 'Agency OS', meta: 'Education library',
-    kicker: 'Agency OS · Education library',
-    blurb: 'Training library and educational resources so new hires and owners can learn Score OS workflows at their own pace.',
-    bullets: ['On-demand training library', 'Educational resources for your team', 'Ramp staff on the same playbook']
-  },
-  {
-    img: 'support.webp', title: 'Support System', rating: 'Agency OS', meta: 'Help when you need it',
-    kicker: 'Agency OS · Help when you need it',
-    blurb: 'Access support when your agency needs help with the platform. Keep operations moving while questions get answered.',
-    bullets: ['Support access for agency owners', 'Help tied to the product you use', 'Less time stuck on platform questions']
-  },
 ]
 
 /* card id (img basename without ext) → video sources.
@@ -843,33 +944,13 @@ const VIDEO_BY_CARD = {
   'score-marketplace': { webm: '', mp4: './assets/marketplace-v3-9x16.mp4', poster: './assets/marketplace-v3-9x16-poster.jpg', contain: true, autoplay: true },
   /* Marketing OS v2 clip (real HighLevel workflows UI, no glass intro). Old marketing.* kept in assets/. */
   'marketing-os': { webm: '', mp4: './assets/marketing-os-v2-9x16.mp4', poster: './assets/marketing-os-v2-9x16-poster.jpg', contain: true, autoplay: true },
-  'score-tracking': { webm: './assets/score-tracking.webm', mp4: './assets/score-tracking.mp4', poster: './assets/score-tracking-poster.jpg' },
-  'credit-monitoring': { webm: './assets/credit-monitoring.webm', mp4: './assets/credit-monitoring.mp4', poster: './assets/credit-monitoring-poster.jpg' },
-  'three-bureau': { webm: './assets/three-bureau.webm', mp4: './assets/three-bureau.mp4', poster: './assets/three-bureau-poster.jpg' },
-  'smartcredit-compatible': { webm: './assets/smartcredit-compatible.webm', mp4: './assets/smartcredit-compatible.mp4', poster: './assets/smartcredit-compatible-poster.jpg' },
   /* Custom Game Plan v2 clip (approved). Old goal-based-strategies.* kept in assets/. */
   'goal-based-strategies': { webm: '', mp4: './assets/game-plan-v2-9x16.mp4', poster: './assets/game-plan-v2-9x16-poster.jpg', contain: true, autoplay: true },
   /* Funding OS v3 clip (from Patrick's Funding OS screens). Old funding-v2-9x16.* and funding-in-app.* kept in assets/. */
   'funding-in-app': { webm: '', mp4: './assets/funding-os-v3-9x16.mp4', poster: './assets/funding-os-v3-9x16-poster.jpg', contain: true, autoplay: true },
-  'client-portal-app': { webm: './assets/client-portal-app.webm', mp4: './assets/client-portal-app.mp4', poster: './assets/client-portal-app-poster.jpg' },
-  'messaging': { webm: './assets/messaging.webm', mp4: './assets/messaging.mp4', poster: './assets/messaging-poster.jpg' },
-  'booking-calendar': { webm: './assets/booking-calendar.webm', mp4: './assets/booking-calendar.mp4', poster: './assets/booking-calendar-poster.jpg' },
-  'white-label': { webm: './assets/white-label.webm', mp4: './assets/white-label.mp4', poster: './assets/white-label-poster.jpg' },
-  'free-website': { webm: './assets/free-website.webm', mp4: './assets/free-website.mp4', poster: './assets/free-website-poster.jpg' },
   'marketing': { webm: './assets/marketing.webm', mp4: './assets/marketing.mp4', poster: './assets/marketing-poster.jpg' },
-  'automations': { webm: './assets/automations.webm', mp4: './assets/automations.mp4', poster: './assets/automations-poster.jpg' },
-  'business-launch-tools': { webm: './assets/business-launch-tools.webm', mp4: './assets/business-launch-tools.mp4', poster: './assets/business-launch-tools-poster.jpg' },
-  'referral-tracking': { webm: './assets/referral-tracking.webm', mp4: './assets/referral-tracking.mp4', poster: './assets/referral-tracking-poster.jpg' },
-  'agency-crm': { webm: './assets/agency-crm.webm', mp4: './assets/agency-crm.mp4', poster: './assets/agency-crm-poster.jpg' },
-  'invoicing': { webm: './assets/invoicing.webm', mp4: './assets/invoicing.mp4', poster: './assets/invoicing-poster.jpg' },
   /* Outsource Portal v1 clip (agency Outsourcing UI). Old outsource-portal.* kept in assets/. */
   'outsource-portal': { webm: '', mp4: './assets/outsource-portal-v1-9x16.mp4', poster: './assets/outsource-portal-v1-9x16-poster.jpg', contain: true, autoplay: true },
-  'mail-print-queue': { webm: './assets/mail-print-queue.webm', mp4: './assets/mail-print-queue.mp4', poster: './assets/mail-print-queue-poster.jpg' },
-  'owner-dashboard': { webm: './assets/owner-dashboard.webm', mp4: './assets/owner-dashboard.mp4', poster: './assets/owner-dashboard-poster.jpg' },
-  'mentorship': { webm: './assets/mentorship.webm', mp4: './assets/mentorship.mp4', poster: './assets/mentorship-poster.jpg' },
-  'community': { webm: './assets/community.webm', mp4: './assets/community.mp4', poster: './assets/community-poster.jpg' },
-  'training': { webm: './assets/training.webm', mp4: './assets/training.mp4', poster: './assets/training-poster.jpg' },
-  'support': { webm: './assets/support.webm', mp4: './assets/support.mp4', poster: './assets/support-poster.jpg' },
 };
 window.VIDEO_BY_CARD = VIDEO_BY_CARD;
 const UI = {
@@ -898,6 +979,13 @@ const detailFlyImg = detailFly.querySelector('img');
 const detailImg = document.getElementById('detail-img');
 const detailClose = document.getElementById('detail-close');
 const detailLearn = document.getElementById('detail-learn');
+/* card id → its more-info block below the carousel */
+const FEATURE_ANCHOR = {
+  'score-os': 'feature-score-os', 'maxine': 'feature-automatic-disputing', 'goal-based-strategies': 'feature-game-plan',
+  'funding-in-app': 'feature-funding-os', 'ai-receptionist': 'feature-ai-receptionist', 'ai-agent-human-backup': 'feature-ai-agent-human-backup',
+  'score-marketplace': 'feature-score-marketplace', 'marketing-os': 'feature-marketing-os', 'outsource-portal': 'feature-outsource-portal',
+  'letter-library': 'feature-letter-library', 'client-portal': 'feature-client-portal',
+};
 const detailSheet = document.getElementById('detail-sheet');
 const detailVideo = document.getElementById('detail-video');
 const vidCtrl = document.getElementById('vid-ctrl');
@@ -1249,8 +1337,8 @@ function fillDetail(cd) {
   document.getElementById('detail-media').classList.toggle('-contain', !!src.contain);
   document.getElementById('detail').classList.toggle('-tall', !!src.contain);
   if (hasVid) detailVideo.load();
-  detailLearn.href = '#';
-  detailLearn.innerHTML = 'Learn more <span aria-hidden="true">→</span>';
+  detailLearn.href = '#' + (FEATURE_ANCHOR[cardId(cd)] || 'features');
+  detailLearn.innerHTML = 'Learn more <span aria-hidden="true">↓</span>';
 }
 
 function openDetail(cardIndex, cardEl) {
@@ -1260,6 +1348,7 @@ function openDetail(cardIndex, cardEl) {
   lastFocus = document.activeElement;
   detailOpen = true;
   detail.hidden = false;
+  document.documentElement.classList.add('-detail-open');
   detail.classList.add('-open');
   detail.classList.remove('-ready');
   stage.classList.add('-locked');
@@ -1343,6 +1432,7 @@ function closeDetail() {
   setTimeout(() => {
     detail.classList.remove('-open');
     detail.hidden = true;
+    document.documentElement.classList.remove('-detail-open');
     detailFly.style.opacity = '0';
     stage.classList.remove('-locked');
     detailOpen = false;
@@ -1415,6 +1505,17 @@ document.getElementById('next').addEventListener('click', () => go(1));
 document.getElementById('prev').addEventListener('click', () => go(-1));
 
 detailBackdrop.addEventListener('click', closeDetail);
+detailLearn.addEventListener('click', e => {
+  const id = (detailLearn.getAttribute('href') || '').slice(1);
+  const el = id && document.getElementById(id);
+  if (!el) return;
+  e.preventDefault();
+  closeDetail();
+  setTimeout(() => {
+    el.scrollIntoView({ behavior: REDUCE ? 'auto' : 'smooth', block: 'start' });
+    history.replaceState(null, '', '#' + id);
+  }, REDUCE ? 20 : 480);
+});
 detailClose.addEventListener('click', closeDetail);
 document.addEventListener('keydown', e => {
   if (!detailOpen) return;
