@@ -536,42 +536,80 @@
   @media (min-width: 761px) { #dock { padding-bottom: calc(clamp(22px, 4vh, 40px) + 16px); } }
   @media (prefers-reduced-motion: reduce) { #more-cue span { animation: none; } }
 
-  /* ===== More-info section ===== */
-  #features { --fg: #014A1D; --fg2: #025D25; --gold: #FCC325;
-    background: var(--fg); color: #fff; font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
-  .ft-intro { text-align: center; padding: 64px 22px 44px; max-width: 680px; margin: 0 auto; }
-  .ft-eyebrow { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .26em; text-transform: uppercase;
-    color: var(--gold); }
+  /* ===== More-info section (v2: mostly white; green as accent every 3rd block) ===== */
+  #features { --fg: #014A1D; --fg2: #025D25; --gold: #FCC325; --soft: #F7F8F3; --txt: rgba(1,74,29,.80);
+    background: #fff; color: var(--fg); font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
+  .ft-intro { text-align: center; padding: 64px 22px 40px; max-width: 680px; margin: 0 auto; }
+  .ft-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; letter-spacing: .26em;
+    text-transform: uppercase; color: var(--fg2); }
+  .ft-eyebrow::before, .ft-eyebrow::after { content: ''; width: 22px; height: 2px; background: var(--gold); border-radius: 2px; }
   .ft-intro h2 { margin: 14px 0 0; font-family: 'Fraunces', Georgia, serif; font-weight: 400; font-size: clamp(30px, 8vw, 48px);
-    line-height: 1.08; letter-spacing: -.015em; text-wrap: balance; }
-  .ft-intro p { margin: 14px auto 0; max-width: 32em; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,.78); }
-  .fblock { scroll-margin-top: 0; padding: 52px 22px; border-top: 1px solid rgba(252,195,37,.16); }
-  .fblock:nth-of-type(even) { background: var(--fg2); }
+    line-height: 1.08; letter-spacing: -.015em; color: var(--fg); text-wrap: balance; }
+  .ft-intro p { margin: 14px auto 0; max-width: 32em; font-size: 16px; line-height: 1.6; color: var(--txt); }
+  .fblock { padding: 52px 22px; background: #fff; border-top: 1px solid rgba(1,74,29,.08); }
+  .fblock.-soft { background: var(--soft); }
+  .fblock.-green { background: var(--fg); border-top-color: transparent; --txt: rgba(255,255,255,.84); }
   .fblock__in { max-width: 640px; margin: 0 auto; text-align: center; }
+  .fblock__in.-wide { max-width: 1040px; }
   .fblock__kick { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; letter-spacing: .2em;
-    text-transform: uppercase; color: var(--gold); }
-  .fblock__kick b { font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0;
-    padding: 3px 9px; border: 1px solid rgba(252,195,37,.5); border-radius: 999px; }
+    text-transform: uppercase; color: var(--fg2); }
+  .fblock__kick b { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0; color: var(--fg);
+    background: var(--gold); padding: 3px 10px; border-radius: 999px; }
   .fblock h3 { margin: 14px 0 0; font-family: 'Fraunces', Georgia, serif; font-weight: 400; font-size: clamp(27px, 7.2vw, 42px);
-    line-height: 1.1; letter-spacing: -.012em; color: #fff; text-wrap: balance; overflow-wrap: break-word; }
-  .fblock p { margin: 16px auto 0; max-width: 34em; font-size: 16px; line-height: 1.62; color: rgba(255,255,255,.84); }
-  .fblock ul { list-style: none; margin: 24px auto 0; padding: 18px 18px; max-width: 520px; text-align: left;
-    background: rgba(0,0,0,.16); border: 1px solid rgba(252,195,37,.22); border-radius: 16px; display: grid; gap: 12px; }
-  .fblock li { position: relative; padding-left: 30px; font-size: 15px; line-height: 1.45; font-weight: 500; color: #fff; }
-  .fblock li::before { content: ''; position: absolute; left: 0; top: 2px; width: 19px; height: 19px; border-radius: 50%;
+    line-height: 1.1; letter-spacing: -.012em; color: var(--fg); text-wrap: balance; overflow-wrap: break-word; }
+  .fblock h3::after { content: ''; display: block; width: 44px; height: 3px; margin: 16px auto 0; background: var(--gold); border-radius: 3px; }
+  .fblock p { margin: 16px auto 0; max-width: 34em; font-size: 16px; line-height: 1.62; color: var(--txt); }
+  .fblock ul { list-style: none; margin: 24px auto 0; padding: 18px; max-width: 520px; text-align: left;
+    background: var(--soft); border: 1px solid rgba(1,74,29,.10); border-radius: 16px; display: grid; gap: 12px; }
+  .fblock.-soft ul { background: #fff; }
+  .fblock li { position: relative; padding-left: 30px; font-size: 15px; line-height: 1.45; font-weight: 500; color: var(--fg); }
+  .fblock li::before { content: ''; position: absolute; left: 0; top: 1px; width: 19px; height: 19px; border-radius: 50%;
     background: var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 7' fill='none' stroke='%23014A1D' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/13px no-repeat; }
+  .fblock.-green .fblock__kick { color: var(--gold); }
+  .fblock.-green h3, .fblock.-green li { color: #fff; }
+  .fblock.-green ul { background: rgba(0,0,0,.16); border-color: rgba(252,195,37,.25); }
+  /* Arsenal grid */
+  .ars { margin: 28px auto 0; display: grid; grid-template-columns: 1fr; gap: 12px; text-align: left; }
+  .ars__item { background: var(--soft); border: 1px solid rgba(1,74,29,.10); border-left: 3px solid var(--gold); border-radius: 12px; padding: 14px 16px; }
+  .ars__item h4 { margin: 0; font-size: 15px; font-weight: 700; color: var(--fg); }
+  .ars__item p { margin: 4px 0 0; font-size: 14px; line-height: 1.5; color: var(--txt); max-width: none; }
+  @media (min-width: 640px) { .ars { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1000px) { .ars { grid-template-columns: 1fr 1fr 1fr; } }
+  /* Pricing */
+  .plans { margin: 28px auto 0; display: grid; grid-template-columns: 1fr; gap: 16px; text-align: left; max-width: 420px; }
+  @media (min-width: 900px) { .plans { grid-template-columns: repeat(3, 1fr); max-width: none; align-items: stretch; } }
+  .plan { background: #fff; border: 1px solid rgba(1,74,29,.14); border-radius: 18px; padding: 24px 22px; display: flex; flex-direction: column; }
+  .plan h4 { margin: 0; font-size: 13px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--fg2); }
+  .plan__price { margin-top: 8px; font-family: 'Fraunces', Georgia, serif; font-size: 44px; line-height: 1; color: var(--fg); }
+  .plan__price span { font-family: 'Inter', sans-serif; font-size: 15px; color: var(--txt); margin-left: 3px; }
+  .fblock .plan__d { margin: 10px 0 0; font-size: 14px; line-height: 1.5; max-width: none; }
+  .fblock .plan ul { margin: 16px 0 20px; padding: 0; background: none; border: 0; gap: 10px; max-width: none; }
+  .fblock .plan li { font-size: 14px; }
+  .plan .signup { margin-top: auto; }
+  .plan.-feat { background: var(--fg); border-color: var(--fg); box-shadow: 0 24px 50px -24px rgba(1,74,29,.55); }
+  .plan.-feat h4 { color: var(--gold); }
+  .plan.-feat .plan__price, .fblock .plan.-feat li { color: #fff; }
+  .plan.-feat .plan__price span, .fblock .plan.-feat .plan__d { color: rgba(255,255,255,.8); }
+  .fblock .plans__note { margin-top: 20px; font-size: 13px; }
+  .plans__note a { color: var(--fg); font-weight: 700; }
+  /* Buttons */
   .signup { display: inline-flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none;
     background: var(--gold); color: var(--fg); font-weight: 800; letter-spacing: .01em; border-radius: 999px;
-    box-shadow: 0 10px 28px -10px rgba(252,195,37,.55), inset 0 -2px 0 rgba(0,0,0,.12);
+    border: 1px solid rgba(1,74,29,.22);
+    box-shadow: 0 10px 24px -12px rgba(1,74,29,.45), inset 0 -2px 0 rgba(0,0,0,.10);
     transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
-  .signup:hover { transform: translateY(-2px); background: #ffd24d; box-shadow: 0 16px 34px -12px rgba(252,195,37,.7); }
-  .signup:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  .signup:hover { transform: translateY(-2px); background: #ffd24d; box-shadow: 0 16px 30px -14px rgba(1,74,29,.55); }
+  .signup:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+  .fblock.-green .signup, .ft-cta .signup, .plan.-feat .signup { border-color: transparent; }
   .signup.-sm { margin-top: 26px; font-size: 15px; padding: 13px 26px; }
   .signup.-lg { width: 100%; max-width: 380px; font-size: 19px; padding: 19px 32px; }
-  .ft-cta { text-align: center; padding: 64px 22px 72px; background: radial-gradient(120% 90% at 50% 0%, #025D25 0%, #014A1D 70%);
-    border-top: 1px solid rgba(252,195,37,.3); }
+  .signup.-plan { width: 100%; font-size: 15px; padding: 14px 18px; text-align: center; }
+  .ft-cta { text-align: center; padding: 64px 22px 64px; background: radial-gradient(120% 90% at 50% 0%, #025D25 0%, #014A1D 70%); }
   .ft-cta h2 { margin: 0 auto 26px; max-width: 14em; font-family: 'Fraunces', Georgia, serif; font-weight: 400;
     font-size: clamp(30px, 8vw, 46px); line-height: 1.08; color: #fff; text-wrap: balance; }
+  .ft-cta__diy { margin: 26px auto 0; max-width: 26em; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,.82); }
+  .ft-cta__alt { display: inline-block; margin-top: 10px; font-size: 15px; font-weight: 700; color: var(--gold); text-decoration: none;
+    border-bottom: 1px solid rgba(252,195,37,.5); padding-bottom: 2px; }
   #site-footer { background: #f4f6fa; }
   #site-footer #site-disclaimer { position: static; pointer-events: auto; background: none;
     padding: 18px clamp(16px, 4vw, 32px) max(18px, env(safe-area-inset-bottom)); }
@@ -639,11 +677,11 @@
     <h2 id="ft-title">Everything we built, in one place.</h2>
     <p>Software built to scale your agency and your clients’ success. Here’s what each one does.</p>
   </header>
-  <section class="fblock" id="feature-score-os" aria-labelledby="feature-score-os-h">
+  <section class="fblock -white" id="feature-score-os" aria-labelledby="feature-score-os-h">
     <div class="fblock__in">
       <span class="fblock__kick"><b>01</b>Score OS</span>
       <h3 id="feature-score-os-h">One operating system for your whole agency.</h3>
-      <p>Score OS is the all-in-one operating system for credit repair agencies. Clients, monitoring and workflows live together, so your team can grow without dropping the ball.</p>
+      <p>Score OS is the all-in-one operating system for credit repair agencies. Everything a credit repair agency needs to launch, run, and scale — in one platform. Stop duct-taping ten different subscriptions together.</p>
       <ul>
         <li>One operating system for agency work</li>
         <li>Clients, monitoring and workflows together</li>
@@ -652,7 +690,7 @@
       </ul>
     </div>
   </section>
-  <section class="fblock" id="feature-automatic-disputing" aria-labelledby="feature-automatic-disputing-h">
+  <section class="fblock -soft" id="feature-automatic-disputing" aria-labelledby="feature-automatic-disputing-h">
     <div class="fblock__in">
       <span class="fblock__kick"><b>02</b>Fully Automatic Disputing</span>
       <h3 id="feature-automatic-disputing-h">Your client signs up. Score OS takes it from there.</h3>
@@ -666,7 +704,7 @@
       </ul>
     </div>
   </section>
-  <section class="fblock" id="feature-game-plan" aria-labelledby="feature-game-plan-h">
+  <section class="fblock -green" id="feature-game-plan" aria-labelledby="feature-game-plan-h">
     <div class="fblock__in">
       <span class="fblock__kick"><b>03</b>Custom Game Plan</span>
       <h3 id="feature-game-plan-h">A personal plan for every user.</h3>
@@ -680,7 +718,7 @@
       </ul>
     </div>
   </section>
-  <section class="fblock" id="feature-funding-os" aria-labelledby="feature-funding-os-h">
+  <section class="fblock -white" id="feature-funding-os" aria-labelledby="feature-funding-os-h">
     <div class="fblock__in">
       <span class="fblock__kick"><b>04</b>Funding OS</span>
       <h3 id="feature-funding-os-h">Every goal, tracked from ready to sent.</h3>
@@ -694,7 +732,7 @@
       </ul>
     </div>
   </section>
-  <section class="fblock" id="feature-ai-receptionist" aria-labelledby="feature-ai-receptionist-h">
+  <section class="fblock -soft" id="feature-ai-receptionist" aria-labelledby="feature-ai-receptionist-h">
     <div class="fblock__in">
       <span class="fblock__kick"><b>05</b>AI Sales Receptionist</span>
       <h3 id="feature-ai-receptionist-h">A receptionist trained in sales psychology.</h3>
@@ -707,7 +745,7 @@
       </ul>
     </div>
   </section>
-  <section class="fblock" id="feature-ai-agent-human-backup" aria-labelledby="feature-ai-agent-human-backup-h">
+  <section class="fblock -green" id="feature-ai-agent-human-backup" aria-labelledby="feature-ai-agent-human-backup-h">
     <div class="fblock__in">
       <span class="fblock__kick"><b>06</b>AI Agent, Human Backup</span>
       <h3 id="feature-ai-agent-human-backup-h">An AI agent with a real team behind it.</h3>
@@ -720,7 +758,7 @@
       <a class="signup -sm" href="https://checkout.square.site/merchant/MLGEBVXJC0JRS/checkout/6A2Q2LWRQHPQDXV3LPI3BSBZ" target="_blank" rel="noopener noreferrer">Sign Up Today <span aria-hidden="true">→</span></a>
     </div>
   </section>
-  <section class="fblock" id="feature-score-marketplace" aria-labelledby="feature-score-marketplace-h">
+  <section class="fblock -white" id="feature-score-marketplace" aria-labelledby="feature-score-marketplace-h">
     <div class="fblock__in">
       <span class="fblock__kick"><b>07</b>Score Marketplace</span>
       <h3 id="feature-score-marketplace-h">Everything you need to scale, without burning out.</h3>
@@ -733,7 +771,7 @@
       </ul>
     </div>
   </section>
-  <section class="fblock" id="feature-marketing-os" aria-labelledby="feature-marketing-os-h">
+  <section class="fblock -soft" id="feature-marketing-os" aria-labelledby="feature-marketing-os-h">
     <div class="fblock__in">
       <span class="fblock__kick"><b>08</b>Marketing OS</span>
       <h3 id="feature-marketing-os-h">A free HighLevel account comes with the software.</h3>
@@ -746,7 +784,7 @@
       </ul>
     </div>
   </section>
-  <section class="fblock" id="feature-outsource-portal" aria-labelledby="feature-outsource-portal-h">
+  <section class="fblock -green" id="feature-outsource-portal" aria-labelledby="feature-outsource-portal-h">
     <div class="fblock__in">
       <span class="fblock__kick"><b>09</b>Outsource Portal</span>
       <h3 id="feature-outsource-portal-h">Outsource to multiple agencies, or run it as your affiliate portal.</h3>
@@ -759,7 +797,7 @@
       </ul>
     </div>
   </section>
-  <section class="fblock" id="feature-letter-library" aria-labelledby="feature-letter-library-h">
+  <section class="fblock -white" id="feature-letter-library" aria-labelledby="feature-letter-library-h">
     <div class="fblock__in">
       <span class="fblock__kick"><b>10</b>Letter Library</span>
       <h3 id="feature-letter-library-h">Consumer-law dispute letters for every scenario.</h3>
@@ -773,7 +811,7 @@
       </ul>
     </div>
   </section>
-  <section class="fblock" id="feature-client-portal" aria-labelledby="feature-client-portal-h">
+  <section class="fblock -soft" id="feature-client-portal" aria-labelledby="feature-client-portal-h">
     <div class="fblock__in">
       <span class="fblock__kick"><b>11</b>Mobile-Friendly Client Portal</span>
       <h3 id="feature-client-portal-h">Their whole credit journey, right on their phone.</h3>
@@ -787,9 +825,87 @@
       </ul>
     </div>
   </section>
+  <section class="fblock -white" id="feature-your-brand" aria-labelledby="feature-your-brand-h">
+    <div class="fblock__in">
+      <span class="fblock__kick">Client experience</span>
+      <h3 id="feature-your-brand-h">Your brand. Not ours.</h3>
+      <p>When your clients log in to check their scores or read messages, they see your logo, your colors, and your agency’s name. You own the relationship; we just power it.</p>
+      <ul>
+        <li>Your logo, your colors, your brand</li>
+        <li>Clients log into a premium portal that looks like you built it yourself</li>
+        <li>Fully white-labeled client portal</li>
+      </ul>
+    </div>
+  </section>
+  <section class="fblock -green" id="feature-maxine-ai" aria-labelledby="feature-maxine-ai-h">
+    <div class="fblock__in">
+      <span class="fblock__kick">Proprietary tech</span>
+      <h3 id="feature-maxine-ai-h">Maxine, our AI engine.</h3>
+      <p>Maxine reads each credit report and drafts unique, non-templated letters.</p>
+      <ul>
+        <li>Analyzes the specific negative item and account history</li>
+        <li>Drafts 100% unique, tailored dispute letters</li>
+        <li>Cites exact FCRA violations based on the finding</li>
+        <li>Unlimited AI dispute letters (Maxine) on every plan</li>
+      </ul>
+    </div>
+  </section>
+  <section class="fblock -white" id="feature-arsenal" aria-labelledby="feature-arsenal-h">
+    <div class="fblock__in -wide">
+      <span class="fblock__kick">The Arsenal</span>
+      <h3 id="feature-arsenal-h">Everything you need to scale, in one playbook.</h3>
+      <p>Every tool you need to run offense, defense, and special teams — no duct-taped subscriptions, no missing plays.</p>
+      <div class="ars">
+        <div class="ars__item"><h4>Credit Monitoring</h4><p>Real-time 3-bureau credit monitoring built in, so you and your clients always know the score.</p></div>
+        <div class="ars__item"><h4>Agency CRM</h4><p>Manage leads, clients, documents, and notes in one command center built for high-volume agencies.</p></div>
+        <div class="ars__item"><h4>3-Bureau Tracking</h4><p>Track disputes across Equifax, Experian, and TransUnion on one live scoreboard — no more spreadsheets.</p></div>
+        <div class="ars__item"><h4>2-Way Messaging</h4><p>Secure two-way chat keeps every client conversation inside the platform, off your personal phone.</p></div>
+        <div class="ars__item"><h4>Booking Calendar</h4><p>Let clients book consultations around the clock with a built-in scheduling calendar.</p></div>
+        <div class="ars__item"><h4>Free Website</h4><p>A professional, conversion-ready website included free.</p></div>
+        <div class="ars__item"><h4>Tons of Automations</h4><p>Smart automations handle the busywork — follow-ups, progress updates, and reminders on autopilot.</p></div>
+        <div class="ars__item"><h4>Mentorship</h4><p>Learn from operators who’ve scaled — ongoing mentorship to help you grow your agency.</p></div>
+        <div class="ars__item"><h4>Community</h4><p>Join a private community of credit repair owners leveling up together.</p></div>
+        <div class="ars__item"><h4>Training Videos</h4><p>A full library of training videos to onboard fast and master every play in the platform.</p></div>
+        <div class="ars__item"><h4>Support System</h4><p>A built-in support system so you’re never stuck — real help exactly when you need it.</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="fblock -soft" id="pricing" aria-labelledby="pricing-h">
+    <div class="fblock__in -wide">
+      <span class="fblock__kick">Pricing</span>
+      <h3 id="pricing-h">Simple pricing. Infinite scale.</h3>
+      <p>Run an agency, manage an outsourcing company, or repair your own credit.</p>
+      <div class="plans">
+        <div class="plan -feat">
+          <h4>Agency OS</h4>
+          <div class="plan__price">$199<span>/mo</span></div>
+          <p class="plan__d">Cancel anytime. No long-term contracts.</p>
+          <ul><li>Unlimited Active Clients</li><li>Unlimited AI Dispute Letters (Maxine)</li><li>All 3 Bureaus Tracked</li><li>Fully White-Labeled Client Portal</li><li>Built-in Client Messaging</li><li>Automated Monthly Progress Reports</li></ul>
+          <a class="signup -plan" href="https://checkout.square.site/merchant/MLGEBVXJC0JRS/checkout/6A2Q2LWRQHPQDXV3LPI3BSBZ" target="_blank" rel="noopener noreferrer">Subscribe Now — $199/mo <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="plan ">
+          <h4>Outsourcing Portal</h4>
+          <div class="plan__price">$499<span>/mo</span></div>
+          <p class="plan__d">For outsourcing companies managing client work across agencies.</p>
+          <ul><li>Agency-Specific Client Workspaces</li><li>Team Assignments &amp; Workload</li><li>Dispute Workflow &amp; Letter Tools</li><li>Processing Calendars</li></ul>
+          <a class="signup -plan" href="https://square.link/u/FRIVd44M" target="_blank" rel="noopener noreferrer">Subscribe — $499/mo <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="plan ">
+          <h4>DIY OS</h4>
+          <div class="plan__price">$49.99<span>/mo</span></div>
+          <p class="plan__d">For individuals repairing their own credit — no agency needed.</p>
+          <ul><li>Your Own Secure Credit Portal</li><li>AI Credit Audit &amp; Action Plan</li><li>Unlimited AI Dispute Letters (Maxine)</li><li>All 3 Bureaus Tracked</li><li>Secure ID &amp; Document Uploads</li><li>Score Progress Tracking</li></ul>
+          <a class="signup -plan" href="https://scoresos.com/diy" target="_blank" rel="noopener noreferrer">Start DIY — $49.99/mo <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <p class="plans__note">Monthly subscription. Checkout opens securely in Square.<br>Already paid? <a href="https://scoresos.com/login" target="_blank" rel="noopener noreferrer">Sign up with your access code</a></p>
+    </div>
+  </section>
   <section class="ft-cta" aria-labelledby="ft-cta-h">
     <h2 id="ft-cta-h">Ready to build a championship agency?</h2>
     <a class="signup -lg" href="https://checkout.square.site/merchant/MLGEBVXJC0JRS/checkout/6A2Q2LWRQHPQDXV3LPI3BSBZ" target="_blank" rel="noopener noreferrer">Sign Up Today <span aria-hidden="true">→</span></a>
+    <p class="ft-cta__diy">Not running an agency? DIY OS puts the same AI tools in your hands.</p>
+    <a class="ft-cta__alt" href="https://scoresos.com/diy" target="_blank" rel="noopener noreferrer">Do It Yourself — $49.99/mo <span aria-hidden="true">→</span></a>
   </section>
 </main>
 <footer id="site-footer">
