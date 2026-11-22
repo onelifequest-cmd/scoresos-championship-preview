@@ -1228,7 +1228,7 @@ function layout() {
      Desktop keeps the original concave Colosseum arc. */
   let cw, radiusK, arcDepth, persp, zsign, push;
   if (vw <= 520) {
-    cw = Math.min(352, Math.max(290, vw * 0.86)) * CFG.cardScale;  /* phones: ~13% larger on screen than v1 (0.74vw) */
+    cw = Math.min(300, Math.max(240, vw * 0.675)) * CFG.cardScale;  /* phones: front card sits at depth 0, so cw is its on-screen width (~13% larger than v1) */
     radiusK = 3.25;
     arcDepth = 0.28;
     persp = Math.max(1100, vw * 1.4);
@@ -1258,19 +1258,21 @@ function layout() {
   /* (old fixed mast/dock clamp replaced by the measured fit below) */
   void maxCh;
   let r = cw * radiusK;
-  push = zsign < 0 ? r * (1 - arcDepth) : -r * (1 + arcDepth);
+  /* Phones/tablet: front card at depth 0 (push = -r) so its size never depends on how an engine applies perspective. */
+  const pushFor = rr => vw <= 900 ? -rr : (zsign < 0 ? rr * (1 - arcDepth) : -rr * (1 + arcDepth));
+  push = pushFor(r);
   /* Fit the projected front card between the mast (headline + tagline) and the dock, then centre it there. */
   const secH = section.clientHeight || vh;
   const mastB = document.getElementById('mast').getBoundingClientRect().bottom - section.getBoundingClientRect().top;
   const dockEls = [...document.querySelectorAll('.dock__l, .dock__c, .dock__r')].filter(e => e.offsetParent !== null);
   const dockT = dockEls.length ? Math.min(...dockEls.map(e => e.getBoundingClientRect().top - section.getBoundingClientRect().top)) : secH - dockReserve;
   const gapTop = vw > 900 ? 14 : 18, gapBot = vw > 900 ? 30 : 14;
-  const kProj = persp / (persp + r * arcDepth);                        /* front card's on-screen scale */
+  const kProj = persp / (persp - (push + r * zsign));                 /* front card's on-screen scale (1 on phones) */
   const avail = dockT - gapBot - (mastB + gapTop);
   if (ch * kProj > avail && avail > 160) {
     ch = avail / kProj; cw = ch / CFG.cardRatio;
     r = cw * radiusK;
-    push = zsign < 0 ? r * (1 - arcDepth) : -r * (1 + arcDepth);
+    push = pushFor(r);
   }
   const fitLift = Math.round((mastB + gapTop + dockT - gapBot) / 2 - secH / 2);
   fitBox = { top: mastB + gapTop, bot: dockT - gapBot };
