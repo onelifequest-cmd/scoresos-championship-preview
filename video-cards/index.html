@@ -89,6 +89,13 @@
   .card[data-card-id="letter-library"] .card__media img.-dim { opacity: 1; }
   .card[data-card-id="letter-library"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
   .card[data-card-id="letter-library"] .card__title { color: #12141a; text-shadow: none; }
+  .card[data-card-id="client-portal"] .card__inner { background: #FFFFFF; }
+  .card[data-card-id="client-portal"] .card__scrim { display: none; }
+  .card[data-card-id="client-portal"] .card__media img,
+  .card[data-card-id="client-portal"] .card__media video { object-fit: contain; background: #FFFFFF; }
+  .card[data-card-id="client-portal"] .card__media img.-dim { opacity: 1; }
+  .card[data-card-id="client-portal"] .card__no { color: rgba(18,20,26,.7); text-shadow: none; }
+  .card[data-card-id="client-portal"] .card__title { color: #12141a; text-shadow: none; }
   .card[data-card-id="goal-based-strategies"] .card__inner { background: #FFFFFF; }
   .card[data-card-id="goal-based-strategies"] .card__scrim { display: none; }
   .card[data-card-id="goal-based-strategies"] .card__media img,
@@ -687,6 +694,13 @@ const CARDS = [
     bullets: ['62 ScoreOS original letter templates', '~50 law-cited dispute reasons', 'Add your own letters to the library', 'Person approves before send']
   },
   {
+    img: 'client-portal-v1-9x16-poster.webp', id: 'client-portal', title: 'Mobile-Friendly Client Portal', rating: 'Both', meta: 'Built for their phone',
+    kicker: 'Agency OS · DIY OS · Client portal',
+    lead: 'Their whole credit journey, right on their phone.',
+    blurb: 'Clients sign in from their phone to see their to-do list, upload documents securely, and follow dispute details across all three bureaus. A built-in Resource Center adds 3 financial calculators, a budget and payment calendar, rent reporting, credit-building and secured card options, and 19 credit education articles.',
+    bullets: ['Dashboard, to-do list and secure document uploads', 'Dispute details across all three bureaus', '3 financial calculators plus a budget & payment calendar', 'Rent reporting, credit-building and secured card picks', '19 credit education articles']
+  },
+  {
     img: 'score-tracking.webp', title: 'Score Tracking', rating: 'Both', meta: 'Example scoreboard',
     kicker: 'Agency OS · DIY OS · Example scoreboard',
     blurb: 'A sample credit monitoring scoreboard with Equifax, Experian, TransUnion views, history, and report updates. Any scores shown are fictional examples — Score OS helps you organize monitoring, not promise a specific score change.',
@@ -818,6 +832,8 @@ const VIDEO_BY_CARD = {
               contain: true, autoplay: true },
   /* Letter Library v9 clip (mobile smooth scroll, slower, 29.8s). */
   'letter-library': { webm: '', mp4: './assets/letter-library-v9-9x16.mp4', poster: './assets/letter-library-v9-9x16-poster.jpg', contain: true, autoplay: true },
+  /* Mobile-Friendly Client Portal v1 clip (mobile smooth scroll, 26.9s). */
+  'client-portal': { webm: '', mp4: './assets/client-portal-v1-9x16.mp4', poster: './assets/client-portal-v1-9x16-poster.jpg', contain: true, autoplay: true },
   'ai-dispute': { webm: './assets/ai-dispute.webm', mp4: './assets/ai-dispute.mp4', poster: './assets/ai-dispute-poster.jpg' },
   /* Receptionist v4 clip (approved by Patrick). Old ai-receptionist.* kept in assets/. */
   'ai-receptionist': { webm: '', mp4: './assets/receptionist-v5-9x16.mp4', poster: './assets/receptionist-v5-9x16-poster.jpg', contain: true, autoplay: true },
