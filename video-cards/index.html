@@ -619,6 +619,17 @@
     .fblock p { font-size: 17px; }
     .fblock li { font-size: 16px; }
   }
+
+  /* "All-in-One" tagline under the hero headline (above the carousel) */
+  #claim { margin: 12px auto 0; max-width: 22em; font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-weight: 800; font-size: clamp(17px, 4.6vw, 28px); line-height: 1.18; letter-spacing: -.012em; color: #014A1D;
+    text-wrap: balance; }
+  #claim::after { content: ''; display: block; width: 56px; height: 3px; margin: 8px auto 0; background: #FCC325; border-radius: 3px; }
+  .claim__pill { display: inline-block; padding: 0 .32em; margin: 0 .04em; border-radius: .38em; background: #FCC325; color: #014A1D;
+    box-shadow: 0 2px 8px -3px rgba(1,74,29,.45); }
+  @media (min-width: 761px) { #claim { max-width: none; font-size: clamp(20px, 2.9vh, 28px); } }
+  @media (max-width: 760px) { #claim { margin-top: 8px; } #claim::after { margin-top: 6px; width: 44px; } }
+  @media (max-height: 560px) { #claim { font-size: 15px; margin-top: 4px; } #claim::after { display: none; } }
 </style>
 </head>
 <body>
@@ -643,6 +654,7 @@
   <div id="mast">
     <span id="eyebrow"></span>
     <h1 id="headline"></h1>
+    <p id="claim">The <span class="claim__pill">All-in-One</span> Credit Repair &amp; Funding Software</p>
   </div>
   <div class="edge -l" id="edge-l"></div>
   <div class="edge -r" id="edge-r"></div>
@@ -1170,7 +1182,7 @@ function buildRing() {
     art.innerHTML = `
       <div class="card__inner">
         <div class="card__media">
-          <img src="${ASSET_BASE_URL}/${cd.img}" alt="${cd.title}" draggable="false" loading="lazy" decoding="async">
+          <img src="${ASSET_BASE_URL}/${cd.img}" alt="${cd.title}" draggable="false" loading="${(i < 2 || i === CFG.slots - 1) ? 'eager' : 'lazy'}"${i === 0 ? ' fetchpriority="high"' : ''} decoding="async">
           <video muted loop playsinline webkit-playsinline preload="none"
             data-src-mp4="${src.mp4}"
             data-src-webm="${src.webm}"
@@ -1196,6 +1208,19 @@ function buildDots() {
   });
 }
 
+let fitBox = null, fitScale = 1;
+/* Second pass: measure the real projected front card and nudge lift / scale so it sits inside fitBox. */
+function fitCorrect(pass = 0) {
+  const f = ring.querySelector('.card.-front .card__inner');
+  if (!f || !fitBox) return;
+  const R = f.getBoundingClientRect(), y0 = section.getBoundingClientRect().top;
+  const avail = fitBox.bot - fitBox.top;
+  if (R.height > avail + 1 && pass < 2) { fitScale *= avail / R.height; layout(); return fitCorrect(pass + 1); }
+  const delta = Math.round((fitBox.top + fitBox.bot) / 2 - ((R.top + R.bottom) / 2 - y0));
+  const cur = parseFloat(stage.style.getPropertyValue('--lift')) || 0;
+  if (Math.abs(delta) >= 1) stage.style.setProperty('--lift', (cur + delta) + 'px');
+}
+function relayout() { fitScale = 1; layout(); requestAnimationFrame(() => fitCorrect()); }
 function layout() {
   const vw = innerWidth;
   const vh = innerHeight;
@@ -1203,7 +1228,7 @@ function layout() {
      Desktop keeps the original concave Colosseum arc. */
   let cw, radiusK, arcDepth, persp, zsign, push;
   if (vw <= 520) {
-    cw = Math.min(310, Math.max(255, vw * 0.74)) * CFG.cardScale;
+    cw = Math.min(352, Math.max(290, vw * 0.86)) * CFG.cardScale;  /* phones: ~13% larger on screen than v1 (0.74vw) */
     radiusK = 3.25;
     arcDepth = 0.28;
     persp = Math.max(1100, vw * 1.4);
@@ -1222,6 +1247,7 @@ function layout() {
     persp = Math.max(1200, vw * 1.05 * CFG.perspective);
     zsign = -1;
   }
+  cw *= fitScale;
   let ch = cw * CFG.cardRatio;
   /* Longer hero line needs more mast room; dock stays visible on 390×844. */
   const mastReserve = vw > 900
@@ -1229,12 +1255,25 @@ function layout() {
     : Math.min(196, Math.max(148, vh * 0.255));
   const dockReserve = Math.min(150, Math.max(110, vh * 0.17));
   const maxCh = Math.max(240, vh - mastReserve - dockReserve - 16);
-  if (ch > maxCh) {
-    ch = maxCh;
-    cw = ch / CFG.cardRatio;
-  }
-  const r = cw * radiusK;
+  /* (old fixed mast/dock clamp replaced by the measured fit below) */
+  void maxCh;
+  let r = cw * radiusK;
   push = zsign < 0 ? r * (1 - arcDepth) : -r * (1 + arcDepth);
+  /* Fit the projected front card between the mast (headline + tagline) and the dock, then centre it there. */
+  const secH = section.clientHeight || vh;
+  const mastB = document.getElementById('mast').getBoundingClientRect().bottom - section.getBoundingClientRect().top;
+  const dockEls = [...document.querySelectorAll('.dock__l, .dock__c, .dock__r')].filter(e => e.offsetParent !== null);
+  const dockT = dockEls.length ? Math.min(...dockEls.map(e => e.getBoundingClientRect().top - section.getBoundingClientRect().top)) : secH - dockReserve;
+  const gapTop = vw > 900 ? 14 : 18, gapBot = vw > 900 ? 30 : 14;
+  const kProj = persp / (persp + r * arcDepth);                        /* front card's on-screen scale */
+  const avail = dockT - gapBot - (mastB + gapTop);
+  if (ch * kProj > avail && avail > 160) {
+    ch = avail / kProj; cw = ch / CFG.cardRatio;
+    r = cw * radiusK;
+    push = zsign < 0 ? r * (1 - arcDepth) : -r * (1 + arcDepth);
+  }
+  const fitLift = Math.round((mastB + gapTop + dockT - gapBot) / 2 - secH / 2);
+  fitBox = { top: mastB + gapTop, bot: dockT - gapBot };
   stage.style.setProperty('--cw', cw + 'px');
   stage.style.setProperty('--ch', ch + 'px');
   stage.style.setProperty('--r', r + 'px');
@@ -1245,10 +1284,7 @@ function layout() {
   document.getElementById('section').style.setProperty('--title-size', titlePx + 'px');
   /* Phones: slight up-nudge so dock title+arrows stay above the fold on 390×844.
      Desktop: drop the ring so the center card clears the (taller) headline by ≥32px. */
-  let lift;
-  if (vw <= 520) lift = Math.min(-6, Math.max(-22, -vh * 0.018));
-  else if (vw <= 900) lift = 8;
-  else lift = Math.round(Math.min(118, Math.max(88, vh * 0.118)));
+  const lift = fitLift;
   stage.style.setProperty('--lift', lift + 'px');
 }
 
@@ -1256,7 +1292,14 @@ let rot = 0, vel = 0, dragging = false, lastX = 0, downX = 0, moved = false, tar
 let lastFrontSlot = -1, lastCard = -1;
 let detailOpen = false, lastFocus = null, swipeStartY = 0;
 
-const applyRot = () => { if (rot !== lastRot) { ring.style.setProperty('--rot', rot+'deg'); lastRot = rot } };
+/* Rotation is folded into each card's own rotateY (same geometry as rotating the ring).
+   WebKit/iOS can freeze a playing <video> whose on-screen angle comes only from a rotated parent. */
+const applyRot = () => {
+  if (rot === lastRot) return;
+  const st = stepDeg();
+  ring.querySelectorAll('.card').forEach(c => c.style.setProperty('--a', (+c.dataset.slot * st + rot) + 'deg'));
+  lastRot = rot;
+};
 const frontSlot = () => ((Math.round(-rot / stepDeg()) % CFG.slots) + CFG.slots) % CFG.slots;
 const nearestCenter = () => Math.round(-rot / stepDeg());
 
@@ -1274,68 +1317,92 @@ function focusWork(i) {
   targetIndex = cs + d; settled = true; vel = 0;
 }
 
-function ensureCardVideo(cardEl) {
+function ensureCardVideo(cardEl, preload = 'metadata') {
   if (!cardEl) return null;
   const vid = cardEl.querySelector('video');
   if (!vid) return null;
+  vid.muted = true; vid.defaultMuted = true; vid.setAttribute('muted', ''); vid.playsInline = true;
+  if (vid.preload !== preload && !(vid.preload === 'auto' && preload === 'metadata')) vid.preload = preload;
   if (!vid.dataset.ready) {
     const webm = vid.dataset.srcWebm;
     const mp4 = vid.dataset.srcMp4;
     vid.poster = vid.dataset.poster || '';
-    // Prefer webm then mp4
     vid.querySelectorAll('source').forEach(s => s.remove());
-    if (webm) {
-      const s = document.createElement('source'); s.src = webm; s.type = 'video/webm'; vid.appendChild(s);
-    }
-    if (mp4) {
-      const s = document.createElement('source'); s.src = mp4; s.type = 'video/mp4'; vid.appendChild(s);
-    }
+    /* mp4 first: iOS Safari must not pick a webm it can't decode */
+    if (mp4) { const s = document.createElement('source'); s.src = mp4; s.type = 'video/mp4'; vid.appendChild(s); }
+    if (webm) { const s = document.createElement('source'); s.src = webm; s.type = 'video/webm'; vid.appendChild(s); }
     vid.dataset.ready = '1';
     vid.load();
-    preloadedClips.add(vid.dataset.srcMp4 || webm);
+    preloadedClips.add(mp4 || webm);
   }
   return vid;
 }
 
+/* Free a card's video (memory/bandwidth): only the active card and its two neighbours keep sources. */
+function unloadCardVideo(vid) {
+  if (!vid || !vid.dataset.ready) return;
+  try { vid.pause(); } catch (_) {}
+  vid.autoplay = false;
+  vid.classList.remove('-on');
+  const img = vid.parentElement && vid.parentElement.querySelector('img');
+  if (img) img.classList.remove('-dim');
+  vid.querySelectorAll('source').forEach(s => s.remove());
+  vid.removeAttribute('src');
+  vid.preload = 'none';
+  delete vid.dataset.ready;
+  try { vid.load(); } catch (_) {}
+}
+
+function resetVideo(v) {
+  try { v.pause(); } catch (_) {}
+  v.autoplay = false;
+  v.classList.remove('-on');
+  try { if (v.readyState > 0) v.currentTime = 0; } catch (_) {}
+  const img = v.parentElement && v.parentElement.querySelector('img');
+  if (img) img.classList.remove('-dim');
+}
+
 function stopFrontVideo() {
-  if (frontVideoEl) {
-    try { frontVideoEl.pause(); } catch (_) {}
-    frontVideoEl.classList.remove('-on');
-    const img = frontVideoEl.parentElement && frontVideoEl.parentElement.querySelector('img');
-    if (img) img.classList.remove('-dim');
-    frontVideoEl = null;
-  }
-  // Also pause any other card videos that somehow play
-  ring.querySelectorAll('video.-on').forEach(v => {
-    v.classList.remove('-on');
-    try { v.pause(); } catch (_) {}
-    const img = v.parentElement && v.parentElement.querySelector('img');
-    if (img) img.classList.remove('-dim');
-  });
+  if (frontVideoEl) { resetVideo(frontVideoEl); frontVideoEl = null; }
+  ring.querySelectorAll('video').forEach(v => { if (!v.paused || v.classList.contains('-on')) resetVideo(v); });
+}
+
+/* Autoplay: muted + playsinline, play() called directly (iOS won't fire loadeddata on its own).
+   If the browser refuses (Low Power Mode, Data Saver…), retry on the first touch/pointer/scroll/key. */
+let heroVisible = true, autoplayRetryArmed = false;
+const RETRY_EVENTS = ['touchstart', 'pointerdown', 'scroll', 'keydown'];
+function armAutoplayRetry() {
+  if (autoplayRetryArmed) return;
+  autoplayRetryArmed = true;
+  const kick = () => {
+    autoplayRetryArmed = false;
+    RETRY_EVENTS.forEach(t => removeEventListener(t, kick, true));
+    const f = ring.querySelector('.card.-front');
+    if (f && !detailOpen) playFrontVideo(f);
+  };
+  RETRY_EVENTS.forEach(t => addEventListener(t, kick, { capture: true, passive: true }));
 }
 
 function playFrontVideo(cardEl) {
-  if (detailOpen || REDUCE) return;
+  if (detailOpen || REDUCE || !heroVisible || document.hidden) return;
+  const vid0 = cardEl && cardEl.querySelector('video');
+  if (vid0 && vid0 === frontVideoEl && !vid0.paused) return;
   stopFrontVideo();
-  const vid = ensureCardVideo(cardEl);
+  const vid = ensureCardVideo(cardEl, 'auto');
   if (!vid) return;
-  vid.muted = true; vid.defaultMuted = true; vid.playsInline = true;
+  vid.preload = 'auto';
+  vid.muted = true; vid.defaultMuted = true; vid.playsInline = true; vid.autoplay = true;
   frontVideoEl = vid;
   const img = vid.parentElement.querySelector('img');
-  const tryPlay = () => {
-    vid.currentTime = 0;
-    const p = vid.play();
-    if (p && p.then) p.then(() => {
-      vid.classList.add('-on');
-      if (img) img.classList.add('-dim');
-    }).catch(() => {});
-    else {
-      vid.classList.add('-on');
-      if (img) img.classList.add('-dim');
-    }
+  const show = () => {
+    if (frontVideoEl !== vid) return;
+    vid.classList.add('-on');
+    if (img) img.classList.add('-dim');
   };
-  if (vid.readyState >= 2) tryPlay();
-  else vid.addEventListener('loadeddata', tryPlay, { once: true });
+  vid.addEventListener('playing', show, { once: true });
+  let p;
+  try { p = vid.play(); } catch (_) { armAutoplayRetry(); return; }
+  if (p && p.then) p.then(show).catch(() => { if (frontVideoEl === vid) armAutoplayRetry(); });
 }
 
 function render() {
@@ -1369,15 +1436,20 @@ function render() {
   });
   if (fs !== lastFrontSlot) {
     lastFrontSlot = fs;
-    stopFrontVideo(); /* posters + play buttons only; video starts on play tap */
+    stopFrontVideo();
+    /* Keep sources only on the active card ±1 slot (covers the duplicated ring copies too). */
+    ring.querySelectorAll('.card').forEach(c => {
+      let dd = Math.abs(+c.dataset.slot - fs); if (dd > CFG.slots / 2) dd = CFG.slots - dd;
+      if (dd > 1) unloadCardVideo(c.querySelector('video'));
+    });
     ring.querySelectorAll('.card__play').forEach(btn => btn.classList.remove('-pulse'));
     const neu = ring.querySelector(`.card[data-slot="${fs}"]`);
     if (neu && !detailOpen) {
       const playBtn = neu.querySelector('.card__play');
       if (playBtn && !REDUCE) playBtn.classList.add('-pulse');
       /* Autoplay cards flagged in VIDEO_BY_CARD (v7 dispute clip): muted inline, from 0s */
-      const v = VIDEO_BY_CARD[neu.dataset.cardId];
-      if (v && v.autoplay) {
+      /* Every card autoplays (muted inline) as soon as it is the active one. */
+      {
         clearTimeout(window.__apT);
         window.__apT = setTimeout(() => {
           if (!detailOpen && neu.classList.contains('-front')) playFrontVideo(neu);
@@ -1558,6 +1630,8 @@ function closeDetail() {
     detailVideo.load();
     const frontPlay = ring.querySelector('.card.-front .card__play');
     if (frontPlay && !REDUCE) frontPlay.classList.add('-pulse');
+    const frontCard = ring.querySelector('.card.-front');
+    if (frontCard) playFrontVideo(frontCard);
     if (lastFocus && lastFocus.focus) lastFocus.focus();
     else stage.focus();
   }, REDUCE ? 0 : 450);
@@ -1621,6 +1695,20 @@ document.getElementById('next').addEventListener('click', () => go(1));
 document.getElementById('prev').addEventListener('click', () => go(-1));
 
 detailBackdrop.addEventListener('click', closeDetail);
+/* Pause the card clip while the carousel is scrolled away or the tab is hidden; resume when back. */
+if ('IntersectionObserver' in window) {
+  new IntersectionObserver(es => {
+    heroVisible = es[es.length - 1].isIntersecting;
+    const f = ring.querySelector('.card.-front');
+    if (!heroVisible) stopFrontVideo();
+    else if (f && !detailOpen) playFrontVideo(f);
+  }, { threshold: 0.2 }).observe(section);
+}
+document.addEventListener('visibilitychange', () => {
+  const f = ring.querySelector('.card.-front');
+  if (document.hidden) stopFrontVideo();
+  else if (f && !detailOpen) playFrontVideo(f);
+});
 detailLearn.addEventListener('click', e => {
   const id = (detailLearn.getAttribute('href') || '').slice(1);
   const el = id && document.getElementById(id);
@@ -1685,7 +1773,9 @@ requestAnimationFrame(() => {
   const front = ring.querySelector('.card.-front .card__play');
   if (front && !REDUCE) front.classList.add('-pulse');
 });
-window.addEventListener('resize', layout);
+window.addEventListener('resize', relayout);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+requestAnimationFrame(() => fitCorrect());
 </script>
 </body>
 </html>
