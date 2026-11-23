@@ -630,6 +630,22 @@
   @media (min-width: 761px) { #claim { max-width: none; font-size: clamp(20px, 2.9vh, 28px); } }
   @media (max-width: 760px) { #claim { margin-top: 8px; } #claim::after { margin-top: 6px; width: 44px; } }
   @media (max-height: 560px) { #claim { font-size: 15px; margin-top: 4px; } #claim::after { display: none; } }
+
+  /* Header "Log In" (outline) beside "Get started" */
+  #top-actions { display: flex; align-items: center; gap: 10px; }
+  #login { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 0 18px; border-radius: 999px;
+    background: #fff; color: #014A1D; border: 1.5px solid #014A1D; font-size: 13px; font-weight: 700; letter-spacing: .01em;
+    text-decoration: none; white-space: nowrap; transition: background .2s ease, border-color .2s ease, box-shadow .2s ease; }
+  #login:hover { background: #FCC325; border-color: #014A1D; }
+  #login:focus-visible { outline: 2px solid #FCC325; outline-offset: 2px; box-shadow: 0 0 0 4px rgba(1,74,29,.25); }
+  @media (max-width: 760px) {
+    #top-actions { gap: 8px; }
+    #login { min-height: 40px; padding: 0 14px; font-size: 13px; }
+    #cta { min-height: 40px; }
+  }
+  @media (max-width: 360px) { #login { padding: 0 11px; } #cta { padding: 8px 10px; } }
+  @media (max-width: 760px) and (max-height: 720px) { #top { padding-top: 12px; padding-bottom: 9px; } }
+  @media (max-width: 760px) { #preview-badge { top: auto; right: auto; left: 8px; bottom: max(4px, env(safe-area-inset-bottom)); font-size: 7px; letter-spacing: .08em; padding: 3px 6px; } }  /* keep the header buttons clear */
 </style>
 </head>
 <body>
@@ -649,7 +665,10 @@
       </a>
     </div>
     <nav id="nav" aria-label="Primary"></nav>
-    <a id="cta" href="#">Get started <span class="arw">→</span></a>
+    <div id="top-actions">
+      <a id="login" href="https://scoresos.com/login">Log In</a>
+      <a id="cta" href="#">Get started <span class="arw">→</span></a>
+    </div>
   </header>
   <div id="mast">
     <span id="eyebrow"></span>
