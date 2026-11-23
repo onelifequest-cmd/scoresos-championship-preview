@@ -610,10 +610,44 @@
   .ft-cta__diy { margin: 26px auto 0; max-width: 26em; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,.82); }
   .ft-cta__alt { display: inline-block; margin-top: 10px; font-size: 15px; font-weight: 700; color: var(--gold); text-decoration: none;
     border-bottom: 1px solid rgba(252,195,37,.5); padding-bottom: 2px; }
-  #site-footer { background: #f4f6fa; }
-  #site-footer #site-disclaimer { position: static; pointer-events: auto; background: none;
-    padding: 18px clamp(16px, 4vw, 32px) max(18px, env(safe-area-inset-bottom)); }
-  #site-footer #site-disclaimer p { font-size: 11px; color: var(--ink-2, #565c6b); }
+  /* Footer — mirrors live scoresos.com (forest green + gold) */
+  #site-footer { background: #013414; color: rgba(255,255,255,.72); border-top: 1px solid #025D25;
+    padding: 0 0 max(28px, env(safe-area-inset-bottom)); font-size: 14px; }
+  .sf-lang { display: flex; justify-content: flex-end; align-items: center; gap: 8px; height: 40px; padding: 0 16px;
+    background: #012B11; color: #fff; font-size: 12px; }
+  .sf-lang svg { width: 14px; height: 14px; }
+  .sf-lang__group { display: flex; align-items: center; gap: 4px; }
+  .sf-lang button { font: inherit; color: inherit; background: none; border: 0; border-radius: 5px; min-height: 32px; padding: 4px 8px; cursor: pointer; }
+  .sf-lang button[aria-pressed="true"] { background: #FCC325; color: #014A1D; font-weight: 700; }
+  .sf-lang button[aria-disabled="true"] { cursor: not-allowed; opacity: .75; }
+  .sf-lang button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .sf-main { max-width: 1280px; margin: 0 auto; padding: 56px 24px 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: space-between; gap: 32px; }
+  .sf-brand { display: flex; align-items: center; gap: 12px; }
+  .sf-brand img { height: 40px; width: auto; filter: grayscale(1); opacity: .5; }
+  .sf-wordmark { margin-top: 4px; line-height: 1; font-size: 18px; font-weight: 900; letter-spacing: -.025em; color: rgba(255,255,255,.85); }
+  .sf-contact { text-align: center; font-size: 14px; font-weight: 500; line-height: 1.5; }
+  .sf-contact > a { color: rgba(255,255,255,.62); text-decoration: none; }
+  .sf-contact a:hover { color: #fff; }
+  .sf-addr { margin-top: 4px; font-size: 12px; color: rgba(255,255,255,.55); }
+  .sf-addr a { color: inherit; text-decoration: none; }
+  .sf-links { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px 22px; max-width: 560px;
+    font-size: 14px; font-weight: 700; text-align: center; }
+  .sf-links a { text-decoration: none; color: rgba(255,255,255,.62); transition: color .2s ease, background .2s ease; }
+  .sf-links a:hover { color: #fff; }
+  .sf-links a:not(.-pill) { padding: 8px 2px; }
+  .sf-links a.-pill { border: 1px solid rgba(252,195,37,.6); border-radius: 6px; padding: 8px 16px; color: #FCC325;
+    text-decoration: underline; text-underline-offset: 4px; }
+  .sf-links a.-pill:hover { background: rgba(252,195,37,.1); color: #FCC325; }
+  .sf-links a:focus-visible, .sf-contact a:focus-visible { outline: 2px solid #FCC325; outline-offset: 3px; border-radius: 4px; }
+  #legal-disclaimer { max-width: 1280px; margin: 40px auto 0; padding: 24px 24px 0; font-size: 12px; line-height: 1.625;
+    color: rgba(255,255,255,.62); }
+  #legal-disclaimer::before { content: ""; display: block; border-top: 1px solid rgba(255,255,255,.12); margin: -24px 0 24px; }
+  #legal-disclaimer h2 { margin: 0 0 8px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.72); }
+  #legal-disclaimer p { margin: 0 0 8px; }
+  #site-footer #site-disclaimer { position: static; pointer-events: auto; background: none; padding: 0; margin: 0; z-index: auto; }
+  #site-footer #site-disclaimer p { margin: 0; max-width: none; font-size: 12px; line-height: 1.625; color: rgba(255,255,255,.62); text-align: left; }
+  @media (min-width: 768px) { .sf-main { flex-direction: row; gap: 40px; } .sf-links { justify-content: flex-end; } .sf-main, #legal-disclaimer { padding-left: 32px; padding-right: 32px; } }
   @media (min-width: 761px) {
     .fblock { padding: 72px 32px; }
     .fblock p { font-size: 17px; }
@@ -941,7 +975,44 @@
   </section>
 </main>
 <footer id="site-footer">
-  <aside id="site-disclaimer" aria-label="Disclaimer"><p>Example scores shown. Results vary; no score increase is guaranteed. Funding is subject to lender approval. Score OS is software for credit repair businesses.</p></aside>
+  <!-- Mirrors the live scoresos.com footer (strings and targets copied from the rendered page, Nov 22 2026). -->
+  <div class="sf-lang" translate="no">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"/><path d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17"/><path d="M11 21.95V18a2 2 0 0 0-2-2a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"/><circle cx="12" cy="12" r="10"/></svg>
+    <div role="group" aria-label="Website language / Idioma del sitio" class="sf-lang__group">
+      <button type="button" lang="en" aria-pressed="true">English</button>
+      <span aria-hidden="true">/</span>
+      <button type="button" lang="es" aria-pressed="false" aria-disabled="true" title="Spanish is not available on this preview">Español</button>
+    </div>
+  </div>
+  <div class="sf-main">
+    <div class="sf-brand">
+      <img src="assets/scoreos-logo-160.png" alt="Score OS" width="40" height="40" loading="lazy" decoding="async">
+      <div class="sf-wordmark">SCORE OS</div>
+    </div>
+    <div class="sf-contact">
+      <div>© 2026 Score OS. All rights reserved.</div>
+      <a href="mailto:admin@scoresos.com">admin@scoresos.com</a>
+      <div class="sf-addr"><a href="tel:+13022730607">(302) 273-0607</a> · 1309 Coffeen Avenue STE 1200, Sheridan, WY 82801</div>
+    </div>
+    <nav class="sf-links" aria-label="Footer">
+      <a class="-pill" href="https://scoresos.com/privacy">Privacy Policy</a>
+      <a class="-pill" href="https://scoresos.com/billing-policy">Cancellation Policy</a>
+      <a href="mailto:admin@scoresos.com">Contact Us</a>
+      <a href="https://scoresos.com/outsourcer/login">Outsourcing</a>
+      <a href="https://scoresos.com/how-to-use-score-os">How to Use Score OS</a>
+      <a href="https://scoresos.com/terms">Terms of Service</a>
+      <a href="https://scoresos.com/scoreos">Sunday</a>
+      <a href="https://scoresos.com/for-clients">Looking for personal credit help?</a>
+    </nav>
+  </div>
+  <section id="legal-disclaimer" aria-labelledby="legal-disclaimer-title">
+    <h2 id="legal-disclaimer-title">Legal Disclaimer</h2>
+    <p>The information provided on this website, within our educational guides, and through our resources is intended for educational and informational purposes only and should not be construed as legal advice.</p>
+    <p>Nothing contained herein establishes an attorney-client relationship or serves as a substitute for professional legal counsel.</p>
+    <p>Consumer credit laws, regulations, and protections may vary by state and individual circumstances. Individuals seeking legal guidance regarding their specific situation should consult a qualified, licensed attorney familiar with applicable federal and state consumer protection laws.</p>
+    <p>Score OS does not provide legal representation or legal advice. Users are responsible for ensuring that their activities comply with all applicable laws and regulations.</p>
+    <aside id="site-disclaimer" aria-label="Disclaimer"><p>Example scores shown. Results vary; no score increase is guaranteed. Funding is subject to lender approval. Score OS is software for credit repair businesses.</p></aside>
+  </section>
 </footer>
 
 <div id="detail" role="dialog" aria-modal="true" aria-labelledby="detail-title" hidden>
