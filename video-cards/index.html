@@ -779,6 +779,21 @@
   .fb__card input:focus-visible { outline: 2px solid #FCC325; outline-offset: 1px; border-color: #014A1D; }
   .fb__card button { min-height: 46px; border-radius: 999px; border: 0; background: #FCC325; color: #014A1D; font: inherit; font-weight: 800; opacity: .55; cursor: not-allowed; }
   .fblock .fb__note { margin: 0; font-size: 12.5px; color: rgba(1,74,29,.65); }
+  /* eBook card (centered); both cards keep their fields at the bottom so they line up side by side */
+  .fb__card { display: flex; flex-direction: column; }
+  .fb__card > label:first-of-type { margin-top: auto; }
+  .fb__card.-ebook { text-align: center; align-items: stretch; }
+  .fb__card.-ebook label { text-align: left; }
+  .fb__cover { display: block; margin: 0 auto 4px; width: min(240px, 72%); }
+  .fb__cover img { display: block; width: 100%; height: auto; }
+  .fblock .fb__sub { margin: -4px 0 0; font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #025D25; max-width: none; }
+  .fblock .fb__copy { margin: 0 auto; font-size: 15px; line-height: 1.5; max-width: 30em; }
+  @media (min-width: 760px) {
+    .fb__cover { width: 170px; }
+    /* agency card: same content, title block sits centred in the extra height so the pair reads balanced */
+    .fb__card:not(.-ebook) > .aud__k { margin-top: auto; }
+    .fb__card:not(.-ebook) > h4 { font-size: 24px; }
+  }
   .faq { margin: 24px auto 0; max-width: 620px; text-align: left; display: grid; gap: 10px; }
   .faq details { border: 1px solid rgba(1,74,29,.14); border-radius: 14px; background: #fff; }
   .faq summary { cursor: pointer; list-style: none; padding: 16px 44px 16px 18px; font-weight: 700; color: #014A1D; position: relative; }
@@ -1163,14 +1178,23 @@
           <button type="submit" disabled aria-disabled="true">Coming soon</button>
           <p class="fb__note">Coming soon — this form doesn’t send anything yet.</p>
         </form>
-        <form class="fb__card" action="#" novalidate data-placeholder-form>
+        <!-- PLACEHOLDER: waiting on Patrick (eBook PDF + HighLevel form pending; nothing is submitted) -->
+        <form class="fb__card -ebook" action="#" novalidate data-placeholder-form>
+          <picture class="fb__cover">
+            <source srcset="./assets/read-your-own-report-cover.webp" type="image/webp">
+            <img src="./assets/read-your-own-report-cover.jpg" width="480" height="558" loading="lazy" decoding="async"
+                 alt="Cover of the Score OS eBook “Read Your Own Report: Accuracy First, Access Next”, showing a credit report under a magnifying glass">
+          </picture>
           <span class="aud__k">For DIY</span>
-          <h4>Free DIY credit guide</h4>
+          <h4>Read Your Own Report</h4>
+          <p class="fb__sub">Accuracy first. Access next.</p>
+          <p class="fb__copy">A 40-page credit guide for anyone ready to find the errors and get approval-ready.</p>
           <label>Name<input type="text" name="name" autocomplete="name"></label>
           <label>Email<input type="email" name="email" autocomplete="email"></label>
-          <button type="submit" disabled aria-disabled="true">Coming soon</button>
+          <button type="submit" disabled aria-disabled="true">Get the free eBook</button>
           <p class="fb__note">Coming soon — this form doesn’t send anything yet.</p>
         </form>
+        <!-- /PLACEHOLDER -->
       </div>
     </div>
   </section>
