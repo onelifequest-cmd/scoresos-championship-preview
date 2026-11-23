@@ -645,6 +645,7 @@
   }
   @media (max-width: 360px) { #login { padding: 0 11px; } #cta { padding: 8px 10px; } }
   @media (max-width: 760px) and (max-height: 720px) { #top { padding-top: 12px; padding-bottom: 9px; } }
+  #pricing { scroll-margin-top: 12px; }  /* header scrolls away with the hero (not sticky); small breathing room only */
   @media (max-width: 760px) { #preview-badge { top: auto; right: auto; left: 8px; bottom: max(4px, env(safe-area-inset-bottom)); font-size: 7px; letter-spacing: .08em; padding: 3px 6px; } }  /* keep the header buttons clear */
 </style>
 </head>
@@ -667,7 +668,7 @@
     <nav id="nav" aria-label="Primary"></nav>
     <div id="top-actions">
       <a id="login" href="https://scoresos.com/login">Log In</a>
-      <a id="cta" href="#">Get started <span class="arw">→</span></a>
+      <a id="cta" href="#pricing">Get started <span class="arw">→</span></a>
     </div>
   </header>
   <div id="mast">
@@ -1740,6 +1741,17 @@ detailLearn.addEventListener('click', e => {
     el.scrollIntoView({ behavior: REDUCE ? 'auto' : 'smooth', block: 'start' });
     history.replaceState(null, '', '#' + id);
   }, REDUCE ? 20 : 480);
+});
+// Top "Get started" → pricing plans (smooth); close an open card panel first
+cta.addEventListener('click', e => {
+  const el = document.getElementById('pricing');
+  if (!el) return;
+  e.preventDefault();
+  const go = () => {
+    el.scrollIntoView({ behavior: REDUCE ? 'auto' : 'smooth', block: 'start' });
+    history.replaceState(null, '', '#pricing');
+  };
+  if (detailOpen) { closeDetail(); setTimeout(go, REDUCE ? 20 : 480); } else go();
 });
 detailClose.addEventListener('click', closeDetail);
 document.addEventListener('keydown', e => {
