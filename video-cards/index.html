@@ -681,6 +681,116 @@
   @media (max-width: 760px) and (max-height: 720px) { #top { padding-top: 12px; padding-bottom: 9px; } }
   #pricing { scroll-margin-top: 12px; }  /* header scrolls away with the hero (not sticky); small breathing room only */
   @media (max-width: 760px) { #preview-badge { top: auto; right: auto; left: 8px; bottom: max(4px, env(safe-area-inset-bottom)); font-size: 7px; letter-spacing: .08em; padding: 3px 6px; } }  /* keep the header buttons clear */
+
+  /* ===== Round Nov 23: call, demo, menu, picker, how-it-works, placeholders ===== */
+  #call { display: inline-flex; align-items: center; gap: 7px; min-height: 40px; min-width: 40px; justify-content: center;
+    padding: 0 12px; border-radius: 999px; color: #014A1D; text-decoration: none; font-size: 13px; font-weight: 700; white-space: nowrap;
+    border: 1.5px solid rgba(1,74,29,.18); background: rgba(255,255,255,.85); }
+  #call svg { width: 16px; height: 16px; flex: none; }
+  #call:hover { border-color: #014A1D; }
+  #call:focus-visible, #menu-btn:focus-visible, .demo-btn:focus-visible { outline: 2px solid #FCC325; outline-offset: 2px; }
+  .demo-btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 0 16px;
+    border-radius: 999px; border: 1.5px solid #014A1D; background: #014A1D; color: #fff; font: inherit; font-size: 13px; font-weight: 700;
+    white-space: nowrap; cursor: pointer; transition: background .2s ease, color .2s ease; }
+  .demo-btn svg { width: 14px; height: 14px; color: #FCC325; }
+  .demo-btn:hover { background: #025D25; }
+  #mast-actions { display: none; }
+  #menu-btn { display: none; width: 40px; height: 40px; padding: 0; border-radius: 999px; border: 1.5px solid rgba(1,74,29,.18);
+    background: rgba(255,255,255,.85); color: #014A1D; cursor: pointer; place-items: center; }
+  #menu-btn svg { width: 20px; height: 20px; }
+  @media (max-width: 1240px) { #call { padding: 0; width: 40px; } #call .call__n { display: none; } }
+  @media (min-width: 761px) and (max-width: 1100px) { #demo-btn { padding: 0; width: 40px; } #demo-btn span { display: none; }
+    #demo-btn { } }
+  @media (max-width: 760px) {
+    #top { gap: 8px; }
+    #demo-btn { display: none; }
+    #menu-btn { display: grid; }
+    #mast-actions { display: block; margin-top: 8px; pointer-events: auto; }
+    .demo-btn.-m { min-height: 34px; padding: 0 14px; font-size: 12.5px; }
+    #claim::after { display: none; }   /* the Watch Demo pill takes the underline's slot on phones */
+  }
+  @media (max-width: 760px) and (max-height: 720px) { #mast-actions { margin-top: 6px; } .demo-btn.-m { min-height: 32px; } }
+  @media (max-width: 380px) { #top-actions { gap: 6px; } #call, #menu-btn { width: 36px; min-width: 36px; height: 36px; min-height: 36px; }
+    #login { padding: 0 10px; } #cta { padding: 8px 10px; } #cta .arw { display: none; } }
+  html.-modal-open, html.-modal-open body { overflow: hidden; }
+  /* mobile menu */
+  #mnav { position: fixed; inset: 0; z-index: 90; }
+  #mnav[hidden], #demo-modal[hidden] { display: none; }
+  .mnav__backdrop, .dm__backdrop { position: absolute; inset: 0; background: rgba(1,30,12,.55); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+  .mnav__sheet { position: absolute; top: 0; left: 0; right: 0; background: #fff; padding: 14px 20px max(22px, env(safe-area-inset-bottom));
+    border-radius: 0 0 22px 22px; box-shadow: 0 30px 60px -30px rgba(1,30,12,.6); max-height: 100svh; overflow: auto; }
+  .mnav__top { display: flex; align-items: center; justify-content: space-between; }
+  .mnav__top img { height: 42px; width: auto; }
+  .mnav__close, .dm__close { width: 44px; height: 44px; border-radius: 999px; border: 1.5px solid rgba(1,74,29,.2); background: #fff;
+    color: #014A1D; font-size: 26px; line-height: 1; cursor: pointer; display: grid; place-items: center; }
+  .mnav__links { display: grid; margin-top: 10px; }
+  .mnav__links a { padding: 14px 4px; font-size: 18px; font-weight: 700; color: #014A1D; text-decoration: none; border-bottom: 1px solid rgba(1,74,29,.1); }
+  .mnav__actions { display: grid; gap: 10px; margin-top: 18px; }
+  .mnav__actions > * { min-height: 48px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 15px; font-weight: 700; text-decoration: none; }
+  .mnav__call { color: #014A1D; border: 1.5px solid rgba(1,74,29,.25); }
+  .mnav__call svg { width: 17px; height: 17px; }
+  .mnav__login { color: #014A1D; border: 1.5px solid #014A1D; background: #fff; }
+  .mnav__cta { background: #FCC325; color: #014A1D; }
+  .demo-btn.-menu { font-size: 15px; }
+  /* demo modal */
+  #demo-modal { position: fixed; inset: 0; z-index: 95; display: grid; place-items: center; padding: 12px; }
+  .dm__box { position: relative; display: flex; flex-direction: column; gap: 10px; background: #014A1D; border-radius: 20px;
+    padding: 12px; box-shadow: 0 30px 80px -20px rgba(0,0,0,.6); max-width: 100%; }
+  .dm__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-left: 6px; }
+  .dm__head h2 { margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 400; font-size: 19px; color: #fff; }
+  .dm__head h2::after { content: ''; display: block; width: 28px; height: 2px; margin-top: 4px; background: #FCC325; border-radius: 2px; }
+  .dm__close { border-color: rgba(252,195,37,.6); background: transparent; color: #fff; }
+  #demo-video { display: block; height: min(calc(100svh - 110px), 1920px); width: auto; max-width: calc(100vw - 48px);
+    aspect-ratio: 9 / 16; border-radius: 12px; background: #000; object-fit: contain; }
+  /* picker + how it works */
+  .aud, .hiw { --fg: #014A1D; padding: 56px 22px; text-align: center; background: #fff; }
+  .aud h2, .hiw h2 { margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 400; font-size: clamp(28px, 7.4vw, 42px); line-height: 1.1; color: #014A1D; }
+  .aud h2::after, .hiw h2::after { content: ''; display: block; width: 44px; height: 3px; margin: 14px auto 0; background: #FCC325; border-radius: 3px; }
+  .aud__grid { display: grid; gap: 12px; max-width: 420px; margin: 26px auto 0; }
+  .aud__card { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 20px 18px; border-radius: 18px; text-decoration: none;
+    background: #fff; border: 1.5px solid rgba(1,74,29,.14); color: #014A1D; transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease; }
+  .aud__card:hover, .aud__card:focus-visible { border-color: #014A1D; transform: translateY(-2px); box-shadow: 0 16px 30px -18px rgba(1,74,29,.45); }
+  .aud__card strong { font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 22px; line-height: 1.15; }
+  .aud__k { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #025D25; }
+  .aud__go { margin-top: 4px; font-size: 14px; font-weight: 700; color: #014A1D; border-bottom: 2px solid #FCC325; padding-bottom: 1px; }
+  .hiw { background: #F7F8F3; border-top: 1px solid rgba(1,74,29,.08); }
+  .hiw h2 { margin-top: 12px; }
+  .hiw__steps { list-style: none; margin: 26px auto 0; padding: 0; display: grid; gap: 12px; max-width: 420px; counter-reset: none; }
+  .hiw__steps li { background: #fff; border: 1px solid rgba(1,74,29,.12); border-radius: 18px; padding: 20px 18px; }
+  .hiw__n { display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: #FCC325; color: #014A1D;
+    font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 19px; }
+  .hiw__steps h3 { margin: 10px 0 0; font-size: 18px; font-weight: 800; line-height: 1.25; color: #014A1D; }
+  .hiw__steps p { margin: 6px 0 0; font-size: 14px; color: rgba(1,74,29,.75); }
+  @media (min-width: 900px) { .aud__grid, .hiw__steps { grid-template-columns: repeat(3, 1fr); max-width: 1040px; } .aud, .hiw { padding: 72px 32px; } }
+  /* anchors: header scrolls away with the hero (not sticky) — small breathing room only */
+  #platform, #feature-maxine-ai, .plan, #audience, #how-it-works, #faq, #switch { scroll-margin-top: 12px; }
+  .plan { transition: box-shadow .4s ease, transform .4s ease; }
+  .plan.-flash { box-shadow: 0 0 0 4px #FCC325, 0 24px 50px -24px rgba(1,74,29,.55); transform: translateY(-3px); }
+  /* placeholders */
+  .ph-empty { margin: 24px auto 0; max-width: 420px; padding: 28px 18px; border: 1.5px dashed rgba(1,74,29,.25); border-radius: 18px;
+    font-weight: 700; color: rgba(1,74,29,.7); }
+  .fb__grid { display: grid; gap: 14px; max-width: 420px; margin: 26px auto 0; text-align: left; }
+  @media (min-width: 760px) { .fb__grid { grid-template-columns: 1fr 1fr; max-width: 820px; } }
+  .fb__card { background: #fff; border: 1px solid rgba(1,74,29,.14); border-radius: 18px; padding: 22px 20px; display: grid; gap: 12px; }
+  .fb__card h4 { margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 21px; color: #014A1D; }
+  .fb__card label { display: grid; gap: 5px; font-size: 13px; font-weight: 700; color: #014A1D; }
+  .fb__card input { font: inherit; font-size: 16px; font-weight: 400; padding: 11px 12px; border-radius: 10px; border: 1.5px solid rgba(1,74,29,.2); }
+  .fb__card input:focus-visible { outline: 2px solid #FCC325; outline-offset: 1px; border-color: #014A1D; }
+  .fb__card button { min-height: 46px; border-radius: 999px; border: 0; background: #FCC325; color: #014A1D; font: inherit; font-weight: 800; opacity: .55; cursor: not-allowed; }
+  .fblock .fb__note { margin: 0; font-size: 12.5px; color: rgba(1,74,29,.65); }
+  .faq { margin: 24px auto 0; max-width: 620px; text-align: left; display: grid; gap: 10px; }
+  .faq details { border: 1px solid rgba(1,74,29,.14); border-radius: 14px; background: #fff; }
+  .faq summary { cursor: pointer; list-style: none; padding: 16px 44px 16px 18px; font-weight: 700; color: #014A1D; position: relative; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: '+'; position: absolute; right: 18px; top: 50%; transform: translateY(-50%); font-size: 22px; color: #025D25; }
+  .faq details[open] summary::after { content: '–'; }
+  .faq summary:focus-visible { outline: 2px solid #FCC325; outline-offset: 2px; border-radius: 14px; }
+  .fblock .faq p { margin: 0; padding: 0 18px 16px; font-size: 15px; max-width: none; }
+  .faq a { color: #014A1D; font-weight: 700; }
+  .ph-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; min-height: 48px; padding: 0 26px; border-radius: 999px;
+    border: 1.5px solid #014A1D; color: #014A1D; background: #fff; font-weight: 800; text-decoration: none; }
+  .ph-btn:hover { background: #FCC325; }
 </style>
 </head>
 <body>
@@ -701,14 +811,18 @@
     </div>
     <nav id="nav" aria-label="Primary"></nav>
     <div id="top-actions">
+      <a id="call" href="tel:+13022730607" aria-label="Call (302) 273-0607"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span class="call__n">(302) 273-0607</span></a>
       <a id="login" href="https://scoresos.com/login">Log In</a>
+      <button id="demo-btn" class="demo-btn" type="button" aria-haspopup="dialog" aria-controls="demo-modal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg><span>Watch Demo</span></button>
       <a id="cta" href="#pricing">Get started <span class="arw">→</span></a>
+      <button id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </header>
   <div id="mast">
     <span id="eyebrow"></span>
     <h1 id="headline"></h1>
     <p id="claim">The <span class="claim__pill">All-in-One</span> Credit Repair &amp; Funding Software</p>
+    <div id="mast-actions"><button class="demo-btn -m" type="button" aria-haspopup="dialog" aria-controls="demo-modal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg><span>Watch Demo</span></button></div>
   </div>
   <div class="edge -l" id="edge-l"></div>
   <div class="edge -r" id="edge-r"></div>
@@ -734,11 +848,62 @@
       <button class="navbtn" id="next" aria-label="Next work">›</button>
     </div>
   </footer>
-  <a id="more-cue" href="#features">Explore every feature <span aria-hidden="true">↓</span></a>
+  <a id="more-cue" href="#platform">Explore every feature <span aria-hidden="true">↓</span></a>
+</div>
+
+<div id="mnav" hidden>
+  <div class="mnav__backdrop" data-close></div>
+  <div class="mnav__sheet" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="mnav__top">
+      <img src="./assets/score-os-logo.webp" alt="Score OS" width="44" height="42">
+      <button class="mnav__close" type="button" aria-label="Close menu">×</button>
+    </div>
+    <nav class="mnav__links" aria-label="Mobile">
+      <a href="#platform">Platform</a>
+      <a href="#feature-maxine-ai">Maxine AI</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#plan-diy">DIY OS</a>
+    </nav>
+    <div class="mnav__actions">
+      <button class="demo-btn -menu" type="button" aria-haspopup="dialog" aria-controls="demo-modal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg><span>Watch Demo</span></button>
+      <a class="mnav__call" href="tel:+13022730607"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>(302) 273-0607</span></a>
+      <a class="mnav__login" href="https://scoresos.com/login">Log In</a>
+      <a class="mnav__cta" href="#pricing">Get started <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</div>
+
+<div id="demo-modal" hidden>
+  <div class="dm__backdrop" data-close></div>
+  <div class="dm__box" role="dialog" aria-modal="true" aria-labelledby="demo-title">
+    <div class="dm__head">
+      <h2 id="demo-title">Score OS walkthrough</h2>
+      <button class="dm__close" type="button" aria-label="Close demo">×</button>
+    </div>
+    <video id="demo-video" controls playsinline preload="none" poster="./assets/scoresos-demo-walkthrough-poster.jpg"
+           data-src="./assets/scoresos-demo-walkthrough.mp4" width="1080" height="1920"></video>
+  </div>
 </div>
 
 <main id="features" aria-labelledby="ft-title">
-  <header class="ft-intro">
+  <section class="aud" id="audience" aria-labelledby="aud-h">
+    <h2 id="aud-h">How can we help you?</h2>
+    <div class="aud__grid">
+      <a class="aud__card" href="#plan-agency"><span class="aud__k">Agency OS · $199/mo</span><strong>I run a credit repair agency</strong><span class="aud__go">See the Agency plan <span aria-hidden="true">→</span></span></a>
+      <a class="aud__card" href="#plan-outsourcing"><span class="aud__k">Outsourcing Portal · $499/mo</span><strong>I’m an outsourcing company</strong><span class="aud__go">See the Outsourcing plan <span aria-hidden="true">→</span></span></a>
+      <a class="aud__card" href="#plan-diy"><span class="aud__k">DIY OS · $49.99/mo</span><strong>I want to fix my own credit</strong><span class="aud__go">See the DIY plan <span aria-hidden="true">→</span></span></a>
+    </div>
+  </section>
+  <section class="hiw" id="how-it-works" aria-labelledby="hiw-h">
+    <span class="ft-eyebrow">How it works</span>
+    <h2 id="hiw-h">Three steps.</h2>
+    <ol class="hiw__steps">
+      <li><span class="hiw__n">1</span><h3>Sign up and import your clients</h3><p>Unlimited Active Clients</p></li>
+      <li><span class="hiw__n">2</span><h3>Maxine preps the dispute letters</h3><p>Unlimited AI Dispute Letters (Maxine)</p></li>
+      <li><span class="hiw__n">3</span><h3>You review, send and track results</h3><p>Person approves before send · All 3 Bureaus Tracked</p></li>
+    </ol>
+  </section>
+  <header class="ft-intro" id="platform">
     <span class="ft-eyebrow">Score OS · Every feature</span>
     <h2 id="ft-title">Everything we built, in one place.</h2>
     <p>Software built to scale your agency and your clients’ success. Here’s what each one does.</p>
@@ -942,21 +1107,21 @@
       <h3 id="pricing-h">Simple pricing. Infinite scale.</h3>
       <p>Run an agency, manage an outsourcing company, or repair your own credit.</p>
       <div class="plans">
-        <div class="plan -feat">
+        <div class="plan -feat" id="plan-agency">
           <h4>Agency OS</h4>
           <div class="plan__price">$199<span>/mo</span></div>
           <p class="plan__d">Cancel anytime. No long-term contracts.</p>
           <ul><li>Unlimited Active Clients</li><li>Unlimited AI Dispute Letters (Maxine)</li><li>All 3 Bureaus Tracked</li><li>Fully White-Labeled Client Portal</li><li>Built-in Client Messaging</li><li>Automated Monthly Progress Reports</li></ul>
           <a class="signup -plan" href="https://checkout.square.site/merchant/MLGEBVXJC0JRS/checkout/6A2Q2LWRQHPQDXV3LPI3BSBZ" target="_blank" rel="noopener noreferrer">Subscribe Now — $199/mo <span aria-hidden="true">→</span></a>
         </div>
-        <div class="plan ">
+        <div class="plan" id="plan-outsourcing">
           <h4>Outsourcing Portal</h4>
           <div class="plan__price">$499<span>/mo</span></div>
           <p class="plan__d">For outsourcing companies managing client work across agencies.</p>
           <ul><li>Agency-Specific Client Workspaces</li><li>Team Assignments &amp; Workload</li><li>Dispute Workflow &amp; Letter Tools</li><li>Processing Calendars</li></ul>
           <a class="signup -plan" href="https://square.link/u/FRIVd44M" target="_blank" rel="noopener noreferrer">Subscribe — $499/mo <span aria-hidden="true">→</span></a>
         </div>
-        <div class="plan ">
+        <div class="plan" id="plan-diy">
           <h4>DIY OS</h4>
           <div class="plan__price">$49.99<span>/mo</span></div>
           <p class="plan__d">For individuals repairing their own credit — no agency needed.</p>
@@ -967,6 +1132,74 @@
       <p class="plans__note">Monthly subscription. Checkout opens securely in Square.<br>Already paid? <a href="https://scoresos.com/login" target="_blank" rel="noopener noreferrer">Sign up with your access code</a></p>
     </div>
   </section>
+  <section class="fblock -green" id="switch" aria-labelledby="switch-h">
+    <div class="fblock__in">
+      <span class="fblock__kick">Switch to Score OS</span>
+      <h3 id="switch-h">Thinking about switching?</h3>
+      <p>Bring your agency to the All-in-One Credit Repair &amp; Funding Software.</p>
+      <a class="signup -sm" href="./switch/">Switch to Score OS <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+  <!-- PLACEHOLDER: waiting on Patrick (reviews) -->
+  <section class="fblock -white" id="reviews" aria-labelledby="reviews-h">
+    <div class="fblock__in">
+      <span class="fblock__kick">Reviews</span>
+      <h3 id="reviews-h">What agencies say.</h3>
+      <div class="ph-empty">Reviews coming soon</div>
+    </div>
+  </section>
+  <!-- /PLACEHOLDER -->
+  <!-- PLACEHOLDER: waiting on Patrick (freebies: no form backend yet; nothing is submitted) -->
+  <section class="fblock -soft" id="freebies" aria-labelledby="freebies-h">
+    <div class="fblock__in -wide">
+      <span class="fblock__kick">Free resources</span>
+      <h3 id="freebies-h">Grab a freebie.</h3>
+      <div class="fb__grid">
+        <form class="fb__card" action="#" novalidate data-placeholder-form>
+          <span class="aud__k">For agencies</span>
+          <h4>Free sample dispute letter pack</h4>
+          <label>Name<input type="text" name="name" autocomplete="name"></label>
+          <label>Email<input type="email" name="email" autocomplete="email"></label>
+          <button type="submit" disabled aria-disabled="true">Coming soon</button>
+          <p class="fb__note">Coming soon — this form doesn’t send anything yet.</p>
+        </form>
+        <form class="fb__card" action="#" novalidate data-placeholder-form>
+          <span class="aud__k">For DIY</span>
+          <h4>Free DIY credit guide</h4>
+          <label>Name<input type="text" name="name" autocomplete="name"></label>
+          <label>Email<input type="email" name="email" autocomplete="email"></label>
+          <button type="submit" disabled aria-disabled="true">Coming soon</button>
+          <p class="fb__note">Coming soon — this form doesn’t send anything yet.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+  <!-- /PLACEHOLDER -->
+  <!-- PLACEHOLDER: waiting on Patrick (FAQ answers marked [answer from Patrick]) -->
+  <section class="fblock -white" id="faq" aria-labelledby="faq-h">
+    <div class="fblock__in">
+      <span class="fblock__kick">FAQ</span>
+      <h3 id="faq-h">Questions, answered.</h3>
+      <div class="faq">
+        <details><summary>What is Score OS?</summary><p>The All-in-One Credit Repair &amp; Funding Software. Not just a credit repair platform — software built to scale your agency and your clients’ success, all in one place.</p></details>
+        <details><summary>Who is it for?</summary><p>Run an agency, manage an outsourcing company, or repair your own credit. Pick <a href="#plan-agency">Agency OS</a>, the <a href="#plan-outsourcing">Outsourcing Portal</a> or <a href="#plan-diy">DIY OS</a>.</p></details>
+        <details><summary>Can I switch from another software?</summary><p>[answer from Patrick]</p></details>
+        <details><summary>Do you offer DIY?</summary><p>Yes. <a href="#plan-diy">DIY OS</a> is $49.99/mo — for individuals repairing their own credit, no agency needed.</p></details>
+        <details><summary>Can I cancel anytime?</summary><p>[answer from Patrick] See the <a href="https://scoresos.com/billing-policy">Cancellation Policy</a>.</p></details>
+        <details><summary>Is my data secure?</summary><p>[answer from Patrick]</p></details>
+      </div>
+    </div>
+  </section>
+  <!-- /PLACEHOLDER -->
+  <!-- PLACEHOLDER: waiting on Patrick (strategy call booking link) -->
+  <section class="fblock -soft" id="strategy-call" aria-labelledby="call-h">
+    <div class="fblock__in">
+      <span class="fblock__kick">Talk to us</span>
+      <h3 id="call-h">Book a free strategy call.</h3>
+      <a class="ph-btn" href="#">Book a free strategy call <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+  <!-- /PLACEHOLDER -->
   <section class="ft-cta" aria-labelledby="ft-cta-h">
     <h2 id="ft-cta-h">Ready to build a championship agency?</h2>
     <a class="signup -lg" href="https://checkout.square.site/merchant/MLGEBVXJC0JRS/checkout/6A2Q2LWRQHPQDXV3LPI3BSBZ" target="_blank" rel="noopener noreferrer">Sign Up Today <span aria-hidden="true">→</span></a>
@@ -1211,7 +1444,8 @@ const vidCtrl = document.getElementById('vid-ctrl');
 const preloadedClips = new Set();
 let frontVideoEl = null;
 
-document.getElementById('nav').innerHTML = UI.nav.map(n => '<a href="#">'+n+'</a>').join('');
+const NAV_HREF = { 'Platform': '#platform', 'Maxine AI': '#feature-maxine-ai', 'Pricing': '#pricing', 'DIY OS': '#plan-diy' };
+document.getElementById('nav').innerHTML = UI.nav.map(n => '<a href="'+(NAV_HREF[n]||'#')+'">'+n+'</a>').join('');
 const cta = document.getElementById('cta');
 cta.childNodes[0].textContent = UI.cta + ' ';
 document.getElementById('eyebrow').textContent = UI.eyebrow;
@@ -1477,7 +1711,7 @@ function armAutoplayRetry() {
 }
 
 function playFrontVideo(cardEl) {
-  if (detailOpen || REDUCE || !heroVisible || document.hidden) return;
+  if (detailOpen || window.__demoOpen || REDUCE || !heroVisible || document.hidden) return;
   const vid0 = cardEl && cardEl.querySelector('video');
   if (vid0 && vid0 === frontVideoEl && !vid0.paused) return;
   stopFrontVideo();
@@ -1813,17 +2047,98 @@ detailLearn.addEventListener('click', e => {
     history.replaceState(null, '', '#' + id);
   }, REDUCE ? 20 : 480);
 });
-// Top "Get started" → pricing plans (smooth); close an open card panel first
-cta.addEventListener('click', e => {
-  const el = document.getElementById('pricing');
-  if (!el) return;
-  e.preventDefault();
+// In-page links (nav, mobile menu, Get started, picker, FAQ…): smooth scroll; close any open panel/menu first.
+function flashPlan(el) {
+  if (!el.classList.contains('plan')) return;
+  el.classList.remove('-flash'); void el.offsetWidth; el.classList.add('-flash');
+  setTimeout(() => el.classList.remove('-flash'), 1800);
+}
+function goTo(id) {
+  const el = document.getElementById(id);
+  if (!el) return false;
   const go = () => {
     el.scrollIntoView({ behavior: REDUCE ? 'auto' : 'smooth', block: 'start' });
-    history.replaceState(null, '', '#pricing');
+    history.replaceState(null, '', '#' + id);
+    if (!el.classList.contains('plan')) return;
+    let done = false; const fl = () => { if (done) return; done = true; flashPlan(el); };
+    if ('onscrollend' in window && !REDUCE) addEventListener('scrollend', fl, { once: true });
+    setTimeout(fl, REDUCE ? 0 : 1400);
   };
-  if (detailOpen) { closeDetail(); setTimeout(go, REDUCE ? 20 : 480); } else go();
+  const wasMenu = closeMenu(true);
+  if (detailOpen) { closeDetail(); setTimeout(go, REDUCE ? 20 : 480); }
+  else if (wasMenu) setTimeout(go, 30);
+  else go();
+  return true;
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('a[href^="#"]');
+  if (!a || a.id === 'detail-learn') return;
+  const id = a.getAttribute('href').slice(1);
+  if (!id) return;                                   // href="#" placeholders: leave as-is
+  if (goTo(id)) e.preventDefault();
 });
+
+// Mobile menu
+const mnav = document.getElementById('mnav'), menuBtn = document.getElementById('menu-btn');
+let menuLastFocus = null;
+function openMenu() {
+  if (detailOpen) closeDetail();
+  menuLastFocus = document.activeElement;
+  mnav.hidden = false; menuBtn.setAttribute('aria-expanded', 'true');
+  document.documentElement.classList.add('-modal-open');
+  mnav.querySelector('.mnav__close').focus();
+}
+function closeMenu(silent) {
+  if (mnav.hidden) return false;
+  mnav.hidden = true; menuBtn.setAttribute('aria-expanded', 'false');
+  if (!window.__demoOpen) document.documentElement.classList.remove('-modal-open');
+  if (!silent && menuLastFocus && menuLastFocus.focus) menuLastFocus.focus();
+  return true;
+}
+menuBtn.addEventListener('click', openMenu);
+mnav.addEventListener('click', e => { if (e.target.closest('[data-close], .mnav__close')) closeMenu(); });
+
+// Demo modal (lazy: video src set on first open; pauses on close)
+const demo = document.getElementById('demo-modal'), demoVideo = document.getElementById('demo-video');
+let demoLastFocus = null;
+window.__demoOpen = false;
+function focusables(root) { return [...root.querySelectorAll('button, [href], video[controls], input, [tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled && el.offsetParent !== null); }
+function openDemo(opener) {
+  closeMenu(true);
+  if (detailOpen) closeDetail();
+  demoLastFocus = opener || document.activeElement;
+  window.__demoOpen = true;
+  stopFrontVideo();
+  demo.hidden = false;
+  document.documentElement.classList.add('-modal-open');
+  if (!demoVideo.getAttribute('src')) { demoVideo.src = demoVideo.dataset.src; }
+  demo.querySelector('.dm__close').focus();
+  const p = demoVideo.play(); if (p && p.catch) p.catch(() => {});
+}
+function closeDemo() {
+  if (demo.hidden) return;
+  try { demoVideo.pause(); } catch (_) {}
+  demo.hidden = true; window.__demoOpen = false;
+  document.documentElement.classList.remove('-modal-open');
+  const f = ring.querySelector('.card.-front'); if (f && !detailOpen) playFrontVideo(f);
+  if (demoLastFocus && demoLastFocus.focus && demoLastFocus.offsetParent !== null) demoLastFocus.focus();
+  else document.getElementById('cta').focus();
+}
+document.querySelectorAll('.demo-btn').forEach(b => b.addEventListener('click', () => openDemo(b.classList.contains('-menu') ? (innerWidth <= 760 ? menuBtn : b) : b)));
+demo.addEventListener('click', e => { if (e.target.closest('[data-close], .dm__close')) closeDemo(); });
+document.addEventListener('keydown', e => {
+  const root = !demo.hidden ? demo : (!mnav.hidden ? mnav : null);
+  if (!root) return;
+  if (e.key === 'Escape') { e.preventDefault(); root === demo ? closeDemo() : closeMenu(); return; }
+  if (e.key === 'Tab') {
+    const f = focusables(root); if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+});
+// Placeholder freebie forms: never submit anywhere
+document.querySelectorAll('form[data-placeholder-form]').forEach(f => f.addEventListener('submit', e => e.preventDefault()));
 detailClose.addEventListener('click', closeDetail);
 document.addEventListener('keydown', e => {
   if (!detailOpen) return;
