@@ -25,3 +25,8 @@ python3 -m http.server 8765
 - `/` colosseum / prior preview
 - `/cards/` static feature cards
 - `/video-cards/` same carousel with free looping cinematic clips on the front card + detail view
+
+## Lead forms (video-cards preview)
+
+- **Read Your Own Report eBook card** (`video-cards/index.html`, `#freebies`): HighLevel form ID `HGf6V7IAVpN83W1iz6eB` (Score OS add-ons HighLevel), form name **Read Your Own Report - Free eBook**. Embedded as an inline iframe plus `https://link.msgsndr.com/js/form_embed.js` (loaded once, end of body). Every submission emails the real eBook and creates a real lead, so do not test-submit it.
+- The agency freebie card ("Free sample dispute letter pack") is still a placeholder with no backend.

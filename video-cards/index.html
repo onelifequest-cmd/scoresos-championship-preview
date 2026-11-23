@@ -782,6 +782,13 @@
   /* eBook card (centered); both cards keep their fields at the bottom so they line up side by side */
   .fb__card { display: flex; flex-direction: column; }
   .fb__card > label:first-of-type { margin-top: auto; }
+  /* HighLevel form: form_embed.js sizes the iframe to its content. min-heights = measured full form height
+     (First Name, Phone, Email, 2 consent checkboxes, submit) so nothing collapses or clips before/after it resizes. */
+  .fb__info { display: flex; flex-direction: column; gap: 12px; }
+  .fb__form { margin-top: 4px; min-height: 943px; }          /* measured at 304px wide (390 phones) */
+  .fb__form iframe { display: block; min-height: 943px; }
+  @media (min-width: 760px) { .fb__form, .fb__form iframe { min-height: 860px; } }
+  @media (min-width: 1000px) { .fb__form, .fb__form iframe { min-height: 843px; } }   /* measured at 343px wide (1440) */
   .fb__card.-ebook { text-align: center; align-items: stretch; }
   .fb__card.-ebook label { text-align: left; }
   .fb__cover { display: block; margin: 0 auto 4px; width: min(240px, 72%); }
@@ -790,9 +797,15 @@
   .fblock .fb__copy { margin: 0 auto; font-size: 15px; line-height: 1.5; max-width: 30em; }
   @media (min-width: 760px) {
     .fb__cover { width: 170px; }
-    /* agency card: same content, title block sits centred in the extra height so the pair reads balanced */
-    .fb__card:not(.-ebook) > .aud__k { margin-top: auto; }
     .fb__card:not(.-ebook) > h4 { font-size: 24px; }
+  }
+  /* Desktop: eBook card is wider (cover + copy left, HighLevel form right); agency card content centred vertically */
+  @media (min-width: 1000px) {
+    .fb__grid { grid-template-columns: 1fr 2fr; max-width: 1040px; }
+    .fb__card:not(.-ebook) { justify-content: center; }
+    .fb__card:not(.-ebook) > label:first-of-type { margin-top: 8px; }
+    .fb__card.-ebook { display: grid; grid-template-columns: 1fr 1.25fr; column-gap: 24px; align-items: center; }
+    .fb__card.-ebook > .fb__form { margin-top: 0; }
   }
   .faq { margin: 24px auto 0; max-width: 620px; text-align: left; display: grid; gap: 10px; }
   .faq details { border: 1px solid rgba(1,74,29,.14); border-radius: 14px; background: #fff; }
@@ -1164,7 +1177,7 @@
     </div>
   </section>
   <!-- /PLACEHOLDER -->
-  <!-- PLACEHOLDER: waiting on Patrick (freebies: no form backend yet; nothing is submitted) -->
+  <!-- PLACEHOLDER: waiting on Patrick (agency freebie card: no form backend yet; nothing is submitted. The eBook card below is live HighLevel.) -->
   <section class="fblock -soft" id="freebies" aria-labelledby="freebies-h">
     <div class="fblock__in -wide">
       <span class="fblock__kick">Free resources</span>
@@ -1178,8 +1191,10 @@
           <button type="submit" disabled aria-disabled="true">Coming soon</button>
           <p class="fb__note">Coming soon — this form doesn’t send anything yet.</p>
         </form>
-        <!-- PLACEHOLDER: waiting on Patrick (eBook PDF + HighLevel form pending; nothing is submitted) -->
-        <form class="fb__card -ebook" action="#" novalidate data-placeholder-form>
+        <!-- eBook lead form: HighLevel form ID HGf6V7IAVpN83W1iz6eB (Score OS add-ons HighLevel),
+             form name 'Read Your Own Report - Free eBook'. Submitting emails the real eBook and creates a real lead. -->
+        <div class="fb__card -ebook">
+          <div class="fb__info">
           <picture class="fb__cover">
             <source srcset="./assets/read-your-own-report-cover.webp" type="image/webp">
             <img src="./assets/read-your-own-report-cover.jpg" width="480" height="558" loading="lazy" decoding="async"
@@ -1189,12 +1204,11 @@
           <h4>Read Your Own Report</h4>
           <p class="fb__sub">Accuracy first. Access next.</p>
           <p class="fb__copy">A 40-page credit guide for anyone ready to find the errors and get approval-ready.</p>
-          <label>Name<input type="text" name="name" autocomplete="name"></label>
-          <label>Email<input type="email" name="email" autocomplete="email"></label>
-          <button type="submit" disabled aria-disabled="true">Get the free eBook</button>
-          <p class="fb__note">Coming soon — this form doesn’t send anything yet.</p>
-        </form>
-        <!-- /PLACEHOLDER -->
+          </div>
+          <div class="fb__form">
+            <iframe src="https://api.leadconnectorhq.com/widget/form/HGf6V7IAVpN83W1iz6eB" style="width:100%;height:100%;border:none;border-radius:8px" id="inline-HGf6V7IAVpN83W1iz6eB" data-layout="{'id':'INLINE'}" data-trigger-type="alwaysShow" data-trigger-value="" data-activation-type="alwaysActivated" data-activation-value="" data-deactivation-type="neverDeactivate" data-deactivation-value="" data-form-name="Read Your Own Report - Free eBook" data-height="660" data-layout-iframe-id="inline-HGf6V7IAVpN83W1iz6eB" data-form-id="HGf6V7IAVpN83W1iz6eB" title="Read Your Own Report - Free eBook"></iframe>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -2220,5 +2234,6 @@ window.addEventListener('resize', relayout);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
 requestAnimationFrame(() => fitCorrect());
 </script>
+<script src="https://link.msgsndr.com/js/form_embed.js"></script>
 </body>
 </html>
