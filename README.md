@@ -29,4 +29,4 @@ python3 -m http.server 8765
 ## Lead forms (video-cards preview)
 
 - **Read Your Own Report eBook card** (`video-cards/index.html`, `#freebies`): HighLevel form ID `HGf6V7IAVpN83W1iz6eB` (Score OS add-ons HighLevel), form name **Read Your Own Report - Free eBook**. Embedded as an inline iframe plus `https://link.msgsndr.com/js/form_embed.js` (loaded once, end of body). Every submission emails the real eBook and creates a real lead, so do not test-submit it.
-- The agency freebie card ("Free sample dispute letter pack") is still a placeholder with no backend.
+- **Home Buying Guide card** (`video-cards/index.html`, `#freebies`): HighLevel form ID `aI9JD9PSigav6j9FCQjv` (Score OS add-ons HighLevel), form name **Home Buying Guide - Free Download**. Same inline iframe + the single `form_embed.js`. Every submission emails the real guide and creates a real lead, so do not test-submit it. (Replaced the old agency "Free sample dispute letter pack" placeholder.)
