@@ -58,6 +58,8 @@
   .card.-front .card__inner { box-shadow: 0 40px 90px -20px rgba(24,34,64,.5), 0 8px 22px -8px rgba(24,34,64,.4); }
   .card:hover .card__inner { transform: scale(var(--hover)); }
   .card__inner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* In-card number/title/scrim removed (Nov 23): they covered the clip. Caption below (.dock) is the only label. */
+  .card__scrim, .card__no, .card__foot { display: none !important; }
   .card__scrim { position: absolute; inset: 0; pointer-events: none; opacity: var(--scrim);
     background: linear-gradient(to top, rgba(6,10,22,.85) 0%, rgba(6,10,22,.28) 30%, rgba(6,10,22,0) 55%); }
   .card__no { position: absolute; top: 12px; left: 13px; z-index: 2; font-size: 11px; font-weight: 600;
@@ -247,6 +249,8 @@
   .hint { position: fixed; left: 50%; bottom: clamp(108px, 13.5vh, 128px); transform: translateX(-50%); z-index: 4;
     font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; font-weight: 600; color: var(--ink-3);
     pointer-events: none; user-select: none; opacity: .9; }
+  /* Nov 23: hint overlapped the caption title on desktop (labels must not cover content); arrows + dots + swipe remain. */
+  .hint { display: none !important; }
 
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
@@ -1585,10 +1589,8 @@ function buildRing() {
             data-poster="${src.poster}"
             aria-hidden="true"></video>
         </div>
-        <div class="card__scrim"></div>
-        <span class="card__no">${pad2((i % CARDS.length) + 1)}</span>
-        <div class="card__foot"><h3 class="card__title">${cd.title}</h3></div>
       </div>`;
+    /* No in-card labels: number + title live only in the caption under the carousel (.dock), so nothing covers the clip. */
     ring.appendChild(art);
   }
 }
