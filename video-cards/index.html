@@ -885,7 +885,7 @@
   <div class="hint">Drag · swipe · play</div>
   <footer id="dock">
     <div class="dock__l">
-      <div class="dock__count"><b id="d-cur">01</b> <i class="of">/ <span id="d-total">11</span></i></div>
+      <div class="dock__count"><b id="d-cur">01</b> <i class="of">/ <span id="d-total">12</span></i></div>
     </div>
     <div class="dock__c" aria-live="polite">
       <h2 class="dock__title" id="d-title"></h2>
@@ -1380,7 +1380,7 @@
 <script type="module">
 const ASSET_BASE_URL = './assets';
 const CFG = {
-  slots: 22,  /* 2 × 11 cards — must stay a multiple of CARDS.length so the ring wraps 11 → 01 cleanly */
+  slots: 24,  /* 2 × 12 cards — must stay a multiple of CARDS.length so the ring wraps 12 → 01 cleanly */
   cardScale: 1.0,
   cardRatio: 1.36,
   radiusK: 3.25,
@@ -1454,6 +1454,13 @@ const CARDS = [
     bullets: ['Free HighLevel sub-account with your software', 'Fully loaded with credit-repair automations', '100% customizable']
   },
   {
+    img: 'score-connect-v1-9x16-poster.webp', id: 'score-connect', title: 'Score Connect', rating: 'Agency OS', meta: 'Calls · Texts · Email',
+    kicker: 'Agency OS · Score Connect',
+    lead: 'One Platform. Every Conversation.',
+    blurb: 'Call, text and email your clients without leaving Score OS. Calls and texts run on your agency’s own Twilio account, email goes out from your own mailbox, and call and message history stays inside your agency.',
+    bullets: ['Call and text clients from your own Twilio account', 'Send texts and read replies in one place', 'Email from your own Gmail or Outlook mailbox', 'Emails go out only after you review and confirm']
+  },
+  {
     img: 'outsource-portal-v1-9x16-poster.webp', id: 'outsource-portal', title: 'Outsource Portal', rating: 'Agency OS', meta: 'Affiliate desk',
     kicker: 'Agency OS · Affiliate desk',
     lead: 'Outsource to multiple agencies — or run it as your affiliate portal.',
@@ -1497,6 +1504,7 @@ const VIDEO_BY_CARD = {
   'score-marketplace': { webm: '', mp4: './assets/marketplace-v3-9x16.mp4', poster: './assets/marketplace-v3-9x16-poster.jpg', contain: true, autoplay: true },
   /* Marketing OS v2 clip (real HighLevel workflows UI, no glass intro). Old marketing.* kept in assets/. */
   'marketing-os': { webm: '', mp4: './assets/marketing-os-v2-9x16.mp4', poster: './assets/marketing-os-v2-9x16-poster.jpg', contain: true, autoplay: true },
+  'score-connect': { webm: '', mp4: './assets/score-connect-v1-9x16.mp4', poster: './assets/score-connect-v1-9x16-poster.jpg', contain: true, autoplay: true },
   /* Custom Game Plan v2 clip (approved). Old goal-based-strategies.* kept in assets/. */
   'goal-based-strategies': { webm: '', mp4: './assets/game-plan-v2-9x16.mp4', poster: './assets/game-plan-v2-9x16-poster.jpg', contain: true, autoplay: true },
   /* Funding OS v3 clip (from Patrick's Funding OS screens). Old funding-v2-9x16.* and funding-in-app.* kept in assets/. */
