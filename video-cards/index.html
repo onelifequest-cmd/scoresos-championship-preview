@@ -821,6 +821,32 @@
   .ph-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; min-height: 48px; padding: 0 26px; border-radius: 999px;
     border: 1.5px solid #014A1D; color: #014A1D; background: #fff; font-weight: 800; text-decoration: none; }
   .ph-btn:hover { background: #FCC325; }
+
+  /* ===== Nov 23 (9:55 PM): card label pill below the screen; caption under the carousel removed ===== */
+  .card__inner { background: #FFFFFF !important; display: flex; flex-direction: column; }
+  .card__media { position: relative; inset: auto; flex: 1 1 auto; min-height: 0; margin: 8px 8px 0; overflow: hidden; }
+  .card__media img, .card__media video { object-fit: contain !important; background: #FFFFFF; }
+  .card__pill { flex: none; margin: 8px 10px 10px; padding: .55em .8em; border: 2px solid #FCC325; border-radius: 12px; background: #FFFFFF;
+    color: #014A1D; font-family: 'Inter', -apple-system, system-ui, sans-serif; font-weight: 800; line-height: 1.2; text-align: center;
+    font-size: clamp(11px, calc(var(--cw, 260px) * 0.05), 15px); text-wrap: balance; box-shadow: 0 6px 14px -8px rgba(1,74,29,.35); }
+  /* Clips 04-09 have a numbered "1 Open …" step-pill strip burned into the bottom 18.75% of every frame (and poster).
+     The files are NOT re-cut: show the clip top-aligned at 1/0.8125 of the media height so that strip falls outside the
+     (overflow:hidden) media box. Remove these rules to show the burned-in strip again. */
+  .card[data-card-id="funding-in-app"] .card__media :is(img, video),
+  .card[data-card-id="ai-receptionist"] .card__media :is(img, video),
+  .card[data-card-id="ai-agent-human-backup"] .card__media :is(img, video),
+  .card[data-card-id="score-marketplace"] .card__media :is(img, video),
+  .card[data-card-id="marketing-os"] .card__media :is(img, video),
+  .card[data-card-id="outsource-portal"] .card__media :is(img, video) {
+    height: calc(100% / 0.8125); bottom: auto; object-position: 50% 0; -webkit-clip-path: none; clip-path: none; }
+  /* Caption under the carousel removed (number, title, subline, badge). Title stays for screen readers (aria-live). */
+  .dock__l { display: none !important; }
+  .dock__sub { display: none !important; }
+  .dock__title { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  #dock { display: flex !important; flex-direction: column; align-items: center; justify-content: flex-end; gap: 10px; }
+  .dock__c { gap: 0; }
+  .dock__r { justify-content: center; }
 </style>
 </head>
 <body>
@@ -1589,8 +1615,9 @@ function buildRing() {
             data-poster="${src.poster}"
             aria-hidden="true"></video>
         </div>
+        <div class="card__pill">${cd.title}</div>
       </div>`;
-    /* No in-card labels: number + title live only in the caption under the carousel (.dock), so nothing covers the clip. */
+    /* Label = the gold-bordered pill BELOW the screen (inside the card frame). Nothing sits on top of the clip. */
     ring.appendChild(art);
   }
 }
